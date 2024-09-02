@@ -1,0 +1,31 @@
+name: sign_in
+description: "A new Flutter package project."
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.5.1
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  component_library:
+    path: ../../component_library
+  domain_models:
+    path: ../../domain_models
+  bazaar_api:
+    path: ../../bazaar_api
+  form_fields:
+    path: ../../form_fields
+
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
