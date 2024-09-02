@@ -17,6 +17,7 @@ class AppTheme {
       brightness: Brightness.light,
       colorScheme: colorScheme,
       inputDecorationTheme: _inputDecorationTheme,
+      elevatedButtonTheme: _elevatedButtonTheme,
       textTheme: textTheme.apply(
         bodyColor: colorScheme.onSurface,
         displayColor: colorScheme.onSurface,
@@ -25,6 +26,15 @@ class AppTheme {
       canvasColor: colorScheme.surface,
     );
   }
+
+  ElevatedButtonThemeData get _elevatedButtonTheme => ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
 
   ColorScheme get _lightScheme => const ColorScheme(
         brightness: Brightness.light,
