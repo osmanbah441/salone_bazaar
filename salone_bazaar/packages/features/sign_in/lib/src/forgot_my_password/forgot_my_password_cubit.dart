@@ -1,21 +1,19 @@
 import 'package:bazaar_api/bazaar_api.dart';
 
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
-
 
 part 'forgot_my_password_state.dart';
 
 class ForgotMyPasswordCubit extends Cubit<ForgotMyPasswordState> {
   ForgotMyPasswordCubit({
-   required this.api,
+    required this.api,
   }) : super(const ForgotMyPasswordState());
 
   final BazaarApi api;
 
-void onResetEmailChanged(String newValue) {
+  void onResetEmailChanged(String newValue) {
     final newEmail = state.resetEmail.shouldValidate
         ? Email.validated(newValue)
         : Email.unvalidated(newValue);
@@ -35,7 +33,8 @@ void onResetEmailChanged(String newValue) {
     final isValid = FormFields.validate([email]);
     final newState = state.copyWith(
       resetEmail: email,
-      resetEmailSubmissionStatus: isValid ? ResetEmailSubmissionStatus.inProgress : null,
+      resetEmailSubmissionStatus:
+          isValid ? ResetEmailSubmissionStatus.inProgress : null,
     );
     emit(newState);
 
@@ -54,5 +53,4 @@ void onResetEmailChanged(String newValue) {
       }
     }
   }
-
 }

@@ -24,14 +24,14 @@ class AuthService {
   // Sign in with email and password
   Future<domain.User?> signInWithEmailAndPassword(
       String email, String password) async {
-        print(password);
+    print(password);
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
       return result.user?.toDomain;
     } catch (e) {
-     throw domain.InvalidCredentialException();
+      throw domain.InvalidCredentialException();
     }
   }
 

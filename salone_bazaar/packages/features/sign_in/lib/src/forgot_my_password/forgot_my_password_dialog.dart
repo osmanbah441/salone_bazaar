@@ -4,13 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:component_library/component_library.dart';
 
-
 import 'forgot_my_password_cubit.dart';
 
 class ForgotMyPasswordDialog extends StatelessWidget {
   const ForgotMyPasswordDialog({required this.api, super.key});
 
-final BazaarApi api;
+  final BazaarApi api;
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +97,7 @@ class _ForgotMyPasswordViewState extends State<ForgotMyPasswordView> {
             state.resetEmailSubmissionStatus.isInProgress
                 ? const InProgressTextButton(label: 'confirm')
                 : TextButton(
-                    onPressed: _cubit.onResetEmailSubmit
-                    
-                    
-                    ,
+                    onPressed: _cubit.onResetEmailSubmit,
                     child: const Text('confirm'),
                   )
           ],

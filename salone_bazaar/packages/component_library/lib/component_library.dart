@@ -4,6 +4,6 @@ export 'src/generic_error_snackbar.dart';
 export 'src/exception_indicator.dart';
 export 'src/centered_circular_progress_indicator.dart';
 export 'src/in_progress_text_button.dart';
-
-// theme for the app.
+export 'src/email_and_password_form.dart';
 export 'src/app_theme/theme.dart';
+export 'src/row_text_with_button.dart';

@@ -1,4 +1,5 @@
 import 'form_fields.dart';
+
 final class Password extends FormInput<String, PasswordValidationError> {
   const Password.unvalidated([super.value = '']) : super.unvalidated();
   const Password.validated(super.value) : super.validated();

@@ -3,57 +3,57 @@ import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'sign_in_cubit.dart';
+import 'sign_up_cubit.dart';
 
-class SignInScreen extends StatelessWidget {
-  const SignInScreen({
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({
     super.key,
     required this.api,
-    required this.onSignInSuccess,
-    required this.onSignUpTap,
-    required this.onForgotPasswordTap,
+    required this.onSignUpSuccess,
+    required this.onSignInTap,
+    required this.onCreateRetailerAccount,
   });
 
   final BazaarApi api;
-  final VoidCallback onSignInSuccess;
-  final VoidCallback onSignUpTap;
-  final VoidCallback onForgotPasswordTap;
+  final VoidCallback onSignUpSuccess;
+  final VoidCallback onSignInTap;
+  final VoidCallback onCreateRetailerAccount;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignInCubit(api),
-      child: SigninScreenView(
-        onSignInSuccess: onSignInSuccess,
-        onSignUpTap: onSignUpTap,
-        onForgotPasswordTap: onForgotPasswordTap,
+      create: (context) => SignUpCubit(api),
+      child: SignUpScreenView(
+        onCreateRetailerAccount: onCreateRetailerAccount,
+        onSignUpSuccess: onSignUpSuccess,
+        onSignInTap: onSignInTap,
       ),
     );
   }
 }
 
 @visibleForTesting
-class SigninScreenView extends StatefulWidget {
-  const SigninScreenView({
+class SignUpScreenView extends StatefulWidget {
+  const SignUpScreenView({
     super.key,
-    required this.onSignInSuccess,
-    required this.onSignUpTap,
-    required this.onForgotPasswordTap,
+    required this.onSignUpSuccess,
+    required this.onSignInTap,
+    required this.onCreateRetailerAccount,
   });
 
-  final VoidCallback onSignInSuccess;
-  final VoidCallback onSignUpTap;
-  final VoidCallback onForgotPasswordTap;
+  final VoidCallback onSignUpSuccess;
+  final VoidCallback onSignInTap;
+  final VoidCallback onCreateRetailerAccount;
 
   @override
-  State<SigninScreenView> createState() => _SigninScreenViewState();
+  State<SignUpScreenView> createState() => _SignUpScreenViewState();
 }
 
-class _SigninScreenViewState extends State<SigninScreenView> {
+class _SignUpScreenViewState extends State<SignUpScreenView> {
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
 
-  SignInCubit get _cubit => context.read<SignInCubit>();
+  SignUpCubit get _cubit => context.read<SignUpCubit>();
 
   @override
   void initState() {
@@ -76,13 +76,13 @@ class _SigninScreenViewState extends State<SigninScreenView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SignInCubit, SignInState>(
+    return BlocConsumer<SignUpCubit, SignUpState>(
       listenWhen: (previous, current) =>
           previous.emailAndPasswordSubmissionStatus !=
           current.emailAndPasswordSubmissionStatus,
       listener: (context, state) {
         if (state.emailAndPasswordSubmissionStatus.isSuccess) {
-          widget.onSignInSuccess();
+          widget.onSignUpSuccess();
           return;
         }
 
@@ -107,7 +107,7 @@ class _SigninScreenViewState extends State<SigninScreenView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Sign in to saloneBazaar',
+                  'Create a saloneBazaar Account',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Spacing.height24,
@@ -117,10 +117,8 @@ class _SigninScreenViewState extends State<SigninScreenView> {
                 Spacing.height24,
                 const Text('OR'),
                 Spacing.height24,
-
-                //
                 EmailAndPasswordForm(
-                  buttonLabel: 'Sign in',
+                  buttonLabel: 'Create account',
                   emailFocusNode: _emailFocusNode,
                   passwordFocusNode: _passwordFocusNode,
                   onEmailChanged: _cubit.onEmailChanged,
@@ -131,27 +129,18 @@ class _SigninScreenViewState extends State<SigninScreenView> {
                   isEmailAndPasswordSubmissionStatusInProgress:
                       state.emailAndPasswordSubmissionStatus.isInProgress,
                 ),
-
-                //
-                Spacing.height8,
-                TextButton(
-                  onPressed: state.emailAndPasswordSubmissionStatus.isInProgress
-                      ? null
-                      : widget.onForgotPasswordTap,
-                  child: const Text('Reset password'),
+                Spacing.height24,
+                Spacing.height16,
+                RowTextWithButton(
+                  text: 'Already have an account?',
+                  buttonLabel: 'Sign In',
+                  onButtonTap: widget.onSignInTap,
                 ),
-                Spacing.height8,
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('No account yet?'),
-                    TextButton(
-                      onPressed: widget.onSignUpTap,
-                      child: const Text("create account"),
-                    ),
-                  ],
-                )
+                RowTextWithButton(
+                  text: 'Are you a business owner?',
+                  buttonLabel: 'Create an account',
+                  onButtonTap: widget.onCreateRetailerAccount,
+                ),
               ],
             ),
           ),

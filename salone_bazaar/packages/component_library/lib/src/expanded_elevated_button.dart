@@ -10,14 +10,17 @@ class ExpandedElevatedButton extends StatelessWidget {
     this.icon,
   });
 
-  ExpandedElevatedButton.google({Key? key, VoidCallback? onTap}) : this(
-    key: key,
-             onTap: onTap,
-            icon: 
-            
-            Image.asset('assets/google_icon.png', height: 32, package: 'component_library',),
-            label: 'Continue with google',
-  );
+  ExpandedElevatedButton.google({Key? key, VoidCallback? onTap})
+      : this(
+          key: key,
+          onTap: onTap,
+          icon: Image.asset(
+            'assets/google_icon.png',
+            height: 32,
+            package: 'component_library',
+          ),
+          label: 'Continue with google',
+        );
 
   ExpandedElevatedButton.inProgress({
     required String label,
@@ -30,7 +33,6 @@ class ExpandedElevatedButton extends StatelessWidget {
           ),
           key: key,
         );
-
 
   final VoidCallback? onTap;
   final String label;

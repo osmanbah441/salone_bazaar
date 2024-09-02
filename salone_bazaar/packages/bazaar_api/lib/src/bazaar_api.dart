@@ -6,16 +6,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 class BazaarApi {
-const BazaarApi();
+  const BazaarApi();
 
-  static Future<void> initializeApi({bool isDebug = true})  async {
-      await Firebase.initializeApp(
-   options: DefaultFirebaseOptions.currentPlatform,
- );
- if (isDebug) {
-   await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-   FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
- }
+  static Future<void> initializeApi({bool isDebug = true}) async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    if (isDebug) {
+      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+    }
   }
 
   final auth = const AuthService();

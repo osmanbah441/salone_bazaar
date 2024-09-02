@@ -3,6 +3,30 @@ final class FormFields {
       inputs.every((i) => i.isValid);
 }
 
+enum EmailAndPasswordSubmissionStatus {
+  idle,
+  inProgress,
+  invalidCredentialsError,
+  genericError,
+  success;
+
+  bool get isSuccess => this == EmailAndPasswordSubmissionStatus.success;
+  bool get isInProgress => this == EmailAndPasswordSubmissionStatus.inProgress;
+  bool get isGenericError =>
+      this == EmailAndPasswordSubmissionStatus.genericError;
+  bool get isInvalidCredentialsError =>
+      this == EmailAndPasswordSubmissionStatus.invalidCredentialsError;
+
+  bool get hasSubmissionError => isGenericError || isInvalidCredentialsError;
+}
+
+enum GoogleSignInSubmissionStatusStatus {
+  idle,
+  inProgress,
+  success,
+  error,
+  cancelled
+}
 
 abstract class FormInput<T, E> {
   const FormInput._(this.value, this.shouldValidate);

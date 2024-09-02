@@ -1,7 +1,7 @@
-part of 'sign_in_cubit.dart';
+part of 'sign_up_cubit.dart';
 
-final class SignInState extends Equatable {
-  const SignInState({
+final class SignUpState extends Equatable {
+  const SignUpState({
     this.password = const Password.unvalidated(''),
     this.email = const Email.unvalidated(''),
     this.emailAndPasswordSubmissionStatus =
@@ -15,13 +15,14 @@ final class SignInState extends Equatable {
   final EmailAndPasswordSubmissionStatus emailAndPasswordSubmissionStatus;
   final GoogleSignInSubmissionStatusStatus googleSignInSubmissionStatusStatus;
 
-  SignInState copyWith({
+  SignUpState copyWith({
     Password? password,
     Email? email,
+    bool? isRetailer,
     EmailAndPasswordSubmissionStatus? emailAndPasswordSubmissionStatus,
     GoogleSignInSubmissionStatusStatus? googleSignInSubmissionStatusStatus,
   }) =>
-      SignInState(
+      SignUpState(
         password: password ?? this.password,
         email: email ?? this.email,
         emailAndPasswordSubmissionStatus: emailAndPasswordSubmissionStatus ??

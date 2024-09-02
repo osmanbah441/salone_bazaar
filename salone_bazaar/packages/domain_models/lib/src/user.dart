@@ -11,3 +11,5 @@ class User {
   final String? username;
   final String? photoURL;
 }
+
+enum UserAccountType { customer, retailer }

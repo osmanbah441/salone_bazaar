@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
 
-part 'sign_in_state.dart';
+part 'sign_up_state.dart';
 
-final class SignInCubit extends Cubit<SignInState> {
-  SignInCubit(this.api) : super(const SignInState());
+final class SignUpCubit extends Cubit<SignUpState> {
+  SignUpCubit(this.api) : super(const SignUpState());
 
   final BazaarApi api;
 
@@ -57,7 +57,7 @@ final class SignInCubit extends Cubit<SignInState> {
 
     if (isFormValid) {
       try {
-        await api.auth.signInWithEmailAndPassword(email.value, password.value);
+        await api.auth.signUpWithEmailAndPassword(email.value, password.value);
         emit(state.copyWith(
             emailAndPasswordSubmissionStatus:
                 EmailAndPasswordSubmissionStatus.success));

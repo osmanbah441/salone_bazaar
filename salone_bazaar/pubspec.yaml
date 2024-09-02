@@ -17,6 +17,8 @@ dependencies:
     path: ./packages/bazaar_api
   sign_in:
     path: ./packages/features/sign_in
+  sign_up:
+    path: ./packages/features/sign_up
   go_router: ^14.2.7
 
 
