@@ -6,7 +6,8 @@ import 'package:form_fields/form_fields.dart';
 part 'retailer_registration_state.dart';
 
 final class RetailerRegistrationCubit extends Cubit<RetailerRegistrationState> {
-  RetailerRegistrationCubit(this.api) : super(const RetailerRegistrationState());
+  RetailerRegistrationCubit(this.api)
+      : super(const RetailerRegistrationState());
 
   final BazaarApi api;
 
@@ -19,7 +20,7 @@ final class RetailerRegistrationCubit extends Cubit<RetailerRegistrationState> {
     emit(newState);
   }
 
-    void onBusinessNameUnfocused() {
+  void onBusinessNameUnfocused() {
     final newName = BusinessName.validated(state.businessName.value);
     final newState = state.copyWith(businessName: newName);
     emit(newState);
@@ -34,7 +35,7 @@ final class RetailerRegistrationCubit extends Cubit<RetailerRegistrationState> {
     emit(newState);
   }
 
-    void onEmailUnfocused() {
+  void onEmailUnfocused() {
     final newEmail = Email.validated(state.email.value);
     final newState = state.copyWith(email: newEmail);
     emit(newState);
@@ -49,12 +50,11 @@ final class RetailerRegistrationCubit extends Cubit<RetailerRegistrationState> {
     emit(newState);
   }
 
-    void onPasswordUnfocused() {
+  void onPasswordUnfocused() {
     final newPassword = Password.validated(state.password.value);
     final newState = state.copyWith(password: newPassword);
     emit(newState);
   }
-
 
   void onPhoneNumberChanged(String newValue) {
     final newPhoneNumber = state.phoneNumber.shouldValidate
@@ -65,14 +65,11 @@ final class RetailerRegistrationCubit extends Cubit<RetailerRegistrationState> {
     emit(newState);
   }
 
-    void onPhoneNumberUnfocused() {
+  void onPhoneNumberUnfocused() {
     final newPhoneNumber = PhoneNumber.validated(state.phoneNumber.value);
     final newState = state.copyWith(phoneNumber: newPhoneNumber);
     emit(newState);
   }
-
-
-
 
   Future<void> onSubmit() async {
     final businessName = BusinessName.validated(state.businessName.value);
@@ -80,9 +77,8 @@ final class RetailerRegistrationCubit extends Cubit<RetailerRegistrationState> {
     final password = Password.validated(state.password.value);
     final phoneNumber = PhoneNumber.validated(state.phoneNumber.value);
 
-    final isFormValid = FormFields.validate([
-      businessName, email, password, phoneNumber
-    ]);
+    final isFormValid =
+        FormFields.validate([businessName, email, password, phoneNumber]);
 
     final newState = state.copyWith(
       businessName: businessName,
@@ -105,8 +101,7 @@ final class RetailerRegistrationCubit extends Cubit<RetailerRegistrationState> {
         emit(state.copyWith(submissionStatus: SubmissionStatus.success));
       } catch (e) {
         emit(
-          state.copyWith(
-              submissionStatus: SubmissionStatus.genericError),
+          state.copyWith(submissionStatus: SubmissionStatus.genericError),
         );
       }
     }

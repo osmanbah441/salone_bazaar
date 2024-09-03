@@ -90,7 +90,12 @@ class AuthService {
     }
   }
 
-  registerRetailer({required String businessName, required String email, required String password, required String phoneNumber, }) {}
+  registerRetailer({
+    required String businessName,
+    required String email,
+    required String password,
+    required String phoneNumber,
+  }) {}
 }
 
 // convert the firebase user model to the app domain user.

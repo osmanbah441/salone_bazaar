@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'form_fields.dart';
 
-class BusinessAddress
-    extends FormInput<String, BusinessAddressValidationError>
+class BusinessAddress extends FormInput<String, BusinessAddressValidationError>
     with EquatableMixin {
   const BusinessAddress.unvalidated([
     super.value = '',

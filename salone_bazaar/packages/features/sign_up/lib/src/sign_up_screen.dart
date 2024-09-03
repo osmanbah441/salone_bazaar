@@ -55,7 +55,8 @@ class _SignUpScreenViewState extends State<SignUpScreenView> {
 
   SignUpCubit get _cubit => context.read<SignUpCubit>();
 
-  static const _marketingText = 'Discover endless possibilities! 🛒 Shop everything from groceries to gadgets. Join now and discover hidden gems. 🛍️';
+  static const _marketingText =
+      'Discover endless possibilities! 🛒 Shop everything from groceries to gadgets. Join now and discover hidden gems. 🛍️';
 
   @override
   void initState() {
@@ -108,13 +109,12 @@ class _SignUpScreenViewState extends State<SignUpScreenView> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-           
                 Text(
                   'Create a saloneBazaar Account',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                 Spacing.height16,
-              const   Text(_marketingText),
+                Spacing.height16,
+                const Text(_marketingText),
                 Spacing.height24,
                 ExpandedElevatedButton.google(
                   onTap: _cubit.signInWithGoogle,

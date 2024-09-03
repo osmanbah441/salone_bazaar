@@ -21,6 +21,8 @@ dependencies:
     path: ./packages/features/sign_up
   register_retailer:
     path: ./packages/features/register_retailer
+  product_list:
+    path: ./packages/features/product_list
 
   go_router: ^14.2.7
 

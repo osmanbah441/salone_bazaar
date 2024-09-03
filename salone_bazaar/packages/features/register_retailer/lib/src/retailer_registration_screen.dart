@@ -17,7 +17,6 @@ class RetailerRegistrationScreen extends StatelessWidget {
   final VoidCallback onRegistrationSuccess;
   final VoidCallback onCreateAccountTap;
 
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -41,7 +40,6 @@ class RetailerRegistrationScreenView extends StatefulWidget {
   final VoidCallback onRegistrationSuccess;
   final VoidCallback onCreateAccountTap;
 
-
   @override
   State<RetailerRegistrationScreenView> createState() =>
       _RetailerRegistrationScreenViewState();
@@ -54,7 +52,8 @@ class _RetailerRegistrationScreenViewState
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
 
-  static const _marketingText = 'Ready to grow your business? Join our marketplace and reach more customers than ever before. Register as a retailer today and start showcasing your products to a wider audience!';
+  static const _marketingText =
+      'Ready to grow your business? Join our marketplace and reach more customers than ever before. Register as a retailer today and start showcasing your products to a wider audience!';
 
   RetailerRegistrationCubit get _cubit =>
       context.read<RetailerRegistrationCubit>();
@@ -109,11 +108,10 @@ class _RetailerRegistrationScreenViewState
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                   Text(
+                Text(
                   'Create a Retailer saloneBazaar Account',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
@@ -156,8 +154,11 @@ class _RetailerRegistrationScreenViewState
                       state.submissionStatus.isInProgress,
                 ),
                 const SizedBox(height: 24),
-             
-             RowTextWithButton(text: 'Want to buy something?', buttonLabel: 'Create account.', onButtonTap: widget.onCreateAccountTap,)
+                RowTextWithButton(
+                  text: 'Want to buy something?',
+                  buttonLabel: 'Create account.',
+                  onButtonTap: widget.onCreateAccountTap,
+                )
               ],
             ),
           ),

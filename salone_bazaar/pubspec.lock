@@ -468,6 +468,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  product_list:
+    dependency: "direct main"
+    description:
+      path: "packages/features/product_list"
+      relative: true
+    source: path
+    version: "0.0.1"
   provider:
     dependency: transitive
     description:
