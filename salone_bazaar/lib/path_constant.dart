@@ -8,4 +8,6 @@ abstract final class _PathConstants {
   static String get signInPath => '/sign-in';
 
   static String get signUpPath => '/sign-up';
+
+  static String get registerRetailerPath =>  '/register-retailer';
 }

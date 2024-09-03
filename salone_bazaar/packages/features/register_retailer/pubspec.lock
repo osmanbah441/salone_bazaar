@@ -20,7 +20,7 @@ packages:
   bazaar_api:
     dependency: "direct main"
     description:
-      path: "packages/bazaar_api"
+      path: "../../bazaar_api"
       relative: true
     source: path
     version: "0.0.1"
@@ -91,7 +91,7 @@ packages:
   component_library:
     dependency: "direct main"
     description:
-      path: "packages/component_library"
+      path: "../../component_library"
       relative: true
     source: path
     version: "0.0.1"
@@ -104,14 +104,14 @@ packages:
     source: hosted
     version: "3.0.5"
   domain_models:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "packages/domain_models"
+      path: "../../domain_models"
       relative: true
     source: path
     version: "1.0.0"
   equatable:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: equatable
       sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
@@ -212,7 +212,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_bloc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_bloc
       sha256: b594505eac31a0518bdcb4b5b79573b8d9117b193cc80cc12e17d639b10aa27a
@@ -238,20 +238,12 @@ packages:
     source: sdk
     version: "0.0.0"
   form_fields:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "packages/form_fields"
+      path: "../../form_fields"
       relative: true
     source: path
     version: "1.0.0"
-  go_router:
-    dependency: "direct main"
-    description:
-      name: go_router
-      sha256: "2ddb88e9ad56ae15ee144ed10e33886777eb5ca2509a914850a5faa7b52ff459"
-      url: "https://pub.dev"
-    source: hosted
-    version: "14.2.7"
   google_fonts:
     dependency: transitive
     description:
@@ -356,14 +348,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  logging:
-    dependency: transitive
-    description:
-      name: logging
-      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.0"
   matcher:
     dependency: transitive
     description:
@@ -476,27 +460,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
-  register_retailer:
-    dependency: "direct main"
-    description:
-      path: "packages/features/register_retailer"
-      relative: true
-    source: path
-    version: "0.0.1"
-  sign_in:
-    dependency: "direct main"
-    description:
-      path: "packages/features/sign_in"
-      relative: true
-    source: path
-    version: "0.0.1"
-  sign_up:
-    dependency: "direct main"
-    description:
-      path: "packages/features/sign_up"
-      relative: true
-    source: path
-    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

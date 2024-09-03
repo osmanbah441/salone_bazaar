@@ -89,6 +89,8 @@ class AuthService {
       throw Exception("Failed to send password reset email: $e");
     }
   }
+
+  registerRetailer({required String businessName, required String email, required String password, required String phoneNumber, }) {}
 }
 
 // convert the firebase user model to the app domain user.
