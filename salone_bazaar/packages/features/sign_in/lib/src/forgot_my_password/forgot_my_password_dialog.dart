@@ -77,7 +77,7 @@ class _ForgotMyPasswordViewState extends State<ForgotMyPasswordView> {
                 decoration: InputDecoration(
                   suffixIcon: const Icon(Icons.alternate_email),
                   enabled: !state.resetEmailSubmissionStatus.isInProgress,
-                  labelText: 'Email',
+                  labelText: 'EMAIL',
                   errorText: state.resetEmail.error?.message,
                 ),
               ),

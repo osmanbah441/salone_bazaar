@@ -41,7 +41,7 @@ class EmailAndPasswordForm extends StatelessWidget {
           decoration: InputDecoration(
             suffixIcon: const Icon(Icons.email),
             enabled: !isEmailAndPasswordSubmissionStatusInProgress,
-            labelText: 'email',
+            labelText: 'EMAIL',
             errorText: emailFieldErrorText,
           ),
         ),
@@ -55,7 +55,7 @@ class EmailAndPasswordForm extends StatelessWidget {
           obscuringCharacter: '*',
           decoration: InputDecoration(
             suffixIcon: const Icon(Icons.lock),
-            labelText: 'Password',
+            labelText: 'PASSWORD',
             enabled: !isEmailAndPasswordSubmissionStatusInProgress,
             errorText: passwordFieldErrorText,
           ),

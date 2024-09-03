@@ -126,7 +126,7 @@ class _RetailerRegistrationScreenViewState
                   enabled: !state.submissionStatus.isInProgress,
                   onChanged: _cubit.onBusinessNameChanged,
                   decoration: InputDecoration(
-                    labelText: 'Business Name',
+                    labelText: 'BUSINESS NAME',
                     errorText: state.businessName.error?.message,
                   ),
                 ),
@@ -138,7 +138,7 @@ class _RetailerRegistrationScreenViewState
                   decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.phone),
                     enabled: !state.submissionStatus.isInProgress,
-                    labelText: 'Phone Number',
+                    labelText: 'PHONE NUMBER',
                     errorText: state.phoneNumber.error?.message,
                   ),
                 ),
