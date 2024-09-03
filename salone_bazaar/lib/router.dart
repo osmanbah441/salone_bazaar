@@ -61,6 +61,7 @@ final class AppRouter {
   GoRoute get _productListRoute => GoRoute(
       path: _PathConstants.productListPath,
       builder: (context, state) => ProductListScreen(
+            onProductSelected: (p0) {},
             api: _api,
           ));
 }

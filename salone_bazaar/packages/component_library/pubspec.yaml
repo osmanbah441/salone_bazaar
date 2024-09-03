@@ -20,6 +20,9 @@ dev_dependencies:
 flutter:
   assets:
     - 'assets/google_icon.png'
+    - 'assets/bag.png'
+    - 'assets/diamond.png'
+    - 'assets/slanted_menu.png'
 
   # To add custom fonts to your package, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
