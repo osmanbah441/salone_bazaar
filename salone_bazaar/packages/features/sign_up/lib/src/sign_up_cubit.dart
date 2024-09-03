@@ -78,18 +78,17 @@ final class SignUpCubit extends Cubit<SignUpState> {
             GoogleSignInSubmissionStatusStatus.inProgress));
 
     try {
-      final googleUser = await api.auth.signInWithGoogle();
-      if (googleUser == null) {
-        emit(state.copyWith(
-            googleSignInSubmissionStatusStatus:
-                GoogleSignInSubmissionStatusStatus.cancelled));
-        return;
-      }
+      await api.auth.signInWithGoogle();
+   
 
       emit(state.copyWith(
           googleSignInSubmissionStatusStatus:
               GoogleSignInSubmissionStatusStatus.success));
     } catch (error) {
+error is GoogleSignInCancelByUser ? emit(state.copyWith(
+            googleSignInSubmissionStatusStatus:
+                GoogleSignInSubmissionStatusStatus.cancelled)) :
+
       emit(state.copyWith(
           googleSignInSubmissionStatusStatus:
               GoogleSignInSubmissionStatusStatus.error));

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -9,7 +11,7 @@ class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Get current user
-  User? get currentUser => _auth.currentUser;
+  domain.User? get currentUser => _auth.currentUser?.toDomain;
 
   // Get user role from custom claims
   Future<String?> getUserRole() async {
@@ -22,34 +24,30 @@ class AuthService {
   }
 
   // Sign in with email and password
-  Future<domain.User?> signInWithEmailAndPassword(
+  Future<void> signInWithEmailAndPassword(
       String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
+ await      _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      return result.user?.toDomain;
-    } catch (e) {
+    } on FirebaseAuthException catch (_) {
       throw domain.InvalidCredentialException();
     }
   }
 
-  Future<User?> signUpWithEmailAndPassword(
+  Future<void> signUpWithEmailAndPassword(
       String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
+       _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return result.user;
     } catch (e) {
-      print("Error signing up with email and password: $e");
-      return null;
+ rethrow;
     }
   }
 
   // Sign in with Google
-  Future<domain.User?> signInWithGoogle() async {
-    // TODO: add client-id: for flutter web
-    final webClientId = '';
+  Future<void> signInWithGoogle() async {
+    final webClientId = Platform.environment['GOOGLE_AUTH_WEB_CLIENT_ID'];
 
     try {
       final googleUser =
@@ -63,14 +61,12 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
 
-      UserCredential result = await _auth.signInWithCredential(credential);
-      final user = result.user?.toDomain;
-      print(
-          'email: ${user?.email}, \n id: ${user?.id},  \n photo: ${user?.photoURL}');
-      return result.user?.toDomain;
+  await _auth.signInWithCredential(credential);
+
+    
     } catch (e) {
-      print("Error signing in with Google: $e");
-      return null;
+      print(e);
+  rethrow;
     }
   }
 
@@ -89,16 +85,16 @@ class AuthService {
     }
   }
 
-  registerRetailer({
+Future<void>  registerRetailer({
     required String businessName,
     required String email,
     required String password,
     required String phoneNumber,
-  }) {}
+  }) async {}
 }
 
 // convert the firebase user model to the app domain user.
 extension on User {
   domain.User get toDomain => domain.User(
-      id: uid, email: email, username: displayName, photoURL: photoURL);
+      id: uid, email: email, username: displayName, photoURL: photoURL,);
 }
