@@ -102,51 +102,56 @@ class _SignUpScreenViewState extends State<SignUpScreenView> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Create a saloneBazaar Account',
-                  style: Theme.of(context).textTheme.titleLarge,
+        return SafeArea(
+          child: Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Spacing.height80,
+                    Text(
+                      'Create a saloneBazaar Account',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Spacing.height16,
+                    const Text(_marketingText),
+                    Spacing.height24,
+                    ExpandedElevatedButton.google(
+                      onTap: _cubit.signInWithGoogle,
+                    ),
+                    Spacing.height24,
+                    const Text('OR'),
+                    Spacing.height24,
+                    EmailAndPasswordForm(
+                      buttonLabel: 'Create account',
+                      emailFocusNode: _emailFocusNode,
+                      passwordFocusNode: _passwordFocusNode,
+                      onEmailChanged: _cubit.onEmailChanged,
+                      onPasswordChanged: _cubit.onPasswordChanged,
+                      emailFieldErrorText: state.email.error?.message,
+                      passwordFieldErrorText: state.password.error?.message,
+                      onEmailAndPasswordSubmit: _cubit.onSubmit,
+                      isEmailAndPasswordSubmissionStatusInProgress:
+                          state.emailAndPasswordSubmissionStatus.isInProgress,
+                    ),
+                    Spacing.height24,
+                    Spacing.height16,
+                    RowTextWithButton(
+                      text: 'Already have an account?',
+                      buttonLabel: 'Sign In',
+                      onButtonTap: widget.onSignInTap,
+                    ),
+                    RowTextWithButton(
+                      text: 'Are you a business owner?',
+                      buttonLabel: 'Create an account',
+                      onButtonTap: widget.onCreateRetailerAccount,
+                    ),
+                  ],
                 ),
-                Spacing.height16,
-                const Text(_marketingText),
-                Spacing.height24,
-                ExpandedElevatedButton.google(
-                  onTap: _cubit.signInWithGoogle,
-                ),
-                Spacing.height24,
-                const Text('OR'),
-                Spacing.height24,
-                EmailAndPasswordForm(
-                  buttonLabel: 'Create account',
-                  emailFocusNode: _emailFocusNode,
-                  passwordFocusNode: _passwordFocusNode,
-                  onEmailChanged: _cubit.onEmailChanged,
-                  onPasswordChanged: _cubit.onPasswordChanged,
-                  emailFieldErrorText: state.email.error?.message,
-                  passwordFieldErrorText: state.password.error?.message,
-                  onEmailAndPasswordSubmit: _cubit.onSubmit,
-                  isEmailAndPasswordSubmissionStatusInProgress:
-                      state.emailAndPasswordSubmissionStatus.isInProgress,
-                ),
-                Spacing.height24,
-                Spacing.height16,
-                RowTextWithButton(
-                  text: 'Already have an account?',
-                  buttonLabel: 'Sign In',
-                  onButtonTap: widget.onSignInTap,
-                ),
-                RowTextWithButton(
-                  text: 'Are you a business owner?',
-                  buttonLabel: 'Create an account',
-                  onButtonTap: widget.onCreateRetailerAccount,
-                ),
-              ],
+              ),
             ),
           ),
         );

@@ -99,60 +99,64 @@ class _SigninScreenViewState extends State<SigninScreenView> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Sign in to saloneBazaar',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Spacing.height24,
-                ExpandedElevatedButton.google(
-                  onTap: _cubit.signInWithGoogle,
-                ),
-                Spacing.height24,
-                const Text('OR'),
-                Spacing.height24,
-
-                //
-                EmailAndPasswordForm(
-                  buttonLabel: 'Sign in',
-                  emailFocusNode: _emailFocusNode,
-                  passwordFocusNode: _passwordFocusNode,
-                  onEmailChanged: _cubit.onEmailChanged,
-                  onPasswordChanged: _cubit.onPasswordChanged,
-                  emailFieldErrorText: state.email.error?.message,
-                  passwordFieldErrorText: state.password.error?.message,
-                  onEmailAndPasswordSubmit: _cubit.onSubmit,
-                  isEmailAndPasswordSubmissionStatusInProgress:
-                      state.emailAndPasswordSubmissionStatus.isInProgress,
-                ),
-
-                //
-                Spacing.height8,
-                TextButton(
-                  onPressed: state.emailAndPasswordSubmissionStatus.isInProgress
-                      ? null
-                      : widget.onForgotPasswordTap,
-                  child: const Text('Reset password'),
-                ),
-                Spacing.height8,
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        return SafeArea(
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text('No account yet?'),
-                    TextButton(
-                      onPressed: widget.onSignUpTap,
-                      child: const Text("create account"),
+                    Spacing.height80,
+                    Text(
+                      'Sign in to saloneBazaar',
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
+                    Spacing.height24,
+                    ExpandedElevatedButton.google(
+                      onTap: _cubit.signInWithGoogle,
+                    ),
+                    Spacing.height24,
+                    const Text('OR'),
+                    Spacing.height24,
+                        
+                    EmailAndPasswordForm(
+                      buttonLabel: 'Sign in',
+                      emailFocusNode: _emailFocusNode,
+                      passwordFocusNode: _passwordFocusNode,
+                      onEmailChanged: _cubit.onEmailChanged,
+                      onPasswordChanged: _cubit.onPasswordChanged,
+                      emailFieldErrorText: state.email.error?.message,
+                      passwordFieldErrorText: state.password.error?.message,
+                      onEmailAndPasswordSubmit: _cubit.onSubmit,
+                      isEmailAndPasswordSubmissionStatusInProgress:
+                          state.emailAndPasswordSubmissionStatus.isInProgress,
+                    ),
+                        
+            
+                    Spacing.height8,
+                    TextButton(
+                      onPressed: state.emailAndPasswordSubmissionStatus.isInProgress
+                          ? null
+                          : widget.onForgotPasswordTap,
+                      child: const Text('Reset password'),
+                    ),
+                    Spacing.height8,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('No account yet?'),
+                        TextButton(
+                          onPressed: widget.onSignUpTap,
+                          child: const Text("create account"),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
+                ),
+              ),
             ),
           ),
         );

@@ -50,6 +50,7 @@ final class AppRouter {
               api: _api,
               onRegistrationSuccess: () {},
               onCreateAccountTap: () => context.go(_PathConstants.signUpPath),
+              onSignInTap: () => context.go(_PathConstants.signInPath),
             ),
           ),
           ShellRoute(

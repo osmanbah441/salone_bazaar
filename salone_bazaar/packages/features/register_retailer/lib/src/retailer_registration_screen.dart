@@ -11,11 +11,14 @@ class RetailerRegistrationScreen extends StatelessWidget {
     required this.api,
     required this.onRegistrationSuccess,
     required this.onCreateAccountTap,
+    required this.onSignInTap,
   });
 
   final BazaarApi api;
   final VoidCallback onRegistrationSuccess;
   final VoidCallback onCreateAccountTap;
+  final VoidCallback  onSignInTap;
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class RetailerRegistrationScreen extends StatelessWidget {
       child: RetailerRegistrationScreenView(
         onRegistrationSuccess: onRegistrationSuccess,
         onCreateAccountTap: onCreateAccountTap,
+        onSignInTap: onSignInTap,
       ),
     );
   }
@@ -35,10 +39,12 @@ class RetailerRegistrationScreenView extends StatefulWidget {
     super.key,
     required this.onRegistrationSuccess,
     required this.onCreateAccountTap,
+    required this.onSignInTap,
   });
 
   final VoidCallback onRegistrationSuccess;
   final VoidCallback onCreateAccountTap;
+  final VoidCallback  onSignInTap;
 
   @override
   State<RetailerRegistrationScreenView> createState() =>
@@ -104,62 +110,72 @@ class _RetailerRegistrationScreenViewState
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Create a Retailer saloneBazaar Account',
-                  style: Theme.of(context).textTheme.titleLarge,
+        return SafeArea(
+          child: Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Spacing.height80,
+                    Text(
+                      'Create a Retailer saloneBazaar Account',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Spacing.height16,
+                    const Text(_marketingText),
+                    Spacing.height24,
+                    Spacing.height24,
+                    TextField(
+                      focusNode: _businessNameFocusNode,
+                      enabled: !state.submissionStatus.isInProgress,
+                      onChanged: _cubit.onBusinessNameChanged,
+                      decoration: InputDecoration(
+                        labelText: 'BUSINESS NAME',
+                        errorText: state.businessName.error?.message,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      focusNode: _phoneNumberFocusNode,
+                      onChanged: _cubit.onPhoneNumberChanged,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        suffixIcon: const Icon(Icons.phone),
+                        enabled: !state.submissionStatus.isInProgress,
+                        labelText: 'PHONE NUMBER',
+                        errorText: state.phoneNumber.error?.message,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    EmailAndPasswordForm(
+                      buttonLabel: 'Register Business',
+                      emailFocusNode: _emailFocusNode,
+                      passwordFocusNode: _passwordFocusNode,
+                      onEmailChanged: _cubit.onEmailChanged,
+                      onPasswordChanged: _cubit.onPasswordChanged,
+                      emailFieldErrorText: state.email.error?.message,
+                      passwordFieldErrorText: state.password.error?.message,
+                      onEmailAndPasswordSubmit: _cubit.onSubmit,
+                      isEmailAndPasswordSubmissionStatusInProgress:
+                          state.submissionStatus.isInProgress,
+                    ),
+                    const SizedBox(height: 24),
+                     RowTextWithButton(
+                      text: 'Already have an account?',
+                      buttonLabel: 'Sign In',
+                      onButtonTap: widget.onSignInTap,
+                    ),
+                    RowTextWithButton(
+                      text: 'Want to buy something?',
+                      buttonLabel: 'Create account.',
+                      onButtonTap: widget.onCreateAccountTap,
+                    )
+                  ],
                 ),
-                Spacing.height16,
-                const Text(_marketingText),
-                Spacing.height24,
-                Spacing.height24,
-                TextField(
-                  focusNode: _businessNameFocusNode,
-                  enabled: !state.submissionStatus.isInProgress,
-                  onChanged: _cubit.onBusinessNameChanged,
-                  decoration: InputDecoration(
-                    labelText: 'BUSINESS NAME',
-                    errorText: state.businessName.error?.message,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  focusNode: _phoneNumberFocusNode,
-                  onChanged: _cubit.onPhoneNumberChanged,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.phone),
-                    enabled: !state.submissionStatus.isInProgress,
-                    labelText: 'PHONE NUMBER',
-                    errorText: state.phoneNumber.error?.message,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                EmailAndPasswordForm(
-                  buttonLabel: 'Register Business',
-                  emailFocusNode: _emailFocusNode,
-                  passwordFocusNode: _passwordFocusNode,
-                  onEmailChanged: _cubit.onEmailChanged,
-                  onPasswordChanged: _cubit.onPasswordChanged,
-                  emailFieldErrorText: state.email.error?.message,
-                  passwordFieldErrorText: state.password.error?.message,
-                  onEmailAndPasswordSubmit: _cubit.onSubmit,
-                  isEmailAndPasswordSubmissionStatusInProgress:
-                      state.submissionStatus.isInProgress,
-                ),
-                const SizedBox(height: 24),
-                RowTextWithButton(
-                  text: 'Want to buy something?',
-                  buttonLabel: 'Create account.',
-                  onButtonTap: widget.onCreateAccountTap,
-                )
-              ],
+              ),
             ),
           ),
         );

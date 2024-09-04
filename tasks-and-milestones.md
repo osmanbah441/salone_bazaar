@@ -5,11 +5,11 @@
 
 ## Milestone: Onboarding
 - **Design the UI**
-  - ❌ Registration Screen: UI for users to sign up with email and password, including fields for name, email, password, and role selection (Retailer/Customer).
-  - ❌ Login Screen: UI for users to log in with their credentials, including a "Forgot Password?" option.
+  - ✅ Registration Screen: UI for users to sign up with email and password, including fields for name, email, password, and role selection (Retailer/Customer).
+  - ✅ Login Screen: UI for users to log in with their credentials, including a "Forgot Password?" option.
 - **Implement the Front-End Code**
-  - ❌ Registration Screen Implementation: Code the UI, handle form validation, and connect to Firebase Authentication for user sign-up.
-  - ❌ Login Screen Implementation: Implement the login functionality and integrate Firebase Authentication for user sign-in.
+  - ✅ Registration Screen Implementation: Code the UI, handle form validation, and connect to Firebase Authentication for user sign-up.
+  - ✅ Login Screen Implementation: Implement the login functionality and integrate Firebase Authentication for user sign-in.
 - **Implement the Back-End Code**
   - ❌ Using Cloud Functions and the Admin SDK to manage user data and roles to centralize data management.
   - ❌ Enhance security by implementing custom claims to protect sensitive information.
@@ -17,7 +17,7 @@
 
 ## Milestone: Product Management
 - **Design the UI**
-  - ❌ Product Listing Screen: UI for displaying products, allowing users to view images, titles, prices, and brief descriptions.
+  - ❌ Product Listing Screen: UI for displaying products, allowing users to view images, titles, prices,
   - ❌ Product Details Screen: UI for showing detailed product information, including images, descriptions, pricing, and "Add to Cart" button.
 - **Implement the Front-End Code**
   - ❌ Product Listing Implementation: Code the UI for the product listing, integrate Firestore to fetch product data, and handle dynamic rendering.
