@@ -22,17 +22,13 @@ class Product {
     required this.isFeatured,
     required this.name,
     required this.price,
+    required this.imageUrl,
   });
 
   final ProductCategory category;
   final String id;
   final bool isFeatured;
+  final String imageUrl;
   final String name;
   final int price;
-
-  String get assetName => '$id-0.jpg';
-  String get assetPackage => 'shrine_images';
-
-  @override
-  String toString() => "$name (id=$id)";
 }

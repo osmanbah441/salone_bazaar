@@ -13,88 +13,104 @@ class AuthService {
   // Get current user
   domain.User? get currentUser => _auth.currentUser?.toDomain;
 
-  // Get user role from custom claims
+  // // Get user role from custom claims
   Future<String?> getUserRole() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      IdTokenResult tokenResult = await user.getIdTokenResult();
-      return tokenResult.claims?['role'];
-    }
-    return null;
+    await Future.delayed(
+        const Duration(seconds: 2)); // TODO: remove for production
+
+    //   User? user = _auth.currentUser;
+    //   if (user != null) {
+    //     IdTokenResult tokenResult = await user.getIdTokenResult();
+    //     return tokenResult.claims?['role'];
+    //   }
+    //   return null;
   }
 
   // Sign in with email and password
-  Future<void> signInWithEmailAndPassword(
-      String email, String password) async {
-    try {
- await      _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    await Future.delayed(
+        const Duration(seconds: 2)); // TODO: remove for production
 
-    } on FirebaseAuthException catch (_) {
-      throw domain.InvalidCredentialException();
-    }
+    // try {
+    //   await _auth.signInWithEmailAndPassword(email: email, password: password);
+    // } on FirebaseAuthException catch (_) {
+    //   throw domain.InvalidCredentialException();
+    // }
   }
 
-  Future<void> signUpWithEmailAndPassword(
-      String email, String password) async {
-    try {
-       _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-    } catch (e) {
- rethrow;
-    }
+  Future<void> signUpWithEmailAndPassword(String email, String password) async {
+    await Future.delayed(
+        const Duration(seconds: 2)); // TODO: remove for production
+
+    // try {
+    //   _auth.createUserWithEmailAndPassword(email: email, password: password);
+    // } catch (e) {
+    //   rethrow;
+    // }
   }
 
   // Sign in with Google
   Future<void> signInWithGoogle() async {
-    final webClientId = Platform.environment['GOOGLE_AUTH_WEB_CLIENT_ID'];
+    await Future.delayed(
+        const Duration(seconds: 2)); // TODO: remove for production
 
-    try {
-      final googleUser =
-          await GoogleSignIn(clientId: webClientId).signInSilently();
-      if (googleUser == null) throw domain.GoogleSignInCancelByUser();
+    // final webClientId = Platform.environment['GOOGLE_AUTH_WEB_CLIENT_ID'];
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+    // try {
+    //   final googleUser =
+    //       await GoogleSignIn(clientId: webClientId).signInSilently();
+    //   if (googleUser == null) throw domain.GoogleSignInCancelByUser();
 
-  await _auth.signInWithCredential(credential);
+    //   final GoogleSignInAuthentication googleAuth =
+    //       await googleUser.authentication;
+    //   final AuthCredential credential = GoogleAuthProvider.credential(
+    //     accessToken: googleAuth.accessToken,
+    //     idToken: googleAuth.idToken,
+    //   );
 
-    
-    } catch (e) {
-      print(e);
-  rethrow;
-    }
+    //   await _auth.signInWithCredential(credential);
+    // } catch (e) {
+    //   rethrow;
+    // }
   }
 
   // Sign out
   Future<void> signOut() async {
-    await _auth.signOut();
-    await GoogleSignIn().signOut();
+    await Future.delayed(
+        const Duration(seconds: 2)); // TODO: remove for production
+
+    // await _auth.signOut();
+    // await GoogleSignIn().signOut();
   }
 
   Future<void> requestPasswordResetEmail({required String email}) async {
-    print(email);
-    try {
-      await _auth.sendPasswordResetEmail(email: email);
-    } catch (e) {
-      throw Exception("Failed to send password reset email: $e");
-    }
+    await Future.delayed(
+        const Duration(seconds: 2)); // TODO: remove for production
+
+    // try {
+    //   await _auth.sendPasswordResetEmail(email: email);
+    // } catch (e) {
+    //   throw Exception("Failed to send password reset email: $e");
+    // }
   }
 
-Future<void>  registerRetailer({
+  Future<void> registerRetailer({
     required String businessName,
     required String email,
     required String password,
     required String phoneNumber,
-  }) async {}
+  }) async {
+    await Future.delayed(
+        const Duration(seconds: 2)); // TODO: remove for production
+  }
 }
 
 // convert the firebase user model to the app domain user.
 extension on User {
   domain.User get toDomain => domain.User(
-      id: uid, email: email, username: displayName, photoURL: photoURL,);
+        id: uid,
+        email: email,
+        username: displayName,
+        photoURL: photoURL,
+      );
 }

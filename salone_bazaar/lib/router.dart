@@ -66,28 +66,23 @@ final class AppRouter {
                   api: _api,
                 ),
               ),
-          
-                GoRoute(
-                // user profile 
-                path: _PathConstants.userProfilePath,
-                builder: (context, state) => const UserProfileScreen()
-              ),
               GoRoute(
-                // cart 
-                path: _PathConstants.cartPath,
-                builder: (context, state) => const CartScreen()
-              ),
+                  // user profile
+                  path: _PathConstants.userProfilePath,
+                  builder: (context, state) => const UserProfileScreen()),
               GoRoute(
-                //  orders
-                path: _PathConstants.ordersPath,
-                builder: (context, state) => const OrdersScreen()
-              ),
+                  // cart
+                  path: _PathConstants.cartPath,
+                  builder: (context, state) => const CartScreen()),
+              GoRoute(
+                  //  orders
+                  path: _PathConstants.ordersPath,
+                  builder: (context, state) => const OrdersScreen()),
             ],
           ),
         ],
       );
 }
-
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});

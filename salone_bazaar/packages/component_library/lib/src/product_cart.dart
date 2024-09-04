@@ -4,13 +4,13 @@ class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
     required this.onTap,
-    this.imageUrl,
+    required this.imageUrl,
     required this.title,
     required this.price,
   });
 
   final VoidCallback? onTap;
-  final String? imageUrl;
+  final String imageUrl;
   final String title;
   final String price;
 
@@ -20,7 +20,7 @@ class ProductCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Card(
-          elevation: 4,
+          elevation: 0,
           surfaceTintColor: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,9 +28,8 @@ class ProductCard extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: Image.asset(
-                  'assets/bag.png',
-                  package: 'component_library',
+                child: Image.network(
+                  imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),

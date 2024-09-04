@@ -21,10 +21,13 @@ class ScaffoldWithNavBar extends StatelessWidget {
         elevation: 4,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.explore_outlined), label: 'shop'),
-          NavigationDestination(icon: Icon(Icons.shopping_basket_outlined), label: 'cart'),
+          NavigationDestination(
+              icon: Icon(Icons.explore_outlined), label: 'shop'),
+          NavigationDestination(
+              icon: Icon(Icons.shopping_basket_outlined), label: 'cart'),
           NavigationDestination(icon: Icon(Icons.history), label: 'orders'),
-          NavigationDestination(icon: Icon(Icons.person_outline), label: 'profile'),
+          NavigationDestination(
+              icon: Icon(Icons.person_outline), label: 'profile'),
         ],
         selectedIndex: _calculateSelectedIndex(context),
         onDestinationSelected: (int idx) => _onItemTapped(idx, context),

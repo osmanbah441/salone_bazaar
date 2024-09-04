@@ -33,11 +33,12 @@ class ProductPagedGridView extends StatelessWidget {
             child: PagedMasonryGridView.count(
                 pagingController: pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Product>(
-                  itemBuilder: (context, item, index) {
+                  itemBuilder: (context, product, index) {
                     return ProductCard(
-                      title: item.name,
-                      price: item.price.toStringAsFixed(2),
-                      onTap: () => onProductSelected(item.id),
+                      imageUrl: product.imageUrl,
+                      title: product.name,
+                      price: product.price.toStringAsFixed(2),
+                      onTap: () => onProductSelected(product.id),
                     );
                   },
                   firstPageErrorIndicatorBuilder: (context) {

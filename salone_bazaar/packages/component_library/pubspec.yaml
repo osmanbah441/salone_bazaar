@@ -20,7 +20,6 @@ dev_dependencies:
 flutter:
   assets:
     - 'assets/google_icon.png'
-    - 'assets/bag.png'
     - 'assets/diamond.png'
     - 'assets/slanted_menu.png'
 
