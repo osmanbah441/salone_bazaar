@@ -150,18 +150,51 @@ class _RetailerRegistrationScreenViewState
                       ),
                     ),
                     const SizedBox(height: 16),
-                    EmailAndPasswordForm(
-                      buttonLabel: 'Register Business',
-                      emailFocusNode: _emailFocusNode,
-                      passwordFocusNode: _passwordFocusNode,
-                      onEmailChanged: _cubit.onEmailChanged,
-                      onPasswordChanged: _cubit.onPasswordChanged,
-                      emailFieldErrorText: state.email.error?.message,
-                      passwordFieldErrorText: state.password.error?.message,
-                      onEmailAndPasswordSubmit: _cubit.onSubmit,
-                      isEmailAndPasswordSubmissionStatusInProgress:
-                          state.submissionStatus.isInProgress,
-                    ),
+
+           
+               
+                    //
+
+        TextField(
+          focusNode: _emailFocusNode,
+          textInputAction: TextInputAction.next,
+          onChanged: _cubit.onEmailChanged,
+          enabled: !state.submissionStatus.isInProgress,
+          keyboardType: TextInputType.emailAddress,
+          autocorrect: false,
+          decoration: InputDecoration(
+            suffixIcon: const Icon(Icons.email),
+            enabled: !state.submissionStatus.isInProgress,
+            labelText: 'EMAIL',
+            errorText: state.email.error?.message,
+          ),
+        ),
+        Spacing.height16,
+        TextField(
+          focusNode: _passwordFocusNode,
+          enabled: !state.submissionStatus.isInProgress,
+          onChanged: _cubit.onPasswordChanged,
+          textInputAction: TextInputAction.next,
+          obscureText: true,
+          obscuringCharacter: '*',
+          decoration: InputDecoration(
+            suffixIcon: const Icon(Icons.lock),
+            labelText: 'PASSWORD',
+            enabled: !state.submissionStatus.isInProgress,
+            errorText: state.password.error?.message,
+          ),
+        ),
+  Spacing.height24,
+        state.submissionStatus.isInProgress
+            ? ExpandedElevatedButton.inProgress(
+                label: 'Loading',
+              )
+            : ExpandedElevatedButton(
+                onTap: _cubit.onSubmit,
+                label: 'Create account',
+                icon: const Icon(Icons.login),
+              ),
+                    //
                     const SizedBox(height: 24),
                      RowTextWithButton(
                       text: 'Already have an account?',
