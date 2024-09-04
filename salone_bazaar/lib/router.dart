@@ -6,6 +6,7 @@ import 'package:product_list/product_list.dart';
 import 'package:register_retailer/register_retailer.dart';
 import 'package:sign_in/sign_in.dart';
 import 'package:sign_up/sign_up.dart';
+import 'package:user_cart/user_cart.dart';
 
 part 'path_constant.dart';
 part 'scaffold_with_nav_bar.dart';
@@ -16,7 +17,7 @@ final class AppRouter {
   final BazaarApi _api;
 
   GoRouter get router => GoRouter(
-        initialLocation: _PathConstants.signInPath,
+        initialLocation: _PathConstants.productListPath,
         routes: [
           GoRoute(
             // sign in
@@ -85,9 +86,14 @@ final class AppRouter {
                   path: _PathConstants.userProfilePath,
                   builder: (context, state) => const UserProfileScreen()),
               GoRoute(
-                  // cart
-                  path: _PathConstants.cartPath,
-                  builder: (context, state) => const CartScreen()),
+                // cart
+                path: _PathConstants.cartPath,
+                builder: (context, state) => UserCartScreen(
+                  api: _api,
+                  onItemTap: (id) =>
+                      context.go(_PathConstants.productDetailsPath(id)),
+                ),
+              ),
               GoRoute(
                   //  orders
                   path: _PathConstants.ordersPath,
@@ -106,18 +112,6 @@ class UserProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('User')),
       body: const Center(child: Text('User screen')),
-    );
-  }
-}
-
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Cart')),
-      body: const Center(child: Text('Cart screen')),
     );
   }
 }

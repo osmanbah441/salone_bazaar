@@ -420,7 +420,7 @@ class ProductsRepository {
 
   Future<Product> getProductDetails(String productId) async {
     print(productId);
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     return _allProducts.firstWhere((p) => p.id == productId);
   }
 }

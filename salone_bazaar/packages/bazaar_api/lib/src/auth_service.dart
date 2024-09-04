@@ -1,7 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:domain_models/domain_models.dart' as domain;
-
 class AuthService {
   const AuthService();
 
@@ -23,8 +19,7 @@ class AuthService {
 
   // Sign in with email and password
   Future<void> signInWithEmailAndPassword(String email, String password) async {
-    await Future.delayed(
-        const Duration(seconds: 2)); // TODO: remove for production
+    await Future.delayed(const Duration(seconds: 1));
 
     // try {
     //   await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -34,8 +29,7 @@ class AuthService {
   }
 
   Future<void> signUpWithEmailAndPassword(String email, String password) async {
-    await Future.delayed(
-        const Duration(seconds: 2)); // TODO: remove for production
+    await Future.delayed(const Duration(seconds: 1));
 
     // try {
     //   _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -46,8 +40,7 @@ class AuthService {
 
   // Sign in with Google
   Future<void> signInWithGoogle() async {
-    await Future.delayed(
-        const Duration(seconds: 2)); // TODO: remove for production
+    await Future.delayed(const Duration(seconds: 1));
 
     // final webClientId = Platform.environment['GOOGLE_AUTH_WEB_CLIENT_ID'];
 
@@ -71,16 +64,14 @@ class AuthService {
 
   // Sign out
   Future<void> signOut() async {
-    await Future.delayed(
-        const Duration(seconds: 2)); // TODO: remove for production
+    await Future.delayed(const Duration(seconds: 1));
 
     // await _auth.signOut();
     // await GoogleSignIn().signOut();
   }
 
   Future<void> requestPasswordResetEmail({required String email}) async {
-    await Future.delayed(
-        const Duration(seconds: 2)); // TODO: remove for production
+    await Future.delayed(const Duration(seconds: 1));
 
     // try {
     //   await _auth.sendPasswordResetEmail(email: email);
@@ -95,17 +86,16 @@ class AuthService {
     required String password,
     required String phoneNumber,
   }) async {
-    await Future.delayed(
-        const Duration(seconds: 2)); // TODO: remove for production
+    await Future.delayed(const Duration(seconds: 1));
   }
 }
 
 // convert the firebase user model to the app domain user.
-extension on User {
-  domain.User get toDomain => domain.User(
-        id: uid,
-        email: email,
-        username: displayName,
-        photoURL: photoURL,
-      );
-}
+// extension on User {
+//   domain.User get toDomain => domain.User(
+//         id: uid,
+//         email: email,
+//         username: displayName,
+//         photoURL: photoURL,
+//       );
+// }

@@ -1,0 +1,165 @@
+import 'package:bazaar_api/bazaar_api.dart';
+
+import 'package:domain_models/domain_models.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:component_library/component_library.dart';
+
+import 'cart_cubit.dart';
+import 'cart_list_tile.dart';
+
+class UserCartScreen extends StatelessWidget {
+  const UserCartScreen({
+    required this.api,
+    required this.onItemTap,
+    super.key,
+  });
+
+  final BazaarApi api;
+  final Function(String) onItemTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<CartCubit>(
+      create: (_) => CartCubit(api),
+      child: CartView(
+        onItemTap: onItemTap,
+      ),
+    );
+  }
+}
+
+@visibleForTesting
+class CartView extends StatelessWidget {
+  const CartView({
+    super.key,
+    required this.onItemTap,
+  });
+
+  final Function(String) onItemTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<CartCubit, CartState>(
+      listener: (context, state) {
+        final cartUpdateError =
+            state is CartStateSuccess ? state.cartUpdateError : null;
+        if (cartUpdateError != null) {
+          final snackBar =
+              cartUpdateError is UserAuthenticationRequiredException
+                  ? const AuthenticationRequiredErrorSnackBar()
+                  : const GenericErrorSnackBar();
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: SafeArea(
+              child: switch (state) {
+            CartStateInprogress() => const CenteredCircularProgressIndicator(),
+            CartStateSuccess() => _Cart(state.cart, onItemTap),
+            CartStateFailure() => ExceptionIndicator(
+                onTryAgain: () {
+                  final cubit = context.read<CartCubit>();
+                  cubit.refetch();
+                },
+              ),
+          }),
+        );
+      },
+    );
+  }
+}
+
+class _Cart extends StatelessWidget {
+  const _Cart(this.cart, this.onItemTap);
+  final Cart cart;
+  final Function(String) onItemTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final cartCubit = context.read<CartCubit>();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: (cart.items.isEmpty)
+          ? const EmptyItemList()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cart.items.length,
+                    itemBuilder: (context, index) {
+                      final item = cart.items[index];
+                      return CartListTile(
+                        onItemTap: () => onItemTap(item.productId),
+                        imageUrl: item.imageUrl,
+                        price: item.unitPrice,
+                        quantity: item.quantity,
+                        name: item.name,
+                        onDecrement: () => cartCubit.updateCartQuantity(
+                            item.productId, item.quantity - 1),
+                        onIncrement: () => cartCubit.updateCartQuantity(
+                            item.productId, item.quantity + 1),
+                      );
+                    },
+                  ),
+                ),
+                ExpandedElevatedButton(
+                    label: 'buy now',
+                    onTap: () => showDialog(
+                          context: context,
+                          builder: (_) => _CartSummaryDialog(
+                            totalPrice: cart.totalCartPrice,
+                            onOrderConfirmed: cartCubit.createOrder,
+                          ),
+                        ))
+              ],
+            ),
+    );
+  }
+}
+
+class _CartSummaryDialog extends StatelessWidget {
+  const _CartSummaryDialog({
+    required this.onOrderConfirmed,
+    required this.totalPrice,
+  });
+
+  final VoidCallback onOrderConfirmed;
+  final double totalPrice;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Confirmation Order'),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+              'Please note that once the order is made, it cannot be undone. Your order will be processed and delivered within 3 hours.'),
+          const SizedBox(height: 8),
+          Text('Total Cart Price: SLL${totalPrice.toStringAsFixed(2)}'),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(), // Close the dialog
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            onOrderConfirmed();
+            Navigator.of(context).pop();
+          },
+          child: const Text('Confirm'),
+        ),
+      ],
+    );
+  }
+}

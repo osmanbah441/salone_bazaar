@@ -37,7 +37,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     }
 
     try {
-      await _api.cart.addItemToCart(item);
+      await _api.cart.add(item);
       emit(ProductDetailsSuccess(product: item, isAddedToCartSuccessful: true));
     } catch (error) {
       if (lastState is ProductDetailsSuccess) {

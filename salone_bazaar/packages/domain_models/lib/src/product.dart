@@ -30,6 +30,6 @@ class Product {
   final bool isFeatured;
   final String imageUrl;
   final String name;
-  final int price;
+  final double price;
   final String description;
 }

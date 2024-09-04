@@ -25,7 +25,9 @@ dependencies:
     path: ./packages/features/product_list
   product_details:
     path: ./packages/features/product_details
-
+  user_cart:
+    path: ./packages/features/user_cart
+    
   go_router: ^14.2.7
 
 
