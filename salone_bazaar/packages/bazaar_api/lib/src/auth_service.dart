@@ -6,10 +6,10 @@ import 'package:domain_models/domain_models.dart' as domain;
 class AuthService {
   const AuthService();
 
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  // static final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Get current user
-  domain.User? get currentUser => _auth.currentUser?.toDomain;
+  // domain.User? get currentUser => _auth.currentUser?.toDomain;
 
   // // Get user role from custom claims
   // Future<String?> getUserRole() async {
