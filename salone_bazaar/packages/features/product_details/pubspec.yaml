@@ -1,4 +1,4 @@
-name: product_list
+name: product_details
 description: "A new Flutter package project."
 version: 0.0.1
 publish_to: none
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+    
   component_library:
     path: ../../component_library
   domain_models:
@@ -20,10 +20,6 @@ dependencies:
 
   equatable: ^2.0.5
   flutter_bloc: ^8.1.6
-  bloc_concurrency: ^0.2.5
-  rxdart: ^0.28.0
-  infinite_scroll_pagination: ^4.0.0
-
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:bazaar_api/bazaar_api.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:product_details/product_details.dart';
 import 'package:product_list/product_list.dart';
 import 'package:register_retailer/register_retailer.dart';
 import 'package:sign_in/sign_in.dart';
@@ -53,6 +54,11 @@ final class AppRouter {
               onSignInTap: () => context.go(_PathConstants.signInPath),
             ),
           ),
+          GoRoute(
+            // product details
+            path: _PathConstants.productDetailsPath,
+            builder: (context, state) => const ProductDetailsScreen(),
+          ),
           ShellRoute(
             // bottom navigation route
             builder: (context, state, child) => ScaffoldWithNavBar(
@@ -63,7 +69,7 @@ final class AppRouter {
                 // product list
                 path: _PathConstants.productListPath,
                 builder: (context, state) => ProductListScreen(
-                  onProductSelected: (p0) {},
+                  onProductSelected: (p0) => context.go(_PathConstants.productDetailsPath),
                   api: _api,
                 ),
               ),

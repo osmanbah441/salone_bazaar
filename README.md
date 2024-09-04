@@ -4,6 +4,8 @@ SaloneBazaar brings the vibrant spirit of Sierra Leone's markets to the digital 
 
 [visit site to test](https://salone-bazaar.web.app/)
 
+NOTE: The site is intend for mobile size, you can resize your window if you're a laptop/desktop
+
 ## Problem
 
 In Sierra Leone, talented entrepreneurs like Binta, a craftsperson in Makeni, struggle to reach customers beyond their immediate vicinity. Meanwhile, customers like Emmanuel waste precious time and resources travelling between shops to find the best deals. Our fragmented market limits growth for businesses and inconveniences consumers.

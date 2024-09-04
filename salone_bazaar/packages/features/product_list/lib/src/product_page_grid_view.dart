@@ -37,7 +37,7 @@ class ProductPagedGridView extends StatelessWidget {
                     return ProductCard(
                       imageUrl: product.imageUrl,
                       title: product.name,
-                      price: product.price.toStringAsFixed(2),
+                      price: 'SLE ${product.price.toStringAsFixed(2)}',
                       onTap: () => onProductSelected(product.id),
                     );
                   },
