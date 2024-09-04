@@ -55,9 +55,15 @@ final class AppRouter {
             ),
           ),
           GoRoute(
-            // product details
-            path: _PathConstants.productDetailsPath,
-            builder: (context, state) => const ProductDetailsScreen(),
+            path: _PathConstants.productDetailsPath(),
+            builder: (context, state) => ProductDetailsScreen(
+              api: _api,
+              onBackButtonTap: () => context.go(_PathConstants.productListPath),
+              productId:
+                  state.pathParameters[_PathConstants._productIdPathParameter]!,
+              onItemAddedToCart: () => context.go(_PathConstants.cartPath),
+              onAuthenticationRequired: () {},
+            ),
           ),
           ShellRoute(
             // bottom navigation route
@@ -69,7 +75,8 @@ final class AppRouter {
                 // product list
                 path: _PathConstants.productListPath,
                 builder: (context, state) => ProductListScreen(
-                  onProductSelected: (p0) => context.go(_PathConstants.productDetailsPath),
+                  onProductSelected: (id) =>
+                      context.go(_PathConstants.productDetailsPath(id)),
                   api: _api,
                 ),
               ),

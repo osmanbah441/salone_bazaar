@@ -1,4 +1,5 @@
 import 'package:bazaar_api/src/auth_service.dart';
+import 'package:bazaar_api/src/cart_repository.dart';
 import 'package:bazaar_api/src/products_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,4 +23,6 @@ class BazaarApi {
   final auth = const AuthService();
 
   final product = const ProductsRepository();
+
+  final cart = const CartRepository();
 }

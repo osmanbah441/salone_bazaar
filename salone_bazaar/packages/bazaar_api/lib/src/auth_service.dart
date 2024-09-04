@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:domain_models/domain_models.dart' as domain;
@@ -13,14 +12,13 @@ class AuthService {
 
   // // Get user role from custom claims
   // Future<String?> getUserRole() async {
-   
 
-    //   User? user = _auth.currentUser;
-    //   if (user != null) {
-    //     IdTokenResult tokenResult = await user.getIdTokenResult();
-    //     return tokenResult.claims?['role'];
-    //   }
-    //   return null;
+  //   User? user = _auth.currentUser;
+  //   if (user != null) {
+  //     IdTokenResult tokenResult = await user.getIdTokenResult();
+  //     return tokenResult.claims?['role'];
+  //   }
+  //   return null;
   // }
 
   // Sign in with email and password

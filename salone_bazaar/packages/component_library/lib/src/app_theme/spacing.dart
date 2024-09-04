@@ -6,5 +6,4 @@ final class Spacing {
   static const height16 = SizedBox(height: 16);
   static const height24 = SizedBox(height: 24);
   static const height80 = SizedBox(height: 80);
-
 }

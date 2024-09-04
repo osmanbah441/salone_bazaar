@@ -120,7 +120,6 @@ class _SigninScreenViewState extends State<SigninScreenView> {
                     Spacing.height24,
                     const Text('OR'),
                     Spacing.height24,
-                        
                     EmailAndPasswordForm(
                       buttonLabel: 'Sign in',
                       emailFocusNode: _emailFocusNode,
@@ -133,13 +132,12 @@ class _SigninScreenViewState extends State<SigninScreenView> {
                       isEmailAndPasswordSubmissionStatusInProgress:
                           state.emailAndPasswordSubmissionStatus.isInProgress,
                     ),
-                        
-            
                     Spacing.height8,
                     TextButton(
-                      onPressed: state.emailAndPasswordSubmissionStatus.isInProgress
-                          ? null
-                          : widget.onForgotPasswordTap,
+                      onPressed:
+                          state.emailAndPasswordSubmissionStatus.isInProgress
+                              ? null
+                              : widget.onForgotPasswordTap,
                       child: const Text('Reset password'),
                     ),
                     Spacing.height8,

@@ -17,8 +17,7 @@ class RetailerRegistrationScreen extends StatelessWidget {
   final BazaarApi api;
   final VoidCallback onRegistrationSuccess;
   final VoidCallback onCreateAccountTap;
-  final VoidCallback  onSignInTap;
-
+  final VoidCallback onSignInTap;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,7 @@ class RetailerRegistrationScreenView extends StatefulWidget {
 
   final VoidCallback onRegistrationSuccess;
   final VoidCallback onCreateAccountTap;
-  final VoidCallback  onSignInTap;
+  final VoidCallback onSignInTap;
 
   @override
   State<RetailerRegistrationScreenView> createState() =>
@@ -151,52 +150,50 @@ class _RetailerRegistrationScreenViewState
                     ),
                     const SizedBox(height: 16),
 
-           
-               
                     //
 
-        TextField(
-          focusNode: _emailFocusNode,
-          textInputAction: TextInputAction.next,
-          onChanged: _cubit.onEmailChanged,
-          enabled: !state.submissionStatus.isInProgress,
-          keyboardType: TextInputType.emailAddress,
-          autocorrect: false,
-          decoration: InputDecoration(
-            suffixIcon: const Icon(Icons.email),
-            enabled: !state.submissionStatus.isInProgress,
-            labelText: 'EMAIL',
-            errorText: state.email.error?.message,
-          ),
-        ),
-        Spacing.height16,
-        TextField(
-          focusNode: _passwordFocusNode,
-          enabled: !state.submissionStatus.isInProgress,
-          onChanged: _cubit.onPasswordChanged,
-          textInputAction: TextInputAction.next,
-          obscureText: true,
-          obscuringCharacter: '*',
-          decoration: InputDecoration(
-            suffixIcon: const Icon(Icons.lock),
-            labelText: 'PASSWORD',
-            enabled: !state.submissionStatus.isInProgress,
-            errorText: state.password.error?.message,
-          ),
-        ),
-  Spacing.height24,
-        state.submissionStatus.isInProgress
-            ? ExpandedElevatedButton.inProgress(
-                label: 'Loading',
-              )
-            : ExpandedElevatedButton(
-                onTap: _cubit.onSubmit,
-                label: 'Create account',
-                icon: const Icon(Icons.login),
-              ),
+                    TextField(
+                      focusNode: _emailFocusNode,
+                      textInputAction: TextInputAction.next,
+                      onChanged: _cubit.onEmailChanged,
+                      enabled: !state.submissionStatus.isInProgress,
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        suffixIcon: const Icon(Icons.email),
+                        enabled: !state.submissionStatus.isInProgress,
+                        labelText: 'EMAIL',
+                        errorText: state.email.error?.message,
+                      ),
+                    ),
+                    Spacing.height16,
+                    TextField(
+                      focusNode: _passwordFocusNode,
+                      enabled: !state.submissionStatus.isInProgress,
+                      onChanged: _cubit.onPasswordChanged,
+                      textInputAction: TextInputAction.next,
+                      obscureText: true,
+                      obscuringCharacter: '*',
+                      decoration: InputDecoration(
+                        suffixIcon: const Icon(Icons.lock),
+                        labelText: 'PASSWORD',
+                        enabled: !state.submissionStatus.isInProgress,
+                        errorText: state.password.error?.message,
+                      ),
+                    ),
+                    Spacing.height24,
+                    state.submissionStatus.isInProgress
+                        ? ExpandedElevatedButton.inProgress(
+                            label: 'Loading',
+                          )
+                        : ExpandedElevatedButton(
+                            onTap: _cubit.onSubmit,
+                            label: 'Create account',
+                            icon: const Icon(Icons.login),
+                          ),
                     //
                     const SizedBox(height: 24),
-                     RowTextWithButton(
+                    RowTextWithButton(
                       text: 'Already have an account?',
                       buttonLabel: 'Sign In',
                       onButtonTap: widget.onSignInTap,

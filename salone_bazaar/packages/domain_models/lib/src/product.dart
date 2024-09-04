@@ -16,14 +16,14 @@ enum ProductCategory {
 }
 
 class Product {
-  const Product({
-    required this.category,
-    required this.id,
-    required this.isFeatured,
-    required this.name,
-    required this.price,
-    required this.imageUrl,
-  });
+  const Product(
+      {required this.category,
+      required this.id,
+      required this.isFeatured,
+      required this.name,
+      required this.price,
+      required this.imageUrl,
+      required this.description});
 
   final ProductCategory category;
   final String id;
@@ -31,4 +31,5 @@ class Product {
   final String imageUrl;
   final String name;
   final int price;
+  final String description;
 }
