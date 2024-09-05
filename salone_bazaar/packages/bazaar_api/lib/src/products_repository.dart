@@ -423,4 +423,10 @@ class ProductsRepository {
     await Future.delayed(const Duration(seconds: 1));
     return _allProducts.firstWhere((p) => p.id == productId);
   }
+
+  add(
+      {required String name,
+      required String description,
+      required double price,
+      required String imagePath}) {}
 }

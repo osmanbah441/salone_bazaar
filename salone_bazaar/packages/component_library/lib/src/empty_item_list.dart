@@ -20,13 +20,16 @@ class EmptyItemList extends StatelessWidget {
             const SizedBox(height: 80),
             Text(
               'Your cart is currently empty.',
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 16),
-            const Text(
-              "Don't miss out on amazing deals!",
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                "Don't miss out on amazing deals! Browse our collection now.",
+                textAlign: TextAlign.center,
+              ),
             ),
-            const Text('Browse our collection now.')
           ],
         ),
       ),
