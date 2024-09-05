@@ -30,12 +30,12 @@ SaloneBazaar is a user-friendly mobile marketplace that:
 This impact makes the project not just a valuable tool for consumers but a potential driver of broader socio-economic development in Sierra Leone.
 
 ## Implementation Roadmap
-MVP (Minimum Viable Product)
-- **User Authentication:** Implement sign-up/login for customers and retailers.
-- **Product Management:** Allow retailers to add, edit, and delete products.
-- **Inventory Management:** Basic inventory tracking and alerts.
-- **Basic Analytics:** Simple sales reports using fl_chart.
-- **Customer Browsing & Purchasing:** Allow customers to browse products, add to cart, and place orders.
+MVP (Minimum Viable Product) 
+- **✅ User Authentication:** Implement sign-up/login for customers and retailers.
+- **❌ Customer Browsing & Purchasing:** Allow customers to browse products, add to cart, and place orders.
+- **❌ Product Management:** Allow retailers to add, edit, and delete products.
+- **❌ Inventory Management:** Basic inventory tracking and alerts.
+- **❌ Basic Analytics:** Simple sales reports using fl_chart.
 
 Phase 2: Enhanced Functionality
 - **Advanced Analytics:** Incorporate more detailed reports and charts.
