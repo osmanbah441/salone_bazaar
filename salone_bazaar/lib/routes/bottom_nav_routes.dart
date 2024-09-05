@@ -38,10 +38,7 @@ ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
 class _ScaffoldWithNavBar extends StatelessWidget {
   /// Constructs an [_ScaffoldWithNavBar].
-  const _ScaffoldWithNavBar({
-    required this.child,
-    super.key,
-  });
+  const _ScaffoldWithNavBar({required this.child});
 
   /// The widget to display in the body of the Scaffold.
   final Widget child;

@@ -12,4 +12,13 @@ List<GoRoute> productRoutes(BazaarApi api) => [
           onAuthenticationRequired: () {},
         ),
       ),
+
+      GoRoute(
+        path: PathConstants.productAddPath,
+        builder: (context, state) => AddProductScreen(
+          api: api,
+          onAddAddProductSuccess: () {},
+        ),
+      )
+      // Add more
     ];
