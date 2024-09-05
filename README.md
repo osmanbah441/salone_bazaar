@@ -29,82 +29,30 @@ SaloneBazaar is a user-friendly mobile marketplace that:
 
 This impact makes the project not just a valuable tool for consumers but a potential driver of broader socio-economic development in Sierra Leone.
 
-## Deliverables
+## Implementation Roadmap
+MVP (Minimum Viable Product)
+- **User Authentication:** Implement sign-up/login for customers and retailers.
+- **Product Management:** Allow retailers to add, edit, and delete products.
+- **Inventory Management:** Basic inventory tracking and alerts.
+- **Basic Analytics:** Simple sales reports using fl_chart.
+- **Customer Browsing & Purchasing:** Allow customers to browse products, add to cart, and place orders.
 
-- User Onboarding: Basic sign-up, login, and profile management.
-- Product Browsing: Customers can view a simple list of products, filtered by categories.
-- Product Details: View product information (image, description, price).
-- Shopping Cart: Add products to a cart and view the cart contents.
-- Order Placement: Place an order with basic confirmation.
-- Basic Order Tracking: Simple order status updates (e.g., "Processing", "onDelivery", "completed").
-- Order Monitoring: Retailers can view and update order statuses.
+Phase 2: Enhanced Functionality
+- **Advanced Analytics:** Incorporate more detailed reports and charts.
+- **Order Management:** Implement comprehensive order tracking and management for retailers.
+- **Customer Reviews & Ratings:** Enable customers to leave feedback on products.
+- **Promotions & Discounts:** Allow retailers to create promotional campaigns.
 
-## Scope
+Phase 3: User Engagement & Marketing
+- **Loyalty Programs:** Introduce rewards for repeat customers.
+- **Push Notifications:** Implement notifications for order updates and promotions.
+- **Social Sharing:** Enable sharing of products on social media.
+Phase 4: Scalability & Optimization
+- **Performance Enhancements:** Optimize app performance for larger datasets and user bases.
+- **Security Improvements:** Implement advanced security features like 2FA.
+- **Multi-language Support:** Localize the app for different regions.
 
-### Primary Focus
-
-The project will concentrate on developing features that enhance the experience of customer users. This includes their ability to browse products, manage shopping carts, place orders, and track order statuses. The aim is to create a seamless and intuitive shopping experience, from onboarding to post-purchase order tracking.
-
-### Out of Scope (for now)
-
-- **Retailer Features**: Tools for product listing, inventory management, and sales analytics.
-- **Delivery Personnel Features**: Functionalities such as delivery management, route optimization, and package tracking.
-- **Admin Tools**: Administrative functionalities for managing users, products, and orders.
-- **Support Features**: Customer and retailer support tools, such as chat support or ticketing systems.
-
-## Tools
-
-- **UI/UX Design**: Paper and pen.
-- **Client**: Flutter.
-- **Server**: Firebase.
-
-## Core Features (MVP) (In Scope)
-
-- Retailer/Customer Onboarding
-- Product Listing
-- Customer Browsing
-- Shopping Cart
-- Payment Integration
-- Order Tracking
-- Delivery Finding
-
-## Optional Features (If Time Permits) (Not in Scope)
-
-- Push Notifications
-- Retailer Dashboard
-- Customer Reviews & Ratings
-
-## UI/UX Design Considerations (Not in Scope)
-
-- **Consistency**: Maintain a consistent color scheme and typography throughout the app.
-- **Accessibility**: Ensure buttons are large enough for easy tapping, and text is readable.
-- **Responsiveness**: Design for mobile-first but ensure that the app works well on different screen sizes.
-
-## Prioritization
-
-### High Priority (Must-Have for MVP)
-
-- Retailer/customer Onboarding
-- Product Listing
-- Customer Browsing
-- Shopping Cart
-- Payment Integration
-- Order Tracking
-
-### Medium Priority (Nice-to-Have)
-
-- Push Notifications
-- Retailer Dashboard
-- Customer Reviews & Ratings
-
-### Low Priority (Future Enhancements)
-
-- Loyalty Program
-- Community Features
-
-## Additional Resources
-
-- [User Persona](./user-persona.md)
-- [User Stories](./user-stories.md)
-- [Tasks and Milestones](./tasks-and-milestones.md)
-
+Phase 5: Monetization & Advanced Features
+- **Monetization Strategies:** Introduce commission fees, subscription plans, and advertising options.
+- **AI & ML Integration:** Add predictive analytics and personalized recommendations.
+- **Third-Party Integrations:** Connect with CRM, ERP, and other essential business tools.

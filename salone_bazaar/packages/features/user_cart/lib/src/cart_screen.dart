@@ -142,7 +142,7 @@ class _CartSummaryDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-              'Please note that once the order is made, it cannot be undone. Your order will be processed and delivered within 3 hours.'),
+              'Please note that once the order is made, it cannot be undone. Your order will be processed and delivered.'),
           const SizedBox(height: 8),
           Text('Total Cart Price: SLL${totalPrice.toStringAsFixed(2)}'),
         ],
