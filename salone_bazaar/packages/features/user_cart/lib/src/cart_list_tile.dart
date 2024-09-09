@@ -26,6 +26,7 @@ class CartListTile extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(32),
       child: Card(
+        elevation: 0,
         child: InkWell(
           onTap: onItemTap,
           child: Padding(

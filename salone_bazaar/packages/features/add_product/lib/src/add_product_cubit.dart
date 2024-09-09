@@ -1,4 +1,5 @@
 import 'package:bazaar_api/bazaar_api.dart';
+import 'package:domain_models/domain_models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
@@ -74,12 +75,14 @@ class AddProductCubit extends Cubit<AddProductState> {
         productPrice.isValid &&
         productImage.isValid) {
       try {
-        await api.product.add(
+        await api.product.add(Product(
           name: productName.value,
-          description: productDescription.value,
           price: productPrice.value,
-          imagePath: productImage.value,
-        );
+          isFeatured: false,
+          description: productDescription.value,
+          category: ProductCategory.accessories,
+          imageUrl: productImage.value,
+        ));
         emit(state.copyWith(submissionStatus: SubmissionStatus.success));
       } catch (e) {
         emit(state.copyWith(submissionStatus: SubmissionStatus.genericError));

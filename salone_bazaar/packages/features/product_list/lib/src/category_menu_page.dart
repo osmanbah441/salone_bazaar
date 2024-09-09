@@ -1,6 +1,6 @@
+import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:domain_models/domain_models.dart';
 
 import 'product_list_bloc.dart';
 

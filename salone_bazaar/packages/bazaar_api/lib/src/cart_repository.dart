@@ -1,64 +1,89 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain_models/domain_models.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CartRepository {
   const CartRepository();
-  static final _cart = Cart(
-    cartId: 'cart_1',
-    userId: 'user_1',
-    items: [],
-    totalCartPrice: 0.0,
-  );
 
-  Future<void> add(Product product) async {
-    final item = CartItem(
-        imageUrl: product.imageUrl,
-        name: product.name,
-        productId: product.id,
-        quantity: 1,
-        unitPrice: product.price);
+  static final _currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
-    // Check if the item already exists in the cart
-    for (var item in _cart.items) {
-      if (item.productId == product.id) {
-        return; // Item already in the cart, no need to add again
-      }
-    }
-
-    // Add the new item to the cart
-    _cart.items.add(item);
-
-    // Update the total cart price
-    _updateTotalCartPrice();
-  }
+  static final _ref =
+      FirebaseFirestore.instance.collection('carts').doc(_currentUserId);
 
   Future<void> updateQuantity(String productId, int quantity) async {
-    for (var item in _cart.items) {
-      if (item.productId == productId) {
-        item.quantity = quantity;
-        _updateTotalCartPrice();
-        return;
+    final cartDoc = await _ref.get();
+    if (cartDoc.exists) {
+      Cart cart = Cart.fromMap(cartDoc.data()!);
+
+      for (var item in cart.items) {
+        if (item.productId == productId) {
+          item.quantity = quantity;
+        }
       }
+
+      await _ref.update(cart.toMap());
     }
   }
 
   Future<void> removeItemFromCart(String productId) async {
-    _cart.items.removeWhere((item) => item.productId == productId);
-    _updateTotalCartPrice();
+    final cartDoc = await _ref.get();
+    if (cartDoc.exists) {
+      Cart cart = Cart.fromMap(cartDoc.data()!);
+
+      cart.items.removeWhere((item) => item.productId == productId);
+
+      await _ref.update(cart.toMap());
+    }
   }
 
   Future<void> clearCart() async {
-    _cart.items.clear();
-    _updateTotalCartPrice();
+    final cartDoc = await _ref.get();
+    if (cartDoc.exists) {
+      // Clear the cart items and set the total cart price to 0
+      await _ref.update({
+        'items': [],
+        'totalCartPrice': 0,
+      });
+    }
   }
 
   Future<Cart> get() async {
-    return _cart;
+    final cartDoc = await _ref.get();
+
+    if (cartDoc.exists) {
+      return Cart.fromMap(cartDoc.data()!);
+    } else {
+      return Cart(cartId: _currentUserId, userId: _currentUserId, items: []);
+    }
   }
 
-  void _updateTotalCartPrice() {
-    _cart.totalCartPrice = _cart.items.fold(
-      0.0,
-      (total, item) => total + item.totalPrice,
+  Future<void> add(Product product) async {
+    final cartItem = CartItem(
+      productId: product.id!,
+      name: product.name,
+      unitPrice: product.price,
+      quantity: 1,
+      imageUrl: product.imageUrl,
     );
+    final cartDoc = await _ref.get();
+    Cart cart;
+
+    if (cartDoc.exists) {
+      cart = Cart.fromMap(cartDoc.data()!);
+
+      for (var item in cart.items) {
+        if (item.productId == cartItem.productId) return;
+      }
+
+      cart.items.add(cartItem);
+    } else {
+      cart = Cart(
+        cartId: _currentUserId,
+        userId: _currentUserId,
+        items: [cartItem],
+      );
+    }
+
+    await _ref.set(cart.toMap());
   }
 }

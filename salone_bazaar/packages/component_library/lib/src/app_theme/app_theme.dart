@@ -29,7 +29,7 @@ class AppTheme {
 
   ElevatedButtonThemeData get _elevatedButtonTheme => ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          elevation: 2,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

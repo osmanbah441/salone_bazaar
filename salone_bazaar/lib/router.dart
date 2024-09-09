@@ -21,7 +21,7 @@ final class AppRouter {
   final BazaarApi _api;
 
   GoRouter get router => GoRouter(
-        initialLocation: PathConstants.productAddPath,
+        initialLocation: PathConstants.signInPath,
         routes: [
           bottomNavRoute(_api),
           ...registrationRoutes(_api),

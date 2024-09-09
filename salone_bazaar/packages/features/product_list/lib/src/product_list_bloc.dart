@@ -163,7 +163,7 @@ final class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
         page: page,
         category: currentlyAppliedFilter is ProductListFilterByCategory
             ? currentlyAppliedFilter.category.name
-            : ProductCategory.all.name,
+            : '',
         searchTerm: currentlyAppliedFilter is ProductListFilterBySearchTerm
             ? currentlyAppliedFilter.searchTerm
             : '',

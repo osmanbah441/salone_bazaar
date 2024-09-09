@@ -64,9 +64,10 @@ final class SignUpCubit extends Cubit<SignUpState> {
       } catch (e) {
         emit(
           state.copyWith(
-              emailAndPasswordSubmissionStatus: e is InvalidCredentialException
-                  ? EmailAndPasswordSubmissionStatus.invalidCredentialsError
-                  : EmailAndPasswordSubmissionStatus.genericError),
+            emailAndPasswordSubmissionStatus: e is InvalidCredentialException
+                ? EmailAndPasswordSubmissionStatus.invalidCredentialsError
+                : EmailAndPasswordSubmissionStatus.genericError,
+          ),
         );
       }
     }

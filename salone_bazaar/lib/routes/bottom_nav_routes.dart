@@ -30,7 +30,11 @@ ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
         GoRoute(
             //  orders
             path: PathConstants.orderListPath,
-            builder: (context, state) => const OrderListScreen()),
+            builder: (context, state) => OrderListScreen(
+                  onOrderSelected: (id) {},
+                  onBackButtonTapped: () {},
+                  api: api,
+                )),
       ],
     );
 

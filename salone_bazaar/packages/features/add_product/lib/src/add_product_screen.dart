@@ -56,8 +56,9 @@ class _AddProductScreenViewState extends State<AddProductScreenView> {
       if (!_nameFocusNode.hasFocus) _cubit.onProductNameUnfocused();
     });
     _descriptionFocusNode.addListener(() {
-      if (!_descriptionFocusNode.hasFocus)
+      if (!_descriptionFocusNode.hasFocus) {
         _cubit.onProductDescriptionUnfocused();
+      }
     });
     _priceFocusNode.addListener(() {
       if (!_priceFocusNode.hasFocus) _cubit.onProductPriceUnfocused();
@@ -89,25 +90,27 @@ class _AddProductScreenViewState extends State<AddProductScreenView> {
                 TextField(
                   focusNode: _nameFocusNode,
                   onChanged: _cubit.onProductNameChanged,
-                  decoration: InputDecoration(labelText: 'AddProduct Name'),
+                  decoration:
+                      const InputDecoration(labelText: 'AddProduct Name'),
                 ),
                 TextField(
                   focusNode: _descriptionFocusNode,
                   onChanged: _cubit.onProductDescriptionChanged,
-                  decoration:
-                      InputDecoration(labelText: 'AddProduct Description'),
+                  decoration: const InputDecoration(
+                      labelText: 'AddProduct Description'),
                 ),
                 TextField(
                   focusNode: _priceFocusNode,
                   onChanged: _cubit.onProductPriceChanged,
-                  decoration: InputDecoration(labelText: 'AddProduct Price'),
+                  decoration:
+                      const InputDecoration(labelText: 'AddProduct Price'),
                 ),
                 // TODO: add image.
                 ElevatedButton(
                   onPressed: state.submissionStatus.isInProgress
                       ? null
                       : _cubit.onSubmit,
-                  child: Text('Add AddProduct'),
+                  child: const Text('Add AddProduct'),
                 ),
               ],
             ),

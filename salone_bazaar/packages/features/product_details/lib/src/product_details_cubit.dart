@@ -18,8 +18,8 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
 
   Future<void> _fetchProductDetails() async {
     try {
-      final product = await _api.product.getProductDetails(productId);
-      emit(ProductDetailsSuccess(product: product));
+      final product = await _api.product.getSingle(productId);
+      emit(ProductDetailsSuccess(product: product!));
     } catch (error) {
       emit(const ProductDetailsFailure());
     }
