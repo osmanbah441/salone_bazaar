@@ -13,19 +13,19 @@ class OrderListScreen extends StatelessWidget {
     super.key,
     required this.onOrderSelected,
     required this.api,
-    required this.onBackButtonTapped,
+    
   });
 
   final void Function(String id) onOrderSelected;
   final BazaarApi api;
-  final VoidCallback onBackButtonTapped;
+ 
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderListBloc>(
         create: (_) => OrderListBloc(api: api),
         child: OrderListView(
-          onBackButtonTapped: onBackButtonTapped,
+         
           onOrderSelected: onOrderSelected,
         ));
   }
@@ -36,11 +36,11 @@ class OrderListView extends StatefulWidget {
   const OrderListView({
     super.key,
     required this.onOrderSelected,
-    required this.onBackButtonTapped,
+    
   });
 
   final void Function(String) onOrderSelected;
-  final VoidCallback onBackButtonTapped;
+ 
 
   @override
   State<OrderListView> createState() => _OrderListViewState();
@@ -77,11 +77,9 @@ class _OrderListViewState extends State<OrderListView> {
       builder: (context, state) {
         return SafeArea(
           child: Scaffold(
-            appBar: AppBar(
-              leading: BackButton(
-                onPressed: widget.onBackButtonTapped,
-              ),
-              title: const Text('Feast Flaskback'),
+              appBar: AppBar(
+            centerTitle: false,
+              title: const Text('Order History'),
             ),
             body: Column(
               children: [

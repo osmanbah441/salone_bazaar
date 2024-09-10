@@ -23,6 +23,8 @@ flutter:
     - 'assets/diamond.png'
     - 'assets/slanted_menu.png'
     - 'assets/empty_cart_list.png'
+    - 'assets/image_placeholder.png'
+    - 'assets/user_profile_icon.png'
 
   # To add custom fonts to your package, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

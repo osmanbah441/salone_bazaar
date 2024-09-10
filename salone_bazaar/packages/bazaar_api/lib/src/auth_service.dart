@@ -7,6 +7,37 @@ class AuthService {
 
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
+    // Update display name
+  Future<void> updateDisplayName(String displayName) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await user.updateDisplayName(displayName);
+        await user.reload();
+      }
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthError(e);
+    } catch (e) {
+      throw domain. UndefinedRestaurantAuthException();
+    }
+  }
+
+
+  // Error handling
+  Exception _handleAuthError(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'user-not-found' || 'wrong-password' || 'invalid-credential':
+        return const domain.InvalidCredentialException();
+      case 'email-already-in-use':
+        return const domain.EmailAlreadyRegisteredException();
+      default:
+        return const domain. UndefinedRestaurantAuthException();
+    }
+  }
+
+
+
+
   // Get current user
   domain.User? get currentUser => _auth.currentUser?.toDomain;
 

@@ -8,3 +8,4 @@ export 'src/product_description.dart';
 export 'src/product_image.dart';
 export 'src/product_price.dart';
 export 'src/product_name.dart';
+export 'src/username.dart';

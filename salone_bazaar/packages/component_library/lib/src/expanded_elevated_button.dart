@@ -8,6 +8,7 @@ class ExpandedElevatedButton extends StatelessWidget {
     required this.label,
     this.onTap,
     this.icon,
+    this.color,
   });
 
   ExpandedElevatedButton.google({Key? key, VoidCallback? onTap})
@@ -22,10 +23,8 @@ class ExpandedElevatedButton extends StatelessWidget {
           label: 'Continue with google',
         );
 
-  ExpandedElevatedButton.inProgress({
-    required String label,
-    Key? key,
-  }) : this(
+  ExpandedElevatedButton.inProgress({required String label, Key? key})
+      : this(
           label: label,
           icon: Transform.scale(
             scale: 0.5,
@@ -34,29 +33,37 @@ class ExpandedElevatedButton extends StatelessWidget {
           key: key,
         );
 
+  const ExpandedElevatedButton.signOut({Key? key, VoidCallback? onTap})
+      : this(
+            key: key,
+            label: 'Sign Out',
+            icon: const Icon(Icons.logout),
+            onTap: onTap,
+            color: const Color.fromARGB(255, 254, 148, 140));
+
   final VoidCallback? onTap;
   final String label;
   final Widget? icon;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    final icon = this.icon;
+    final style = ElevatedButton.styleFrom(backgroundColor: color);
+    final labelText = Text(label);
     return SizedBox(
       height: _elevatedButtonHeight,
       width: double.infinity,
       child: icon != null
           ? ElevatedButton.icon(
+              style: style,
               onPressed: onTap,
-              label: Text(
-                label,
-              ),
+              label: labelText,
               icon: icon,
             )
           : ElevatedButton(
+              style: style,
               onPressed: onTap,
-              child: Text(
-                label,
-              ),
+              child: labelText,
             ),
     );
   }

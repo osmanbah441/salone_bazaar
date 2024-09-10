@@ -58,6 +58,7 @@ class CartView extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(title: const Text('Cart'),),
           body: SafeArea(
               child: switch (state) {
             CartStateInprogress() => const CenteredCircularProgressIndicator(),

@@ -1,7 +1,7 @@
 import 'package:bazaar_api/bazaar_api.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
-import 'package:salone_bazaar/router.dart';
+import 'package:salone_bazaar/routes/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

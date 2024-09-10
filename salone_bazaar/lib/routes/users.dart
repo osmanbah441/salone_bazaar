@@ -1,4 +1,4 @@
-part of '../router.dart';
+part of 'router.dart';
 
 List<GoRoute> registrationRoutes(BazaarApi api) => [
       GoRoute(

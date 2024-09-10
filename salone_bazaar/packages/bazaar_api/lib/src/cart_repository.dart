@@ -1,3 +1,4 @@
+import 'package:bazaar_api/src/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,32 +59,40 @@ class CartRepository {
   }
 
   Future<void> add(Product product) async {
-    final cartItem = CartItem(
-      productId: product.id!,
-      name: product.name,
-      unitPrice: product.price,
-      quantity: 1,
-      imageUrl: product.imageUrl,
-    );
-    final cartDoc = await _ref.get();
-    Cart cart;
+    if (AuthService().currentUser == null) {
+      throw UserAuthenticationRequiredException();
+    }
+    try {
+      final cartItem = CartItem(
+        productId: product.id!,
+        name: product.name,
+        unitPrice: product.price,
+        quantity: 1,
+        imageUrl: product.imageUrl,
+      );
+      final cartDoc = await _ref.get();
+      Cart cart;
 
-    if (cartDoc.exists) {
-      cart = Cart.fromMap(cartDoc.data()!);
+      if (cartDoc.exists) {
+        cart = Cart.fromMap(cartDoc.data()!);
 
-      for (var item in cart.items) {
-        if (item.productId == cartItem.productId) return;
+        for (var item in cart.items) {
+          if (item.productId == cartItem.productId) return;
+        }
+
+        cart.items.add(cartItem);
+      } else {
+        cart = Cart(
+          cartId: _currentUserId,
+          userId: _currentUserId,
+          items: [cartItem],
+        );
       }
 
-      cart.items.add(cartItem);
-    } else {
-      cart = Cart(
-        cartId: _currentUserId,
-        userId: _currentUserId,
-        items: [cartItem],
-      );
+      await _ref.set(cart.toMap());
+    } catch (e) {
+      print(e);
+      rethrow;
     }
-
-    await _ref.set(cart.toMap());
   }
 }

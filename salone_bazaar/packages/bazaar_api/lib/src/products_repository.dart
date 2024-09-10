@@ -16,6 +16,7 @@ class ProductsRepository {
     String searchTerm = '',
     int limit = 10,
   }) async {
+    await Future.delayed(Duration(milliseconds: 300));
     if (page == 1) _lastDocument = null;
     final isFiltering = category.isNotEmpty && searchTerm.isEmpty;
     final isSearching = category.isEmpty && searchTerm.isNotEmpty;

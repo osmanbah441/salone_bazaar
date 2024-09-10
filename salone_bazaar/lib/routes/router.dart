@@ -1,4 +1,6 @@
+
 import 'package:bazaar_api/bazaar_api.dart';
+import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:order_list/order_list.dart';
@@ -11,9 +13,9 @@ import 'package:user_cart/user_cart.dart';
 import 'package:user_profile/user_profile.dart';
 import 'package:add_product/add_product.dart';
 
-part 'routes/product_routes.dart';
-part 'routes/bottom_nav_routes.dart';
-part 'routes/users.dart';
+part 'product_routes.dart';
+part 'bottom_nav_routes.dart';
+part 'users.dart';
 
 final class AppRouter {
   const AppRouter() : _api = const BazaarApi();
@@ -21,13 +23,23 @@ final class AppRouter {
   final BazaarApi _api;
 
   GoRouter get router => GoRouter(
-        initialLocation: PathConstants.signInPath,
+        initialLocation: PathConstants.productListPath,
         routes: [
           bottomNavRoute(_api),
           ...registrationRoutes(_api),
           ...productRoutes(_api),
         ],
       );
+}
+
+class Redirect {
+  static String? toSignIn(BuildContext context, BazaarApi api) {
+    if(api.auth.currentUser == null) {
+    ScaffoldMessenger.of(context).showSnackBar(const AuthenticationRequiredErrorSnackBar(),);
+    return  PathConstants.signInPath ;
+    }
+    return null;
+  }
 }
 
 abstract final class PathConstants {

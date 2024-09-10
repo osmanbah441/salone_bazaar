@@ -48,8 +48,9 @@ class OrdersRepository {
 
     final snapshot = await query.get() as QuerySnapshot<Map<String, dynamic>>;
 
-    if (snapshot.docs.isEmpty)
+    if (snapshot.docs.isEmpty) {
       return const OrderListPage(isLastPage: true, orderList: []);
+    }
     final orders =
         snapshot.docs.map((doc) => Orders.fromMap(doc.data())).toList();
     return OrderListPage(isLastPage: true, orderList: orders);

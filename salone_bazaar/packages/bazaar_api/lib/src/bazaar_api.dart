@@ -26,8 +26,10 @@ class BazaarApi {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     if (isDebug) {
-      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      final host =  'localhost';
+
+      await FirebaseAuth.instance.useAuthEmulator(host, 9099);
+      FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
       //  await   _addproduct(product);
     }
   }
@@ -35,7 +37,7 @@ class BazaarApi {
 
 Future<void> _addproduct(ProductsRepository product) async {
   // TODO:
-  const _allProducts = <Product>[
+  const allProducts = <Product>[
     Product(
         category: ProductCategory.accessories,
         id: '0',
@@ -413,9 +415,9 @@ Future<void> _addproduct(ProductsRepository product) async {
     ),
   ];
 
-  for (var i in _allProducts) {
+  for (var i in allProducts) {
     await product.add(i);
   }
 
-  print('completed add mock ${_allProducts.length} products');
+  print('completed add mock ${allProducts.length} products');
 }

@@ -1,6 +1,6 @@
-part of '../router.dart';
+part of 'router.dart';
 
-ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
+ShellRoute bottomNavRoute(BazaarApi api  ) => ShellRoute(
       // bottom navigation route
       builder: (context, state, child) => _ScaffoldWithNavBar(
         child: child,
@@ -17,10 +17,14 @@ ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
         ),
         GoRoute(
             // user profile
+            redirect: (context, state) => Redirect.toSignIn(context, api),
             path: PathConstants.userProfilePath,
-            builder: (context, state) => const UserProfileScreen()),
+            builder: (context, state) =>  UserProfileScreen(
+              api: api,
+            )),
         GoRoute(
           // cart
+            redirect: (context, state) => Redirect.toSignIn(context, api),
           path: PathConstants.cartPath,
           builder: (context, state) => UserCartScreen(
             api: api,
@@ -29,10 +33,12 @@ ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
         ),
         GoRoute(
             //  orders
+            redirect: (context, state) => Redirect.toSignIn(context,api),
+
             path: PathConstants.orderListPath,
             builder: (context, state) => OrderListScreen(
                   onOrderSelected: (id) {},
-                  onBackButtonTapped: () {},
+                
                   api: api,
                 )),
       ],

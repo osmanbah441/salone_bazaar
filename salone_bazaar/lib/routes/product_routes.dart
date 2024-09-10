@@ -1,4 +1,4 @@
-part of '../router.dart';
+part of 'router.dart';
 
 List<GoRoute> productRoutes(BazaarApi api) => [
       GoRoute(
@@ -9,7 +9,7 @@ List<GoRoute> productRoutes(BazaarApi api) => [
           productId:
               state.pathParameters[PathConstants.productIdPathParameter]!,
           onItemAddedToCart: () => context.go(PathConstants.cartPath),
-          onAuthenticationRequired: () {},
+          onAuthenticationRequired: () => context.go(PathConstants.signInPath),
         ),
       ),
 

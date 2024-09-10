@@ -1,6 +1,5 @@
 export 'src/expanded_elevated_button.dart';
-export 'src/authentication_required_error_snackbar.dart';
-export 'src/generic_error_snackbar.dart';
+export 'src/snackbar.dart';
 export 'src/exception_indicator.dart';
 export 'src/centered_circular_progress_indicator.dart';
 export 'src/in_progress_text_button.dart';
@@ -10,3 +9,4 @@ export 'src/row_text_with_button.dart';
 export 'src/product_cart.dart';
 export 'src/empty_item_list.dart';
 export 'src/rounded_choice_chip.dart';
+export 'src/user_profile_image.dart';
