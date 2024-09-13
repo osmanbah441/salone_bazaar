@@ -131,11 +131,14 @@ final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
     final currentlyAppliedFilter = state.filter;
 
     try {
-      final newPage = await _api.order.getOrderssForUser(
-        status: currentlyAppliedFilter is OrderListFilterByStatus
-            ? currentlyAppliedFilter.status.name
-            : '',
-      );
+      final [role as UserRole, newPage as OrderListPage] = await Future.wait([
+        _api.auth.getUserRole(),
+        _api.order.getAll(
+          status: currentlyAppliedFilter is OrderListFilterByStatus
+              ? currentlyAppliedFilter.status.name
+              : '',
+        )
+      ]);
 
       final newItemList = newPage.orderList;
       final oldItemList = state.itemList ?? [];
@@ -145,11 +148,11 @@ final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
       final nextPage = newPage.isLastPage ? null : page + 1;
 
       return OrderListState.success(
-        nextPage: nextPage,
-        itemList: completeItemList,
-        filter: currentlyAppliedFilter,
-        isRefresh: isRefresh,
-      );
+          nextPage: nextPage,
+          itemList: completeItemList,
+          filter: currentlyAppliedFilter,
+          isRefresh: isRefresh,
+          userRole: role);
     } catch (error) {
       if (error is EmptySearchResultException) {
         return OrderListState.noItemsFound(

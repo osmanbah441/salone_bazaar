@@ -25,8 +25,8 @@ class CartCubit extends Cubit<CartState> {
     _fetchCart();
   }
 
-  void createOrder() async {
-    await _api.order.create();
+  void createOrder(lat, long) async {
+    await _api.order.create(lat, long);
     refetch();
   }
 

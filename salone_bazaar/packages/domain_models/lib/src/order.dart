@@ -22,14 +22,14 @@ enum OrderStatus {
   }
 }
 
-class OrdersItem {
+class OrderItem {
   final String productId;
   final String name;
   final String imageUrl;
   final double unitPrice;
   final int quantity;
 
-  const OrdersItem({
+  const OrderItem({
     required this.productId,
     required this.name,
     required this.imageUrl,
@@ -53,8 +53,8 @@ class OrdersItem {
   }
 
   // Create an OrdersItem from a Map
-  factory OrdersItem.fromMap(Map<String, dynamic> map) {
-    return OrdersItem(
+  factory OrderItem.fromMap(Map<String, dynamic> map) {
+    return OrderItem(
       productId: map['productId'],
       name: map['name'],
       imageUrl: map['imageUrl'],
@@ -65,21 +65,25 @@ class OrdersItem {
   }
 }
 
-class Orders {
+class Order {
   final String id;
   final String userId;
   final OrderStatus status;
-  final List<OrdersItem> items;
+  final List<OrderItem> items;
   final DateTime date;
   final String? deliveryCrewId;
+  final double? latitude;
+  final double? longitude;
 
-  const Orders({
+  const Order({
     required this.id,
     required this.userId,
     this.status = OrderStatus.pending,
     required this.items,
     required this.date,
     this.deliveryCrewId,
+    this.latitude,
+    this.longitude,
     double total = 0.0,
   });
 
@@ -96,22 +100,26 @@ class Orders {
       'date': date.toIso8601String(),
       'status': status.name,
       'deliveryCrewId': deliveryCrewId,
+      'latitude': latitude,
+      'longitude': longitude,
     };
   }
 
   // Create an Orders from a Map
-  factory Orders.fromMap(Map<String, dynamic> map) {
-    final orderItems = List<OrdersItem>.from(
-      map['items'].map((item) => OrdersItem.fromMap(item)),
+  factory Order.fromMap(Map<String, dynamic> map) {
+    final orderItems = List<OrderItem>.from(
+      map['items'].map((item) => OrderItem.fromMap(item)),
     );
-    return Orders(
+    return Order(
         id: map['orderId'],
         userId: map['userId'],
         items: orderItems,
         date: DateTime.parse(map['date']),
         total: map['total'],
         status: OrderStatus._getStatus(map['status']),
-        deliveryCrewId: map['deliveryCrewId']);
+        deliveryCrewId: map['deliveryCrewId'],
+        latitude: map['latitude'],
+        longitude: map['longitude']);
   }
 }
 
@@ -122,5 +130,5 @@ class OrderListPage {
   });
 
   final bool isLastPage;
-  final List<Orders> orderList;
+  final List<Order> orderList;
 }

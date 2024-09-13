@@ -8,12 +8,10 @@ class GenericErrorSnackBar extends SnackBar {
         );
 }
 
-
 class AuthenticationRequiredErrorSnackBar extends SnackBar {
-   const AuthenticationRequiredErrorSnackBar({super.key})
+  const AuthenticationRequiredErrorSnackBar({super.key})
       : super(
           content: const Text('authentication is requried error message'),
           duration: const Duration(seconds: 2),
         );
 }
-

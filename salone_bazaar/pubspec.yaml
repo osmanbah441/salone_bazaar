@@ -33,6 +33,8 @@ dependencies:
     path: ./packages/features/user_profile
   order_list:
     path: ./packages/features/order_list
+  order_details:
+    path: ./packages/features/order_details
   map_tracking:
     path: ./packages/features/map_tracking    
   go_router: ^14.2.7

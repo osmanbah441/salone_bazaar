@@ -12,7 +12,7 @@ class UserProfileStateSuccess extends UserProfileState {
   const UserProfileStateSuccess({
     required this.username,
     required this.email,
-     this.photoUrl,
+    this.photoUrl,
   });
 
   UserProfileStateSuccess copyWith({Username? username}) =>

@@ -1,21 +1,19 @@
 import 'package:bazaar_api/src/auth_service.dart';
 import 'package:bazaar_api/src/cart_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:domain_models/domain_models.dart';
+import 'package:domain_models/domain_models.dart' as domain;
 
 class OrdersRepository {
   const OrdersRepository();
   static final _ordersRef = FirebaseFirestore.instance.collection('orders');
 
-  static get _uid => AuthService().currentUser!.uid;
-
-  Future<void> create() async {
+  Future<void> create(double lat, double long) async {
     final cart = await CartRepository().get();
     final currentUser = AuthService().currentUser!;
 
     final orderItems = cart.items
         .map(
-          (e) => OrdersItem(
+          (e) => domain.OrderItem(
             productId: e.productId,
             name: e.name,
             imageUrl: e.imageUrl,
@@ -26,21 +24,31 @@ class OrdersRepository {
         .toList();
 
     final doc = _ordersRef.doc();
-    Orders newOrders = Orders(
+    domain.Order newOrders = domain.Order(
       id: doc.id,
       userId: currentUser.uid,
       items: orderItems,
       date: DateTime.now(),
+      latitude: lat,
+      longitude: long,
     );
     await doc.set(newOrders.toMap());
 
     await CartRepository().clearCart();
   }
 
-  Future<OrderListPage> getOrderssForUser({
+  Future<domain.OrderListPage> getAll({
     String status = '',
   }) async {
-    Query query = _ordersRef.where('userId', isEqualTo: _uid);
+    final uid = AuthService().currentUser!.uid;
+    final role = await AuthService().getUserRole();
+    role == domain.UserRole.deliveryCrew;
+
+    Query query = role == domain.UserRole.admin
+        ? _ordersRef
+        : role == domain.UserRole.deliveryCrew
+            ? _ordersRef.where('deliveryCrewId', isEqualTo: uid)
+            : _ordersRef.where('userId', isEqualTo: uid);
 
     if (status.isNotEmpty) {
       query = query.where('status', isEqualTo: status);
@@ -49,45 +57,36 @@ class OrdersRepository {
     final snapshot = await query.get() as QuerySnapshot<Map<String, dynamic>>;
 
     if (snapshot.docs.isEmpty) {
-      return const OrderListPage(isLastPage: true, orderList: []);
+      return const domain.OrderListPage(isLastPage: true, orderList: []);
     }
     final orders =
-        snapshot.docs.map((doc) => Orders.fromMap(doc.data())).toList();
-    return OrderListPage(isLastPage: true, orderList: orders);
+        snapshot.docs.map((doc) => domain.Order.fromMap(doc.data())).toList();
+    return domain.OrderListPage(isLastPage: true, orderList: orders);
   }
 
-  Future<Orders> getOrders(String orderId) async {
+  Future<domain.Order> get(String orderId) async {
     final orderDoc = await _ordersRef.doc(orderId).get();
-    if (orderDoc.exists) return Orders.fromMap(orderDoc.data()!);
-    throw const NotFoundResultException();
+    if (orderDoc.exists) return domain.Order.fromMap(orderDoc.data()!);
+    throw const domain.NotFoundResultException();
   }
 
-  Future<Orders> updateOrdersStatus(String orderId, OrderStatus status) async =>
-      _updateOrders(orderId, status: status);
+  Future<domain.Order> updateStatus(
+    String orderId,
+    domain.OrderStatus status,
+  ) async {
+    await _ordersRef.doc(orderId).update({"status": status.name});
+    return get(orderId);
+  }
 
-  Future<Orders> assignOrdersToDeliveryCrew({
+  Future<domain.Order> assignToDeliveryCrew({
     required String orderId,
     required String crewId,
-  }) =>
-      _updateOrders(orderId, crewId: crewId, status: OrderStatus.pending);
-
-  Future<Orders> _updateOrders(
-    String orderId, {
-    required OrderStatus status,
-    String? crewId,
   }) async {
-    final newOrders = await getOrders(orderId).then((order) => Orders(
-          status: status,
-          deliveryCrewId: crewId,
-          total: order.total,
-          id: order.id,
-          userId: order.userId,
-          items: order.items,
-          date: order.date,
-        ));
+    await _ordersRef.doc(orderId).update({
+      "deliveryCrewId": crewId,
+      "status": domain.OrderStatus.ongoing,
+    });
 
-    await _ordersRef.doc(orderId).update(newOrders.toMap());
-
-    return getOrders(orderId);
+    return get(orderId);
   }
 }

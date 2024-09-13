@@ -22,3 +22,15 @@ List<GoRoute> productRoutes(BazaarApi api) => [
       )
       // Add more
     ];
+
+List<GoRoute> orderRoutes(BazaarApi api) => [
+      GoRoute(
+        path: PathConstants.orderDetailsPath(),
+        // redirect: ,
+        builder: (context, state) => OrderDetailsScreen(
+          orderId: state.pathParameters[PathConstants.orderIdPathParameter]!,
+          api: api,
+          onBackButtonTap: () => context.go(PathConstants.orderListPath),
+        ),
+      ),
+    ];

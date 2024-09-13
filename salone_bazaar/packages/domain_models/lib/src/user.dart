@@ -22,3 +22,15 @@ class User {
       photoURL: map['photoURL'],
       emailVerified: map['emailVerified']);
 }
+
+enum UserRole {
+  admin,
+  deliveryCrew,
+  retailer,
+  customer;
+
+  bool get isAdmin => this == UserRole.admin;
+  bool get isDeliveryCrew => this == UserRole.deliveryCrew;
+
+  bool get isAdminOrDeliveryCrew => isAdmin || isDeliveryCrew;
+}

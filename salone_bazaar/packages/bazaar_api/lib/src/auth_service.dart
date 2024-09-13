@@ -7,7 +7,7 @@ class AuthService {
 
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    // Update display name
+  // Update display name
   Future<void> updateDisplayName(String displayName) async {
     try {
       User? user = _auth.currentUser;
@@ -18,10 +18,9 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       throw _handleAuthError(e);
     } catch (e) {
-      throw domain. UndefinedRestaurantAuthException();
+      throw domain.UndefinedRestaurantAuthException();
     }
   }
-
 
   // Error handling
   Exception _handleAuthError(FirebaseAuthException e) {
@@ -31,24 +30,31 @@ class AuthService {
       case 'email-already-in-use':
         return const domain.EmailAlreadyRegisteredException();
       default:
-        return const domain. UndefinedRestaurantAuthException();
+        return const domain.UndefinedRestaurantAuthException();
     }
   }
-
-
-
 
   // Get current user
   domain.User? get currentUser => _auth.currentUser?.toDomain;
 
   // // Get user role from custom claims
-  Future<String?> getUserRole() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      IdTokenResult tokenResult = await user.getIdTokenResult();
-      return tokenResult.claims?['role'];
+  Future<domain.UserRole> getUserRole() async {
+    final user = _auth.currentUser;
+    if (user == null) throw domain.UserAuthenticationRequiredException();
+
+    IdTokenResult tokenResult = await user.getIdTokenResult();
+    final role = tokenResult.claims?['role'];
+    if (role == null) return domain.UserRole.customer;
+    switch (role as String) {
+      case "admin":
+        return domain.UserRole.admin;
+      case "deliveryCrew":
+        return domain.UserRole.deliveryCrew;
+      case "retailer":
+        return domain.UserRole.retailer;
+      default:
+        return domain.UserRole.customer;
     }
-    return null;
   }
 
   // Sign in with email and password

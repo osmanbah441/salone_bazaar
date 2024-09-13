@@ -7,15 +7,15 @@ final class OrderListState extends Equatable {
     this.filter,
     this.error,
     this.refreshError,
-    this.user,
+    this.userRole = UserRole.customer,
   });
 
-  final List<Orders>? itemList;
+  final List<Order>? itemList;
   final int? nextPage;
   final OrderListFilter? filter;
   final dynamic error;
   final dynamic refreshError;
-  final User? user;
+  final UserRole userRole;
 
   const OrderListState.noItemsFound(OrderListFilter? filter)
       : this(
@@ -27,15 +27,15 @@ final class OrderListState extends Equatable {
 
   const OrderListState.success({
     required int? nextPage,
-    required List<Orders> itemList,
+    required List<Order> itemList,
     required OrderListFilter? filter,
     required bool isRefresh,
-    // required User user,
+    required UserRole userRole,
   }) : this(
-          nextPage: nextPage,
-          itemList: itemList,
-          filter: filter,
-        );
+            nextPage: nextPage,
+            itemList: itemList,
+            filter: filter,
+            userRole: userRole);
 
   OrderListState.loadingNewTag(OrderStatus? status)
       : this(
@@ -50,7 +50,7 @@ final class OrderListState extends Equatable {
         nextPage: nextPage,
         error: error,
         filter: filter,
-        user: user,
+        userRole: userRole,
         refreshError: null,
       );
 
@@ -62,12 +62,12 @@ final class OrderListState extends Equatable {
         nextPage: nextPage,
         error: error,
         filter: filter,
-        user: user,
+        userRole: userRole,
         refreshError: refreshError,
       );
 
   OrderListState copyWithUpdatedOrder(
-    Orders updatedOrder,
+    Order updatedOrder,
   ) {
     return OrderListState(
       itemList: itemList?.map((order) {
@@ -80,7 +80,7 @@ final class OrderListState extends Equatable {
       nextPage: nextPage,
       error: error,
       filter: filter,
-      user: user,
+      userRole: userRole,
       refreshError: null,
     );
   }

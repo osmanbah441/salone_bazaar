@@ -87,17 +87,19 @@ class _UserState extends State<_User> {
 
       return SafeArea(
         child: Scaffold(
-          appBar: AppBar(title: const Text('Profile'), centerTitle: false,),
+          appBar: AppBar(
+            title: const Text('Profile'),
+            centerTitle: false,
+          ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
-                      
+
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              const UserProfileImage(),
+                const UserProfileImage(),
                 Spacing.height48,
-             
                 TextFormField(
                   initialValue: widget.email,
                   decoration:
@@ -114,12 +116,12 @@ class _UserState extends State<_User> {
                       errorText: successState.username.error?.message),
                 ),
                 Spacing.height48,
-            
-                ExpandedElevatedButton.signOut(onTap: () {
-                 final cubit =  context.read<UserProfileCubit>();
-                 cubit.signOut();
-                },),
-             
+                ExpandedElevatedButton.signOut(
+                  onTap: () {
+                    final cubit = context.read<UserProfileCubit>();
+                    cubit.signOut();
+                  },
+                ),
               ],
             ),
           ),

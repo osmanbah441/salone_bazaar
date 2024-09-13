@@ -17,7 +17,8 @@ dependencies:
     path: ../../domain_models
   bazaar_api:
     path: ../../bazaar_api
-
+  map_tracking:
+    path: ../map_tracking
   equatable: ^2.0.5
   flutter_bloc: ^8.1.6
 

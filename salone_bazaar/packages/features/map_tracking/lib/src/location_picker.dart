@@ -115,15 +115,15 @@ class _LocationPickerState extends State<LocationPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Container(
-            height: 380,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: GoogleMap(
+    return Container(
+      height: 380,
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : GoogleMap(
               mapType: MapType.normal,
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
@@ -149,6 +149,6 @@ class _LocationPickerState extends State<LocationPicker> {
                 ),
               },
             ),
-          );
+    );
   }
 }

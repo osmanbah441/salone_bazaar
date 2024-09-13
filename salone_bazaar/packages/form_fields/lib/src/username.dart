@@ -1,4 +1,3 @@
-
 import 'package:form_fields/src/form_fields.dart';
 
 final class Username extends FormInput<String, UsernameValidationError> {

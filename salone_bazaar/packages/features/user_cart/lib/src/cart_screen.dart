@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:component_library/component_library.dart';
+import 'package:map_tracking/map_tracking.dart';
 
 import 'cart_cubit.dart';
 import 'cart_list_tile.dart';
@@ -58,7 +59,9 @@ class CartView extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Cart'),),
+          appBar: AppBar(
+            title: const Text('Cart'),
+          ),
           body: SafeArea(
               child: switch (state) {
             CartStateInprogress() => const CenteredCircularProgressIndicator(),
@@ -116,7 +119,8 @@ class _Cart extends StatelessWidget {
                           context: context,
                           builder: (_) => _CartSummaryDialog(
                             totalPrice: cart.totalCartPrice,
-                            onOrderConfirmed: cartCubit.createOrder,
+                            onOrderConfirmed: (lat, long) =>
+                                cartCubit.createOrder(lat, long),
                           ),
                         ))
               ],
@@ -131,7 +135,7 @@ class _CartSummaryDialog extends StatelessWidget {
     required this.totalPrice,
   });
 
-  final VoidCallback onOrderConfirmed;
+  final Function(double latitude, double longitude) onOrderConfirmed;
   final double totalPrice;
 
   @override
@@ -142,10 +146,20 @@ class _CartSummaryDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-              'Please note that once the order is made, it cannot be undone. Your order will be processed and delivered.'),
+          const Text('Your order will be processed and delivered.'),
           const SizedBox(height: 8),
-          Text('Total Cart Price: SLL${totalPrice.toStringAsFixed(2)}'),
+          Text(
+            'Choose location',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 8),
+          const LocationPicker(),
+          const SizedBox(height: 8),
+          Text(
+            'Total Order Price: SLL${totalPrice.toStringAsFixed(2)}',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
         ],
       ),
       actions: [
@@ -155,7 +169,7 @@ class _CartSummaryDialog extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            onOrderConfirmed();
+            onOrderConfirmed(LocationPicker.latitude, LocationPicker.longitude);
             Navigator.of(context).pop();
           },
           child: const Text('Confirm'),

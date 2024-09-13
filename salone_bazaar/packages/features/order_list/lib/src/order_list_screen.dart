@@ -13,19 +13,16 @@ class OrderListScreen extends StatelessWidget {
     super.key,
     required this.onOrderSelected,
     required this.api,
-    
   });
 
   final void Function(String id) onOrderSelected;
   final BazaarApi api;
- 
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderListBloc>(
         create: (_) => OrderListBloc(api: api),
         child: OrderListView(
-         
           onOrderSelected: onOrderSelected,
         ));
   }
@@ -36,18 +33,16 @@ class OrderListView extends StatefulWidget {
   const OrderListView({
     super.key,
     required this.onOrderSelected,
-    
   });
 
   final void Function(String) onOrderSelected;
- 
 
   @override
   State<OrderListView> createState() => _OrderListViewState();
 }
 
 class _OrderListViewState extends State<OrderListView> {
-  final _pagingController = PagingController<int, Orders>(
+  final _pagingController = PagingController<int, Order>(
     firstPageKey: 1,
   );
 
@@ -75,11 +70,16 @@ class _OrderListViewState extends State<OrderListView> {
         _pagingController.value = state.toPagingState();
       },
       builder: (context, state) {
+        final title = state.userRole.isAdmin
+            ? "Manage Orders"
+            : state.userRole.isDeliveryCrew
+                ? "Assigned Orders"
+                : "Orders History";
         return SafeArea(
           child: Scaffold(
-              appBar: AppBar(
-            centerTitle: false,
-              title: const Text('Order History'),
+            appBar: AppBar(
+              centerTitle: false,
+              title: Text(title),
             ),
             body: Column(
               children: [
@@ -113,7 +113,7 @@ class _OrderListViewState extends State<OrderListView> {
 }
 
 extension on OrderListState {
-  PagingState<int, Orders> toPagingState() {
+  PagingState<int, Order> toPagingState() {
     return PagingState(
       itemList: itemList,
       nextPageKey: nextPage,

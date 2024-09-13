@@ -1,6 +1,6 @@
 part of 'router.dart';
 
-ShellRoute bottomNavRoute(BazaarApi api  ) => ShellRoute(
+ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
       // bottom navigation route
       builder: (context, state, child) => _ScaffoldWithNavBar(
         child: child,
@@ -10,8 +10,9 @@ ShellRoute bottomNavRoute(BazaarApi api  ) => ShellRoute(
           // product list
           path: PathConstants.productListPath,
           builder: (context, state) => ProductListScreen(
-            onProductSelected: (id) =>
-                context.go(PathConstants.productDetailsPath(id)),
+            onProductSelected: (id) => context.go(
+              PathConstants.productDetailsPath(id),
+            ),
             api: api,
           ),
         ),
@@ -19,28 +20,31 @@ ShellRoute bottomNavRoute(BazaarApi api  ) => ShellRoute(
             // user profile
             redirect: (context, state) => Redirect.toSignIn(context, api),
             path: PathConstants.userProfilePath,
-            builder: (context, state) =>  UserProfileScreen(
-              api: api,
-            )),
+            builder: (context, state) => UserProfileScreen(
+                  api: api,
+                )),
         GoRoute(
           // cart
-            redirect: (context, state) => Redirect.toSignIn(context, api),
+          redirect: (context, state) => Redirect.toSignIn(context, api),
           path: PathConstants.cartPath,
           builder: (context, state) => UserCartScreen(
             api: api,
-            onItemTap: (id) => context.go(PathConstants.productDetailsPath(id)),
+            onItemTap: (id) => context.go(
+              PathConstants.productDetailsPath(id),
+            ),
           ),
         ),
         GoRoute(
-            //  orders
-            redirect: (context, state) => Redirect.toSignIn(context,api),
-
-            path: PathConstants.orderListPath,
-            builder: (context, state) => OrderListScreen(
-                  onOrderSelected: (id) {},
-                
-                  api: api,
-                )),
+          //  orders
+          redirect: (context, state) => Redirect.toSignIn(context, api),
+          path: PathConstants.orderListPath,
+          builder: (context, state) => OrderListScreen(
+            onOrderSelected: (id) => context.go(
+              PathConstants.orderDetailsPath(id),
+            ),
+            api: api,
+          ),
+        ),
       ],
     );
 

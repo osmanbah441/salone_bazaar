@@ -26,7 +26,7 @@ class BazaarApi {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     if (isDebug) {
-      final host =  'localhost';
+      final host = 'localhost';
 
       await FirebaseAuth.instance.useAuthEmulator(host, 9099);
       FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
@@ -36,7 +36,6 @@ class BazaarApi {
 }
 
 Future<void> _addproduct(ProductsRepository product) async {
-  // TODO:
   const allProducts = <Product>[
     Product(
         category: ProductCategory.accessories,

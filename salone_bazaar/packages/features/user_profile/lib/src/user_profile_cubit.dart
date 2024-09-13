@@ -2,7 +2,6 @@ import 'package:bazaar_api/bazaar_api.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
 
-
 part 'user_profile_state.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {

@@ -8,7 +8,7 @@ class DeliveryBoyPage extends StatefulWidget {
   const DeliveryBoyPage({super.key});
 
   @override
-  _DeliveryBoyPageState createState() => _DeliveryBoyPageState();
+  State<DeliveryBoyPage> createState() => _DeliveryBoyPageState();
 }
 
 class _DeliveryBoyPageState extends State<DeliveryBoyPage> {
