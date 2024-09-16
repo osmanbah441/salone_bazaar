@@ -6,7 +6,7 @@ import 'package:salone_bazaar/routes/router.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await const BazaarApi().initializeApi(isDebug: true);
+  await const BazaarApi().initializeApi(isDebug: false);
 
   runApp(const MainApp());
 }

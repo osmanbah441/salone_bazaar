@@ -6,15 +6,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_profile_cubit.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key, required this.api});
+  const UserProfileScreen(
+      {super.key, required this.api, required this.onSignOutSuccess});
 
   final BazaarApi api;
+  final VoidCallback onSignOutSuccess;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => UserProfileCubit(api: api),
-        child: const UserProfileView());
+        child: UserProfileView(
+          onSignOutSuccess: onSignOutSuccess,
+        ));
   }
 }
 
@@ -22,11 +26,19 @@ class UserProfileScreen extends StatelessWidget {
 class UserProfileView extends StatelessWidget {
   const UserProfileView({
     super.key,
+    required this.onSignOutSuccess,
   });
+
+  final VoidCallback onSignOutSuccess;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserProfileCubit, UserProfileState>(
+    return BlocConsumer<UserProfileCubit, UserProfileState>(
+      listener: (context, state) {
+        if (state is UserProfileStateSuccess && state.isSignOutSuccess) {
+          onSignOutSuccess();
+        }
+      },
       builder: (context, state) => switch (state) {
         UserProfileStateSuccess() => _User(
             username: state.username.value,

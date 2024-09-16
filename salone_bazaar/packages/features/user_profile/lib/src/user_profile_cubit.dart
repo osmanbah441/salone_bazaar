@@ -22,7 +22,12 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   }
 
   void signOut() async {
-    await _api.auth.signOut();
+    try {
+      await _api.auth.signOut();
+      final previousState = state as UserProfileStateSuccess;
+      final newState = previousState.copyWith(isSignOutSuccess: true);
+      emit(newState);
+    } catch (_) {}
   }
 
   void onUsernameUnfocused() async {

@@ -77,30 +77,30 @@ class AuthService {
 
   // Sign in with Google
   Future<void> signInWithGoogle() async {
-    // final webClientId = Platform.environment['GOOGLE_AUTH_WEB_CLIENT_ID'];
+    print('signed in with google');
 
-    // try {
-    //   final googleUser =
-    //       await GoogleSignIn(clientId: webClientId).signInSilently();
-    //   if (googleUser == null) throw domain.GoogleSignInCancelByUser();
+    try {
+      final googleUser = await GoogleSignIn().signInSilently();
+      if (googleUser == null) throw domain.GoogleSignInCancelByUser();
 
-    //   final GoogleSignInAuthentication googleAuth =
-    //       await googleUser.authentication;
-    //   final AuthCredential credential = GoogleAuthProvider.credential(
-    //     accessToken: googleAuth.accessToken,
-    //     idToken: googleAuth.idToken,
-    //   );
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    //   await _auth.signInWithCredential(credential);
-    // } catch (e) {
-    //   rethrow;
-    // }
+      await _auth.signInWithCredential(credential);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
   // Sign out
   Future<void> signOut() async {
     await _auth.signOut();
-    await GoogleSignIn().signOut();
+    // await GoogleSignIn().signOut();
   }
 
   Future<void> requestPasswordResetEmail({required String email}) async {

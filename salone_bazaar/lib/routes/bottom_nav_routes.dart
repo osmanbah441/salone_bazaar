@@ -10,9 +10,8 @@ ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
           // product list
           path: PathConstants.productListPath,
           builder: (context, state) => ProductListScreen(
-            onProductSelected: (id) => context.go(
-              PathConstants.productDetailsPath(id),
-            ),
+            onProductSelected: (id) =>
+                context.go(PathConstants.productDetailsPath(id)),
             api: api,
           ),
         ),
@@ -21,6 +20,7 @@ ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
             redirect: (context, state) => Redirect.toSignIn(context, api),
             path: PathConstants.userProfilePath,
             builder: (context, state) => UserProfileScreen(
+                  onSignOutSuccess: () => context.go(PathConstants.signInPath),
                   api: api,
                 )),
         GoRoute(
