@@ -1,0 +1,27 @@
+name: component_library
+description: "A new Flutter package project."
+version: 0.0.1
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  assets:
+    - 'assets/google_icon.png'
+    - 'assets/diamond.png'
+    - 'assets/slanted_menu.png'
+    - 'assets/empty_cart_list.png'
+    - 'assets/image_placeholder.png'
+    - 'assets/user_profile_icon.png'
