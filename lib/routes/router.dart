@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:order_list/order_list.dart';
 import 'package:product_details/product_details.dart';
 import 'package:product_list/product_list.dart';
-import 'package:register_retailer/register_retailer.dart';
 import 'package:sign_in/sign_in.dart';
 import 'package:sign_up/sign_up.dart';
 import 'package:user_cart/user_cart.dart';
@@ -61,7 +60,6 @@ abstract final class PathConstants {
   // user
   static String get signInPath => '/sign-in';
   static String get signUpPath => '/sign-up';
-  static String get registerRetailerPath => '/register-retailer';
   static String get userProfilePath => '/user-profile';
 
   static String get cartPath => '/cart';

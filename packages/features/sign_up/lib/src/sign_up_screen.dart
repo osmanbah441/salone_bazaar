@@ -2,9 +2,6 @@ import 'package:bazaar_api/bazaar_api.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
 
-import 'account_type_selection_widget.dart';
-import 'buyer_fields_widget.dart';
-import 'seller_fields_widget.dart';
 import 'sign_up_notifier.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -13,12 +10,10 @@ class SignUpScreen extends StatefulWidget {
     required this.onSignUpSuccess,
     required this.onSignInTap,
     required this.api,
-    required this.onCreateRetailerAccount,
   });
 
   final VoidCallback onSignUpSuccess;
   final VoidCallback onSignInTap;
-  final VoidCallback onCreateRetailerAccount;
   final BazaarApi api;
 
   @override
@@ -73,6 +68,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  void _submit() => switch (_notifier.createAccountFor) {
+        AccountType.buyer => _notifier.createAccount(
+            formKey: _formKey,
+            email: _buyerEmailController.text,
+            password: _buyerPasswordController.text,
+          ),
+        AccountType.seller => _notifier.createAccount(
+            formKey: _formKey,
+            email: _sellerEmailController.text,
+            password: _sellerPasswordController.text,
+            businessName: _businessNameController.text,
+            phoneNumber: _phoneNumberController.text,
+          ),
+        AccountType.none => null,
+      };
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -85,96 +96,62 @@ class _SignUpScreenState extends State<SignUpScreen> {
               listenable: _notifier,
               builder: (context, child) {
                 return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Sign up for SaloneBazaar',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      Spacing.height24,
-                      switch (_notifier.createAccountFor) {
-                        CreateAccountFor.buyer => BuyerFieldsWidget(
-                            emailController: _buyerEmailController,
-                            passwordController: _buyerPasswordController,
-                            enabled: !_notifier.submissionStatus.isInProgress,
-                            onContinueWithGoogleTap:
-                                _notifier.continueWithGoogle,
-                            onEmailChanged: _notifier.onBuyerEmailChanged,
-                            emailAlreadyRegistered: _notifier
-                                .submissionStatus.isBuyerEmailAlreadyRegistered,
-                            isValidationTriggered:
-                                _notifier.isValidationTriggered,
-                          ),
-                        CreateAccountFor.seller => SellerFieldsWidget(
-                            emailController: _sellerEmailController,
-                            passwordController: _sellerPasswordController,
-                            businessNameController: _businessNameController,
-                            phoneNumberController: _phoneNumberController,
-                            emailAlreadyRegistered: _notifier.submissionStatus
-                                .isSellerEmailAlreadyRegistered,
-                            enabled: !_notifier.submissionStatus.isInProgress,
-                            isValidationTriggered:
-                                _notifier.isValidationTriggered,
-                            onEmailChanged: _notifier.onSellerEmailChanged,
-                          ),
-                        CreateAccountFor.none => AccountTypeSelectionWidget(
-                            onSelectBuyer: () => _notifier
-                                .selectAccountType(CreateAccountFor.buyer),
-                            onSelectSeller: () => _notifier
-                                .selectAccountType(CreateAccountFor.seller),
-                          ),
-                      },
-                      if (!_notifier.createAccountFor.isNone)
-                        (_notifier.submissionStatus.isInProgress)
-                            ? ExpandedElevatedButton.inProgress(
-                                label: 'Loading')
-                            : ExpandedElevatedButton(
-                                icon: const Icon(Icons.person_add),
-                                label: 'Sign Up',
-                                onTap: _notifier.createAccountFor.isBuyer
-                                    ? () =>
-                                        _notifier.signUpWithEmailAndPassword(
-                                          formKey: _formKey,
-                                          email: _buyerEmailController.text,
-                                          password:
-                                              _buyerPasswordController.text,
-                                        )
-                                    : () =>
-                                        _notifier.signUpWithEmailAndPassword(
-                                          formKey: _formKey,
-                                          email: _sellerEmailController.text,
-                                          password:
-                                              _sellerPasswordController.text,
-                                        ),
-                              ),
-                      if (_notifier.createAccountFor.isBuyer)
-                        TextButton(
-                          onPressed: () => _notifier
-                              .selectAccountType(CreateAccountFor.seller),
-                          child: const Text('Create Seller Account'),
-                        ),
-                      if (_notifier.createAccountFor.isSeller)
-                        TextButton(
-                          onPressed: () => _notifier
-                              .selectAccountType(CreateAccountFor.buyer),
-                          child: const Text('Create Buyer Account'),
-                        ),
-                      RowTextWithButton(
-                        text: 'Already have an account?',
-                        buttonLabel: 'Sign In',
-                        onButtonTap: _notifier.submissionStatus.isInProgress
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 16,
+                  children: [
+                    Text(
+                      'Sign up for SaloneBazaar',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Spacing.height24,
+                    _buildAccountTypeForm(),
+                    if (!_notifier.createAccountFor.isNone) ...[
+                      (_notifier.submissionStatus.isInProgress)
+                          ? ExpandedElevatedButton.inProgress(
+                              label: 'Loading',
+                            )
+                          : ExpandedElevatedButton(
+                              icon: const Icon(Icons.person_add),
+                              label: 'Sign Up',
+                              onTap: _submit,
+                            ),
+                      TextButton(
+                        onPressed: _notifier.submissionStatus.isInProgress
                             ? null
-                            : widget.onSignInTap,
+                            : () => _notifier.selectAccountType(
+                                  _notifier.createAccountFor.isBuyer
+                                      ? AccountType.seller
+                                      : AccountType.buyer,
+                                ),
+                        child: Text(
+                          _notifier.createAccountFor.isBuyer
+                              ? 'Create Seller Account'
+                              : 'Create Buyer Account',
+                        ),
                       ),
-                      RowTextWithButton(
-                        text: 'Addd?',
-                        buttonLabel: 'Scccccc',
-                        onButtonTap: _notifier.submissionStatus.isInProgress
-                            ? null
-                            : widget.onCreateRetailerAccount,
-                      ),
-                    ]);
+                    ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Already have an account?'),
+                        TextButton(
+                          onPressed: _notifier.submissionStatus.isInProgress
+                              ? null
+                              : widget.onSignInTap,
+                          child: Text(
+                            'Sign In',
+                            style: TextStyle(
+                              color: _notifier.submissionStatus.isInProgress
+                                  ? Colors.grey
+                                  : Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
               },
             ),
           ),
@@ -182,4 +159,79 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  Widget _buildAccountTypeForm() => switch (_notifier.createAccountFor) {
+        AccountType.buyer => Column(
+            spacing: 16,
+            children: [
+              ExpandedElevatedButton.google(
+                onTap: !_notifier.submissionStatus.isInProgress
+                    ? _notifier.continueWithGoogle
+                    : null,
+              ),
+              const Text('or'),
+              EmailField(
+                onChanged: _notifier.onBuyerEmailChanged,
+                controller: _buyerEmailController,
+                enabled: !_notifier.submissionStatus.isInProgress,
+                isValidationTriggered: _notifier.isValidationTriggeredForBuyer,
+                isAlreadyRegistered:
+                    _notifier.submissionStatus.isBuyerEmailAlreadyRegistered,
+              ),
+              PasswordField(
+                controller: _buyerPasswordController,
+                enabled: !_notifier.submissionStatus.isInProgress,
+                isValidationTriggered:
+                    _notifier.submissionStatus.isBuyerEmailAlreadyRegistered,
+              ),
+            ],
+          ),
+        AccountType.seller => Column(
+            spacing: 16,
+            children: [
+              BusinessNameField(
+                controller: _businessNameController,
+                enabled: !_notifier.submissionStatus.isInProgress,
+                isValidationTriggered: _notifier.isValidationTriggeredForSeller,
+              ),
+              PhoneNumberField(
+                enabled: !_notifier.submissionStatus.isInProgress,
+                controller: _phoneNumberController,
+                isValidationTriggered: _notifier.isValidationTriggeredForSeller,
+              ),
+              EmailField(
+                onChanged: _notifier.onSellerEmailChanged,
+                controller: _sellerEmailController,
+                enabled: !_notifier.submissionStatus.isInProgress,
+                isValidationTriggered: _notifier.isValidationTriggeredForSeller,
+                isAlreadyRegistered:
+                    _notifier.submissionStatus.isSellerEmailAlreadyRegistered,
+              ),
+              PasswordField(
+                controller: _sellerPasswordController,
+                enabled: !_notifier.submissionStatus.isInProgress,
+                isValidationTriggered: _notifier.isValidationTriggeredForSeller,
+              ),
+            ],
+          ),
+        AccountType.none => Column(
+            children: [
+              const Text(
+                'Create a buyer or seller account today and experience the convenience of buying or selling anything you desire, whenever it suits you.',
+                textAlign: TextAlign.center,
+              ),
+              Spacing.height24,
+              TextButton(
+                onPressed: () => _notifier.selectAccountType(AccountType.buyer),
+                child: const Text('Create Buyer Account'),
+              ),
+              const Text('or'),
+              ElevatedButton(
+                onPressed: () =>
+                    _notifier.selectAccountType(AccountType.seller),
+                child: const Text('Create Seller Account'),
+              ),
+            ],
+          ),
+      };
 }

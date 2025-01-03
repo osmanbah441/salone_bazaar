@@ -65,12 +65,13 @@ class AuthService {
     }
   }
 
-  Future<void> signUpWithEmailAndPassword(String email, String password) async {
+  Future<void> createBuyerAccount(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-    } catch (e) {
-      rethrow;
+    } on FirebaseAuthException catch (_) {
+      // log this
+      throw const domain.EmailAlreadyRegisteredException();
     }
   }
 
@@ -118,12 +119,14 @@ class AuthService {
     }
   }
 
-  Future<void> registerRetailer({
-    required String businessName,
+  Future<void> createSellerAccount({
     required String email,
     required String password,
+    required String businessName,
     required String phoneNumber,
-  }) async {}
+  }) async {
+    throw UnimplementedError();
+  }
 }
 
 // convert the firebase user model to the app domain user.

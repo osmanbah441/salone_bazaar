@@ -13,7 +13,6 @@ workspace:
   - packages/form_fields
   - packages/features/sign_in
   - packages/features/sign_up
-  - packages/features/register_retailer
   - packages/features/product_list
   - packages/features/product_details
   - packages/features/user_cart
@@ -31,7 +30,6 @@ dependencies:
   order_list: ^0.0.1
   product_details: ^0.0.1
   product_list: ^0.0.1
-  register_retailer: ^0.0.1
   sign_in: ^0.0.1
   sign_up: ^0.0.1
   user_cart: ^0.0.1
