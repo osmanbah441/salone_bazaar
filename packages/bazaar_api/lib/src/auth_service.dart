@@ -76,8 +76,7 @@ class AuthService {
 
   Future<void> signInWithGoogle() async {
     try {
-      // Sign in using Firebase Authentication
-      await _auth.signInWithPopup(GameCenterAuthProvider());
+      await _auth.signInWithPopup(GoogleAuthProvider());
     } catch (e) {
       rethrow;
     }
@@ -111,7 +110,7 @@ class AuthService {
     // await GoogleSignIn().signOut();
   }
 
-  Future<void> requestPasswordResetEmail({required String email}) async {
+  Future<void> requestPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {

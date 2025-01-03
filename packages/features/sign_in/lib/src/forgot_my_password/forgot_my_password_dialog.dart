@@ -1,114 +1,95 @@
 import 'package:bazaar_api/bazaar_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:component_library/component_library.dart';
 
-import 'forgot_my_password_cubit.dart';
+import 'forgot_my_password_notifier.dart';
 
-class ForgotMyPasswordDialog extends StatelessWidget {
-  const ForgotMyPasswordDialog({required this.api, super.key});
-
+class ForgotMyPasswordDialog extends StatefulWidget {
+  const ForgotMyPasswordDialog({super.key, required this.api});
   final BazaarApi api;
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider<ForgotMyPasswordCubit>(
-      create: (_) => ForgotMyPasswordCubit(api: api),
-      child: const ForgotMyPasswordView(),
-    );
-  }
+  State<ForgotMyPasswordDialog> createState() => _ForgotMyPasswordDialogState();
 }
 
-@visibleForTesting
-class ForgotMyPasswordView extends StatefulWidget {
-  const ForgotMyPasswordView({super.key});
-
-  @override
-  State createState() => _ForgotMyPasswordViewState();
-}
-
-class _ForgotMyPasswordViewState extends State<ForgotMyPasswordView> {
-  final _emailFocusNode = FocusNode();
-
-  ForgotMyPasswordCubit get _cubit => context.read<ForgotMyPasswordCubit>();
+class _ForgotMyPasswordDialogState extends State<ForgotMyPasswordDialog> {
+  late final TextEditingController _emailController;
+  late final ForgotPasswordNotifier _notifier;
+  late final GlobalKey<FormState> _formKey;
 
   @override
   void initState() {
     super.initState();
-    _emailFocusNode.addListener(() {
-      if (!_emailFocusNode.hasFocus) {
-        _cubit.onResetEmailUnfocused();
-      }
-    });
+    _emailController = TextEditingController();
+    _formKey = GlobalKey<FormState>();
+    _notifier = ForgotPasswordNotifier(widget.api);
+    _notifier.addListener(_listener);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<ForgotMyPasswordCubit, ForgotMyPasswordState>(
-      listener: (context, state) {
-        if (state.resetEmailSubmissionStatus.isSuccess) {
-          Navigator.maybePop(context);
-
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(
-                content: Text('check your email to reset your password.'),
-                duration: Duration(
-                  seconds: 8,
-                ),
-              ),
-            );
-        }
-      },
-      builder: (context, state) {
-        return AlertDialog(
-          title: const Text('Forgot password?'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                focusNode: _emailFocusNode,
-                onChanged: _cubit.onResetEmailChanged,
-                enabled: !state.resetEmailSubmissionStatus.isInProgress,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  suffixIcon: const Icon(Icons.alternate_email),
-                  enabled: !state.resetEmailSubmissionStatus.isInProgress,
-                  labelText: 'EMAIL',
-                  errorText: state.resetEmail.error?.message,
-                ),
-              ),
-              if (state.resetEmailSubmissionStatus.isError) ...[
-                const SizedBox(height: 8),
-                const Text('check your internet connection & retry.'),
-              ],
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: state.resetEmailSubmissionStatus.isInProgress
-                  ? null
-                  : () => Navigator.pop(context),
-              child: const Text('cancel'),
+  void _listener() {
+    if (_notifier.submissionStatus.isSuccess) {
+      Navigator.maybePop(context);
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text('check your email to reset your password.'),
+            duration: Duration(
+              seconds: 8,
             ),
-            state.resetEmailSubmissionStatus.isInProgress
-                ? const InProgressTextButton(label: 'confirm')
-                : TextButton(
-                    onPressed: _cubit.onResetEmailSubmit,
-                    child: const Text('confirm'),
-                  )
-          ],
+          ),
         );
-      },
-    );
+    }
   }
 
   @override
   void dispose() {
-    _emailFocusNode.dispose();
+    _emailController.dispose();
+    _notifier.removeListener(_listener);
+    _notifier.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Forgot password?'),
+      content: Form(
+        key: _formKey,
+        child: ListenableBuilder(
+          listenable: _notifier,
+          builder: (context, child) => Column(
+            spacing: 8,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              EmailField(
+                controller: _emailController,
+                isValidationTriggered: _notifier.isValidationTriggered,
+                enabled: !_notifier.submissionStatus.isInProgress,
+              ),
+              if (_notifier.submissionStatus.hasError)
+                const Text('check your internet connection & retry.'),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: _notifier.submissionStatus.isInProgress
+              ? null
+              : () => Navigator.pop(context),
+          child: const Text('cancel'),
+        ),
+        _notifier.submissionStatus.isInProgress
+            ? const InProgressTextButton(label: 'confirm')
+            : TextButton(
+                onPressed: () => _notifier.resetPassword(
+                  formKey: _formKey,
+                  email: _emailController.text,
+                ),
+                child: const Text('confirm'),
+              )
+      ],
+    );
   }
 }

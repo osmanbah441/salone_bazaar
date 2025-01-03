@@ -10,12 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  equatable: ^2.0.5
-  flutter_bloc: ^8.1.6
   domain_models: ^1.0.0
   bazaar_api: ^0.0.1
   component_library: ^0.0.1
-  form_fields: ^1.0.0
 
 dev_dependencies:
   flutter_test:
