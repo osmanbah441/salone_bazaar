@@ -6,13 +6,9 @@ import 'package:flutter/material.dart';
 ///
 /// - Initially, it validates on unfocus [AutovalidateMode.onUnfocus], providing
 ///   immediate feedback when the user leaves the field.
-/// - After losing focus for the first time, it switches to validate on user interaction
-///   [AutovalidateMode.onUserInteraction], offering a more responsive experience
-///   as the user types.
-///
-/// - If `[hasValidationErrorOccurred]` is true, it forces validation on user
-/// [AutovalidateMode.onUserInteraction] regardless of the focus state.
-/// This is useful for ensuring continuous validation after an initial validation error.
+/// - After losing focus for the first time, it switches to validate on [AutovalidateMode.onUserInteraction]
+//    offering a more responsive experience as the user types.
+/// - If [TextFormField.validator] method is called,  it switches to validate [AutovalidateMode.onUserInteraction].
 ///
 /// This widget is designed to be extended to provide custom validation logic.
 abstract class DynamicValidatingTextField extends StatefulWidget {
@@ -20,7 +16,6 @@ abstract class DynamicValidatingTextField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.labelText,
-    required this.isValidationTriggered,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.obscuringCharacter = '•',
@@ -41,9 +36,6 @@ abstract class DynamicValidatingTextField extends StatefulWidget {
   final void Function(String?)? onChanged;
   String? validator(String? value);
 
-  /// This flag is used to trigger validation on user interaction
-  final bool isValidationTriggered;
-
   @override
   State<DynamicValidatingTextField> createState() =>
       _DynamicValidatingTextFieldState();
@@ -51,57 +43,43 @@ abstract class DynamicValidatingTextField extends StatefulWidget {
 
 class _DynamicValidatingTextFieldState
     extends State<DynamicValidatingTextField> {
-  // Tracks whether the field has lost focus at least once.
-  bool _hasLostFocusOnce = false;
-
-  final FocusNode _focusNode = FocusNode();
+  late final ValueNotifier<AutovalidateMode> _valueNotifier;
 
   @override
   void initState() {
     super.initState();
-    _setFocusListener();
-  }
-
-  void _setFocusListener() {
-    _focusNode.addListener(() {
-      // When focus is lost for the first time, update the state to track it.
-      if (!_focusNode.hasFocus && !_hasLostFocusOnce) {
-        setState(() {
-          _hasLostFocusOnce = true;
-        });
-      }
-    });
+    _valueNotifier = ValueNotifier(AutovalidateMode.onUnfocus);
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _valueNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final autovalidateMode = _hasLostFocusOnce
-        ? AutovalidateMode.onUserInteraction
-        : AutovalidateMode.onUnfocus;
-
-    return TextFormField(
-      keyboardType: widget.keyboardType,
-      obscureText: widget.obscureText,
-      obscuringCharacter: widget.obscuringCharacter,
-      autocorrect: widget.autocorrect,
-      focusNode: _focusNode,
-      enabled: widget.enabled,
-      controller: widget.controller,
-      validator: widget.validator,
-      onChanged: widget.onChanged,
-      autovalidateMode: widget.isValidationTriggered
-          ? AutovalidateMode.onUserInteraction
-          : autovalidateMode,
-      decoration: InputDecoration(
-        suffixIcon: widget.suffixIcon,
-        labelText: widget.labelText.toUpperCase(),
-        border: const OutlineInputBorder(),
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier,
+      builder: (context, autovalidateMode, child) => TextFormField(
+        keyboardType: widget.keyboardType,
+        obscureText: widget.obscureText,
+        obscuringCharacter: widget.obscuringCharacter,
+        autocorrect: widget.autocorrect,
+        enabled: widget.enabled,
+        controller: widget.controller,
+        validator: (value) {
+          // If a validation has occurred, force validation on user interaction.
+          _valueNotifier.value = AutovalidateMode.onUserInteraction;
+          return widget.validator(value);
+        },
+        onChanged: widget.onChanged,
+        autovalidateMode: autovalidateMode,
+        decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon,
+          labelText: widget.labelText.toUpperCase(),
+          border: const OutlineInputBorder(),
+        ),
       ),
     );
   }

@@ -5,7 +5,6 @@ class BusinessNameField extends DynamicValidatingTextField {
     super.key,
     required super.controller,
     super.labelText = 'BUSINESS NAME',
-    required super.isValidationTriggered,
     super.enabled = true,
     super.onChanged,
   });

@@ -6,7 +6,6 @@ class PasswordField extends DynamicValidatingTextField {
   const PasswordField({
     super.key,
     required super.controller,
-    required super.isValidationTriggered,
     super.obscureText = true,
     super.keyboardType = TextInputType.visiblePassword,
     super.onChanged,

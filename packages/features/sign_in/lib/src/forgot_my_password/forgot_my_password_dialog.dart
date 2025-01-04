@@ -52,19 +52,18 @@ class _ForgotMyPasswordDialogState extends State<ForgotMyPasswordDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Forgot password?'),
-      content: Form(
-        key: _formKey,
-        child: ListenableBuilder(
-          listenable: _notifier,
-          builder: (context, child) => Column(
+    return ListenableBuilder(
+      listenable: _notifier,
+      builder: (context, child) => AlertDialog(
+        title: const Text('Forgot password?'),
+        content: Form(
+          key: _formKey,
+          child: Column(
             spacing: 8,
             mainAxisSize: MainAxisSize.min,
             children: [
               EmailField(
                 controller: _emailController,
-                isValidationTriggered: _notifier.isValidationTriggered,
                 enabled: !_notifier.submissionStatus.isInProgress,
               ),
               if (_notifier.submissionStatus.hasError)
@@ -72,24 +71,25 @@ class _ForgotMyPasswordDialogState extends State<ForgotMyPasswordDialog> {
             ],
           ),
         ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: _notifier.submissionStatus.isInProgress
-              ? null
-              : () => Navigator.pop(context),
-          child: const Text('cancel'),
-        ),
-        _notifier.submissionStatus.isInProgress
-            ? const InProgressTextButton(label: 'confirm')
-            : TextButton(
-                onPressed: () => _notifier.resetPassword(
-                  formKey: _formKey,
-                  email: _emailController.text,
+        actions: [
+          BazaarTextButton(
+            label: 'cancel',
+            onTap: _notifier.submissionStatus.isInProgress
+                ? null
+                : () => Navigator.pop(context),
+          ),
+          _notifier.submissionStatus.isInProgress
+              ? BazaarTextButton.inprogress(label: 'confirm')
+              : BazaarTextButton(
+                  label: 'confirm',
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      _notifier.resetPassword(email: _emailController.text);
+                    }
+                  },
                 ),
-                child: const Text('confirm'),
-              )
-      ],
+        ],
+      ),
     );
   }
 }

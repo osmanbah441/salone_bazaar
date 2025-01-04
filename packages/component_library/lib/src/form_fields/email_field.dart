@@ -7,7 +7,6 @@ class EmailField extends DynamicValidatingTextField {
     super.key,
     required super.controller,
     super.onChanged,
-    required super.isValidationTriggered,
     super.keyboardType = TextInputType.emailAddress,
     super.enabled = true,
     super.labelText = 'EMAIL',

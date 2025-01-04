@@ -5,7 +5,6 @@ class PhoneNumberField extends DynamicValidatingTextField {
     super.key,
     required super.controller,
     super.labelText = 'Phone number',
-    required super.isValidationTriggered,
     super.enabled = true,
     super.onChanged,
   });

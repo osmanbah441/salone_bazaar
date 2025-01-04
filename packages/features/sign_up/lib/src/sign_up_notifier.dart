@@ -7,121 +7,87 @@ class SignUpNotifier extends ChangeNotifier {
 
   final BazaarApi _api;
 
-  bool _isValidationTriggeredForBuyer = false;
-  bool _isValidationTriggeredForSeller = false;
-  String? _previousBuyerEmail;
-  String? _previousSellerEmail;
+  String? _previousEmail;
   SignUpSubmissionStatus _submissionStatus = SignUpSubmissionStatus.idle;
-  AccountType _createAccountFor = AccountType.none;
+  AccountType _accountType = AccountType.none;
 
   SignUpSubmissionStatus get submissionStatus => _submissionStatus;
-  AccountType get createAccountFor => _createAccountFor;
-  bool get isValidationTriggeredForBuyer => _isValidationTriggeredForBuyer;
-  bool get isValidationTriggeredForSeller => _isValidationTriggeredForSeller;
+  AccountType get accountType => _accountType;
 
   /// Updates the account type selection and resets relevant states.
-  void selectAccountType(AccountType type) {
-    _updateState(
-      createAccountFor: type,
-      isValidationTriggeredForBuyer: false,
-      isValidationTriggeredForSeller: false,
-      status: SignUpSubmissionStatus.idle,
-      previousBuyerEmail: null,
-      previousSellerEmail: null,
-    );
-  }
+  void selectAccountType(AccountType type) => _updateState(
+        createAccountFor: type,
+        status: SignUpSubmissionStatus.idle,
+        previousEmail: null,
+      );
 
   /// Updates the state of the notifier.
   void _updateState({
-    bool? isValidationTriggeredForBuyer,
-    bool? isValidationTriggeredForSeller,
     SignUpSubmissionStatus? status,
-    String? previousBuyerEmail,
-    String? previousSellerEmail,
+    String? previousEmail,
     AccountType? createAccountFor,
   }) {
-    _isValidationTriggeredForBuyer =
-        isValidationTriggeredForBuyer ?? _isValidationTriggeredForBuyer;
-    _isValidationTriggeredForSeller =
-        isValidationTriggeredForSeller ?? _isValidationTriggeredForSeller;
     _submissionStatus = status ?? _submissionStatus;
-    _previousBuyerEmail = previousBuyerEmail ?? _previousBuyerEmail;
-    _previousSellerEmail = previousSellerEmail ?? _previousSellerEmail;
-    _createAccountFor = createAccountFor ?? _createAccountFor;
+    _previousEmail = previousEmail ?? _previousEmail;
+    _accountType = createAccountFor ?? _accountType;
     notifyListeners();
   }
 
-  /// Handles email changes for the seller.
-  void onSellerEmailChanged(String? email) {
+  /// Handles email changes for the buyer.
+  void onEmailChanged(String? email) {
     _updateState(
-      status: email != _previousSellerEmail
+      status: email != _previousEmail
           ? SignUpSubmissionStatus.idle
-          : SignUpSubmissionStatus.sellerEmailAlreadyRegistered,
+          : SignUpSubmissionStatus.emailAlreadyRegistered,
     );
   }
 
-  /// Handles email changes for the buyer.
-  void onBuyerEmailChanged(String? email) {
-    _updateState(
-      status: email != _previousBuyerEmail
-          ? SignUpSubmissionStatus.idle
-          : SignUpSubmissionStatus.buyerEmailAlreadyRegistered,
-    );
-  }
+  void createBuyerAccount({
+    required String email,
+    required String password,
+  }) =>
+      _createAccount(email: email, password: password);
+
+  void createSellerAccount({
+    required String email,
+    required String password,
+    required String businessName,
+    required String phoneNumber,
+  }) =>
+      _createAccount(
+        email: email,
+        password: password,
+        businessName: businessName,
+        phoneNumber: phoneNumber,
+      );
 
   /// Creates an account for the buyer or seller.
-  Future<void> createAccount({
-    required GlobalKey<FormState> formKey,
+  Future<void> _createAccount({
     required String email,
     required String password,
     String? businessName,
     String? phoneNumber,
   }) async {
-    _triggerValidation();
-
-    if (formKey.currentState?.validate() ?? false) {
-      _updateState(status: SignUpSubmissionStatus.inprogress);
-      try {
-        if (createAccountFor.isBuyer) {
-          await _api.auth.createBuyerAccount(email, password);
-        } else if (createAccountFor.isSeller) {
-          await _api.auth.createSellerAccount(
-            email: email,
-            password: password,
-            businessName: businessName!,
-            phoneNumber: phoneNumber!,
-          );
-        }
-        _updateState(status: SignUpSubmissionStatus.success);
-      } on EmailAlreadyRegisteredException {
-        _handleEmailAlreadyRegistered(email);
-      } catch (_) {
-        _updateState(status: SignUpSubmissionStatus.networkError);
+    _updateState(status: SignUpSubmissionStatus.inprogress);
+    try {
+      if (accountType.isBuyer) {
+        await _api.auth.createBuyerAccount(email, password);
+      } else if (accountType.isSeller) {
+        await _api.auth.createSellerAccount(
+          email: email,
+          password: password,
+          businessName: businessName!,
+          phoneNumber: phoneNumber!,
+        );
       }
-    }
-  }
-
-  /// Triggers validation for the appropriate account type.
-  void _triggerValidation() {
-    if (createAccountFor.isBuyer) {
-      _updateState(isValidationTriggeredForBuyer: true);
-    } else if (createAccountFor.isSeller) {
-      _updateState(isValidationTriggeredForSeller: true);
-    }
-  }
-
-  /// Handles email already registered exceptions.
-  void _handleEmailAlreadyRegistered(String email) {
-    if (createAccountFor.isBuyer) {
+      _updateState(status: SignUpSubmissionStatus.success);
+    } on EmailAlreadyRegisteredException {
       _updateState(
-        status: SignUpSubmissionStatus.buyerEmailAlreadyRegistered,
-        previousBuyerEmail: email,
+        status: SignUpSubmissionStatus.emailAlreadyRegistered,
+        previousEmail: email,
       );
-    } else if (createAccountFor.isSeller) {
-      _updateState(
-        status: SignUpSubmissionStatus.sellerEmailAlreadyRegistered,
-        previousSellerEmail: email,
-      );
+    } catch (_) {
+      _updateState(status: SignUpSubmissionStatus.networkError);
     }
   }
 
@@ -153,17 +119,15 @@ enum SignUpSubmissionStatus {
   idle,
   inprogress,
   success,
-  buyerEmailAlreadyRegistered,
-  sellerEmailAlreadyRegistered,
+  emailAlreadyRegistered,
   googleSignInError,
   networkError;
 
   bool get isInProgress => this == SignUpSubmissionStatus.inprogress;
   bool get isSuccess => this == SignUpSubmissionStatus.success;
-  bool get isBuyerEmailAlreadyRegistered =>
-      this == SignUpSubmissionStatus.buyerEmailAlreadyRegistered;
-  bool get isSellerEmailAlreadyRegistered =>
-      this == SignUpSubmissionStatus.sellerEmailAlreadyRegistered;
+  bool get isEmailAlreadyRegistered =>
+      this == SignUpSubmissionStatus.emailAlreadyRegistered;
+
   bool get isNetworkError => this == SignUpSubmissionStatus.networkError;
   bool get isGoogleSignInError =>
       this == SignUpSubmissionStatus.googleSignInError;

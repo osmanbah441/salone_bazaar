@@ -92,38 +92,41 @@ class _SignInScreenState extends State<SignInScreen> {
                 EmailField(
                   controller: _emailController,
                   enabled: !_notifer.submissionStatus.isInProgress,
-                  isValidationTriggered: _notifer.isValidationTriggered,
                 ),
                 PasswordField(
                   controller: _passwordController,
                   enabled: !_notifer.submissionStatus.isInProgress,
-                  isValidationTriggered: _notifer.isValidationTriggered,
                 ),
                 (_notifer.submissionStatus.isInProgress)
                     ? ExpandedElevatedButton.inProgress(label: 'Loading')
                     : ExpandedElevatedButton(
                         icon: const Icon(Icons.login),
                         label: 'Submit',
-                        onTap: () => _notifer.loginWithEmailAndPassword(
-                          formKey: _formKey,
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        ),
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            _notifer.loginWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                          }
+                        },
                       ),
-                TextButton(
-                  onPressed: _notifer.submissionStatus.isInProgress
+                BazaarTextButton(
+                  onTap: _notifer.submissionStatus.isInProgress
                       ? null
                       : widget.onForgotPasswordTap,
-                  child: const Text('Reset password'),
+                  label: 'Reset password',
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('No account yet?'),
-                    TextButton(
-                      onPressed: widget.onSignUpTap,
-                      child: const Text("create account"),
+                    BazaarTextButton(
+                      onTap: _notifer.submissionStatus.isInProgress
+                          ? null
+                          : widget.onSignUpTap,
+                      label: "create account",
                     ),
                   ],
                 )
