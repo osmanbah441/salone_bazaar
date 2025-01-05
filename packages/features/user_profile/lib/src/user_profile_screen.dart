@@ -1,145 +1,134 @@
 import 'package:bazaar_api/bazaar_api.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'user_profile_cubit.dart';
+import 'user_profile_notifier.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen(
-      {super.key, required this.api, required this.onSignOutSuccess});
-
-  final BazaarApi api;
-  final VoidCallback onSignOutSuccess;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => UserProfileCubit(api: api),
-        child: UserProfileView(
-          onSignOutSuccess: onSignOutSuccess,
-        ));
-  }
-}
-
-@visibleForTesting
-class UserProfileView extends StatelessWidget {
-  const UserProfileView({
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({
     super.key,
+    required this.api,
+    required this.onAuthentionRequired,
     required this.onSignOutSuccess,
   });
 
+  final BazaarApi api;
   final VoidCallback onSignOutSuccess;
+  final VoidCallback onAuthentionRequired;
+
+  @override
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  late final UserProfileNotifier _notifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _notifier = UserProfileNotifier(widget.api);
+
+    _notifier.addListener(_listener);
+  }
+
+  void _listener() {
+    switch (_notifier.submissionStatus) {
+      case UserProfileSubmissionStatus.idle:
+        return;
+
+      case UserProfileSubmissionStatus.authenticationRequired:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const AuthenticationRequiredErrorSnackBar(),
+        );
+        widget.onAuthentionRequired();
+
+      case UserProfileSubmissionStatus.signoutSuccess:
+        widget.onSignOutSuccess();
+    }
+  }
+
+  @override
+  void dispose() {
+    _notifier.removeListener(_listener);
+    _notifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserProfileCubit, UserProfileState>(
-      listener: (context, state) {
-        if (state is UserProfileStateSuccess && state.isSignOutSuccess) {
-          onSignOutSuccess();
-        }
-      },
-      builder: (context, state) => switch (state) {
-        UserProfileStateSuccess() => _User(
-            username: state.username.value,
-            email: state.email,
-            photoUrl: state.photoUrl,
-          ),
-        UserProfileStateLoading() => const CenteredCircularProgressIndicator(),
-        UserProfileStateFailure() => ExceptionIndicator(
-            onTryAgain: () => context.read<UserProfileCubit>().refetch()),
-      },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Profile'),
+          centerTitle: false,
+        ),
+        body: ListenableBuilder(
+          listenable: _notifier,
+          builder: (context, child) {
+            return switch (_notifier.state) {
+              UserProfileState.inprogress =>
+                const CenteredCircularProgressIndicator(),
+              UserProfileState.success => _User(_notifier),
+              UserProfileState.error =>
+                ExceptionIndicator(onTryAgain: _notifier.refetch),
+            };
+          },
+        ),
+      ),
     );
   }
 }
 
 class _User extends StatefulWidget {
-  const _User({required this.username, required this.email, this.photoUrl});
-  final String username;
-  final String email;
-  final String? photoUrl;
+  const _User(this.notifier);
+
+  final UserProfileNotifier notifier;
 
   @override
   State<_User> createState() => _UserState();
 }
 
 class _UserState extends State<_User> {
-  late TextEditingController _usernameController;
-  final _usernameFocusNode = FocusNode();
+  late final TextEditingController _usernameController;
 
   @override
   void initState() {
     super.initState();
-    _usernameController = TextEditingController(text: widget.username);
-    _setUsernameFocusNode();
-  }
-
-  void _setUsernameFocusNode() {
-    _usernameFocusNode.addListener(() {
-      if (!_usernameFocusNode.hasFocus) {
-        _cubit.onUsernameUnfocused();
-      }
-    });
+    _usernameController = TextEditingController(
+      text: widget.notifier.user?.displayName,
+    );
   }
 
   @override
   void dispose() {
     _usernameController.dispose();
-    _usernameFocusNode.dispose();
     super.dispose();
   }
 
-  UserProfileCubit get _cubit => context.read<UserProfileCubit>();
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserProfileCubit, UserProfileState>(
-        builder: (context, state) {
-      final successState = state as UserProfileStateSuccess;
-
-      return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Profile'),
-            centerTitle: false,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const UserProfileImage(),
+          const SizedBox(height: 48),
+          EmailField(
+            initialValue: widget.notifier.user?.email,
+            enabled: false,
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const UserProfileImage(),
-                Spacing.height48,
-                TextFormField(
-                  initialValue: widget.email,
-                  decoration:
-                      const InputDecoration(labelText: 'Email', enabled: false),
-                ),
-                Spacing.height16,
-                TextField(
-                  focusNode: _usernameFocusNode,
-                  controller: _usernameController,
-                  onChanged: _cubit.onUsernameChanged,
-                  onSubmitted: print,
-                  decoration: InputDecoration(
-                      labelText: 'Username',
-                      errorText: successState.username.error?.message),
-                ),
-                Spacing.height48,
-                ExpandedElevatedButton(
-                  label: 'Sign out',
-                  onTap: () {
-                    final cubit = context.read<UserProfileCubit>();
-                    cubit.signOut();
-                  },
-                ),
-              ],
-            ),
+          UsernameField(
+            controller: _usernameController,
           ),
-        ),
-      );
-    });
+          ExpandedElevatedButton(
+            onTap: widget.notifier.signOut,
+            label: 'Sign Out',
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -5,8 +5,9 @@ import 'autovalidating_text_field.dart';
 class EmailField extends AutovalidatingTextField {
   const EmailField({
     super.key,
-    required super.controller,
+    super.controller,
     super.onChanged,
+    super.initialValue,
     super.keyboardType = TextInputType.emailAddress,
     super.enabled = true,
     super.labelText = 'EMAIL',

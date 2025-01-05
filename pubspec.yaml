@@ -10,7 +10,6 @@ workspace:
   - packages/domain_models
   - packages/component_library
   - packages/bazaar_api
-  - packages/form_fields
   - packages/features/sign_in
   - packages/features/sign_up
   - packages/features/product_list

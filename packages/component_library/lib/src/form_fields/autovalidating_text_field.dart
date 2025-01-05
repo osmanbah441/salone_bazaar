@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 abstract class AutovalidatingTextField extends StatefulWidget {
   const AutovalidatingTextField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.labelText,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
@@ -23,9 +23,11 @@ abstract class AutovalidatingTextField extends StatefulWidget {
     this.enabled = true,
     this.onChanged,
     this.suffixIcon,
+    this.initialValue,
+    this.onFieldSubmitted,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool enabled;
   final String labelText;
   final TextInputType keyboardType;
@@ -34,6 +36,9 @@ abstract class AutovalidatingTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final bool autocorrect;
   final void Function(String?)? onChanged;
+  final String? initialValue;
+  final Function(String)? onFieldSubmitted;
+
   String? validator(String? value);
 
   @override
@@ -64,6 +69,8 @@ class _AutovalidatingTextFieldState extends State<AutovalidatingTextField> {
       valueListenable: _valueNotifier,
       builder: (context, autovalidateMode, child) => TextFormField(
         keyboardType: widget.keyboardType,
+        initialValue: widget.initialValue,
+        onFieldSubmitted: widget.onFieldSubmitted,
         obscureText: widget.obscureText,
         obscuringCharacter: widget.obscuringCharacter,
         autocorrect: widget.autocorrect,

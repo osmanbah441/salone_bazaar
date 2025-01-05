@@ -20,6 +20,8 @@ ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
             redirect: (context, state) => Redirect.toSignIn(context, api),
             path: PathConstants.userProfilePath,
             builder: (context, state) => UserProfileScreen(
+                  onAuthentionRequired: () =>
+                      context.go(PathConstants.signInPath),
                   onSignOutSuccess: () => context.go(PathConstants.signInPath),
                   api: api,
                 )),
