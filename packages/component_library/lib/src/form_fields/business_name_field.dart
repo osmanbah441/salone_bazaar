@@ -1,6 +1,6 @@
 import 'package:component_library/src/form_fields/dynamic_validating_text_field.dart';
 
-class BusinessNameField extends DynamicValidatingTextField {
+class BusinessNameField extends AutovalidatingTextField {
   const BusinessNameField({
     super.key,
     required super.controller,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'dynamic_validating_text_field.dart';
 
-class EmailField extends DynamicValidatingTextField {
+class EmailField extends AutovalidatingTextField {
   const EmailField({
     super.key,
     required super.controller,

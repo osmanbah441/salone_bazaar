@@ -1,6 +1,6 @@
 import 'package:component_library/src/form_fields/dynamic_validating_text_field.dart';
 
-class PhoneNumberField extends DynamicValidatingTextField {
+class PhoneNumberField extends AutovalidatingTextField {
   const PhoneNumberField({
     super.key,
     required super.controller,

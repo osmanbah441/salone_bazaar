@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 /// - If [TextFormField.validator] method is called,  it switches to validate [AutovalidateMode.onUserInteraction].
 ///
 /// This widget is designed to be extended to provide custom validation logic.
-abstract class DynamicValidatingTextField extends StatefulWidget {
-  const DynamicValidatingTextField({
+abstract class AutovalidatingTextField extends StatefulWidget {
+  const AutovalidatingTextField({
     super.key,
     required this.controller,
     required this.labelText,
@@ -37,24 +37,25 @@ abstract class DynamicValidatingTextField extends StatefulWidget {
   String? validator(String? value);
 
   @override
-  State<DynamicValidatingTextField> createState() =>
-      _DynamicValidatingTextFieldState();
+  State<AutovalidatingTextField> createState() =>
+      _AutovalidatingTextFieldState();
 }
 
-class _DynamicValidatingTextFieldState
-    extends State<DynamicValidatingTextField> {
-  late final ValueNotifier<AutovalidateMode> _valueNotifier;
-
-  @override
-  void initState() {
-    super.initState();
-    _valueNotifier = ValueNotifier(AutovalidateMode.onUnfocus);
-  }
+class _AutovalidatingTextFieldState extends State<AutovalidatingTextField> {
+  final _valueNotifier = ValueNotifier(AutovalidateMode.onUnfocus);
 
   @override
   void dispose() {
     _valueNotifier.dispose();
     super.dispose();
+  }
+
+  String? _onValidation(String? value) {
+    // Switch to onUserInteraction after the first validation
+    if (_valueNotifier.value != AutovalidateMode.onUserInteraction) {
+      _valueNotifier.value = AutovalidateMode.onUserInteraction;
+    }
+    return widget.validator(value);
   }
 
   @override
@@ -68,11 +69,7 @@ class _DynamicValidatingTextFieldState
         autocorrect: widget.autocorrect,
         enabled: widget.enabled,
         controller: widget.controller,
-        validator: (value) {
-          // If a validation has occurred, force validation on user interaction.
-          _valueNotifier.value = AutovalidateMode.onUserInteraction;
-          return widget.validator(value);
-        },
+        validator: _onValidation,
         onChanged: widget.onChanged,
         autovalidateMode: autovalidateMode,
         decoration: InputDecoration(
