@@ -33,14 +33,6 @@ class ExpandedElevatedButton extends StatelessWidget {
           key: key,
         );
 
-  const ExpandedElevatedButton.signOut({Key? key, VoidCallback? onTap})
-      : this(
-            key: key,
-            label: 'Sign Out',
-            icon: const Icon(Icons.logout),
-            onTap: onTap,
-            color: const Color.fromARGB(255, 254, 148, 140));
-
   final VoidCallback? onTap;
   final String label;
   final Widget? icon;

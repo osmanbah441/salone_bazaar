@@ -12,15 +12,6 @@ List<GoRoute> productRoutes(BazaarApi api) => [
           onAuthenticationRequired: () => context.go(PathConstants.signInPath),
         ),
       ),
-
-      GoRoute(
-        path: PathConstants.productAddPath,
-        builder: (context, state) => AddProductScreen(
-          api: api,
-          onAddAddProductSuccess: () {},
-        ),
-      )
-      // Add more
     ];
 
 List<GoRoute> orderRoutes(BazaarApi api) => [

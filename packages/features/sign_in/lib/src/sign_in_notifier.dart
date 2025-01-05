@@ -32,8 +32,6 @@ class SignInNotifier extends ChangeNotifier {
   }) async {
     _updateStatus(status: SignInSubmissionStatus.inprogress);
     try {
-      await Future.delayed(Duration(seconds: 2));
-
       await _api.auth.signInWithEmailAndPassword(email, password);
       _updateStatus(status: SignInSubmissionStatus.success);
     } on InvalidCredentialException catch (_) {

@@ -128,7 +128,8 @@ class _UserState extends State<_User> {
                       errorText: successState.username.error?.message),
                 ),
                 Spacing.height48,
-                ExpandedElevatedButton.signOut(
+                ExpandedElevatedButton(
+                  label: 'Sign out',
                   onTap: () {
                     final cubit = context.read<UserProfileCubit>();
                     cubit.signOut();

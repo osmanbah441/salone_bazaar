@@ -9,7 +9,6 @@ import 'package:sign_in/sign_in.dart';
 import 'package:sign_up/sign_up.dart';
 import 'package:user_cart/user_cart.dart';
 import 'package:user_profile/user_profile.dart';
-import 'package:add_product/add_product.dart';
 import 'package:order_details/order_details.dart';
 
 part 'routes.dart';
@@ -53,7 +52,6 @@ abstract final class PathConstants {
 
   // the product
   static String productListPath = '/products';
-  static const productAddPath = '/product-add';
   static String productDetailsPath([String? productId]) =>
       '$productListPath/${productId ?? ":$productIdPathParameter"}';
 

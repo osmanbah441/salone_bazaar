@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'dynamic_validating_text_field.dart';
+import 'autovalidating_text_field.dart';
 
 class PasswordField extends AutovalidatingTextField {
   const PasswordField({
