@@ -1,26 +1,19 @@
 // User class to store Firebase user information
 
 class User {
-  final String uid;
+  const User({
+    this.uid,
+    this.email,
+    this.displayName,
+    this.photoURL,
+    this.emailVerified,
+  });
+
+  final String? uid;
   final String? email;
   final String? displayName;
   final String? photoURL;
-  final bool emailVerified;
-
-  User({
-    required this.uid,
-    required this.email,
-    required this.displayName,
-    required this.photoURL,
-    required this.emailVerified,
-  });
-
-  factory User.fromMap(Map<String, dynamic> map) => User(
-      uid: map['uid'],
-      email: map['email'],
-      displayName: map['displayName'],
-      photoURL: map['photoURL'],
-      emailVerified: map['emailVerified']);
+  final bool? emailVerified;
 }
 
 enum UserRole {

@@ -1,13 +1,13 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
+import 'package:user_repository/user_repository.dart';
 
 class UserProfileNotifier extends ChangeNotifier {
-  UserProfileNotifier(this._api) {
+  UserProfileNotifier(this._userRepository) {
     _fetchCurrentUser();
   }
 
-  final BazaarApi _api;
+  final UserRepository _userRepository;
 
   User? _user;
   UserProfileState _state = UserProfileState.inprogress;
@@ -37,7 +37,7 @@ class UserProfileNotifier extends ChangeNotifier {
     );
 
     try {
-      final fetchedUser = _api.auth.currentUser;
+      final fetchedUser = await _userRepository.currentUser;
       if (fetchedUser == null) {
         _updateState(
           submissionStatus: UserProfileSubmissionStatus.authenticationRequired,
@@ -55,7 +55,7 @@ class UserProfileNotifier extends ChangeNotifier {
 
   void updateUsername(String username) async {
     try {
-      await _api.auth.updateDisplayName(username);
+      await _userRepository.updateDisplayName(username);
       _fetchCurrentUser();
     } catch (_) {
       _updateState(state: UserProfileState.error);
@@ -66,7 +66,7 @@ class UserProfileNotifier extends ChangeNotifier {
 
   Future<void> signOut() async {
     try {
-      await _api.auth.signOut();
+      await _userRepository.signOut();
       _updateState(
         submissionStatus: UserProfileSubmissionStatus.signoutSuccess,
       );

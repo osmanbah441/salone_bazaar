@@ -1,6 +1,6 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'account_type_selection.dart';
 import 'buyer_sign_up_form.dart';
@@ -12,12 +12,12 @@ class SignUpScreen extends StatefulWidget {
     super.key,
     required this.onSignUpSuccess,
     required this.onSignInTap,
-    required this.api,
+    required this.userRepository,
   });
 
   final VoidCallback onSignUpSuccess;
   final VoidCallback onSignInTap;
-  final BazaarApi api;
+  final UserRepository userRepository;
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -30,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void initState() {
     super.initState();
 
-    _notifier = SignUpNotifier(widget.api);
+    _notifier = SignUpNotifier(widget.userRepository);
     _notifier.addListener(_listener);
   }
 

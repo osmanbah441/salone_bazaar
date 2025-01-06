@@ -1,11 +1,11 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
+import 'package:user_repository/user_repository.dart';
 
 class SignUpNotifier extends ChangeNotifier {
-  SignUpNotifier(this._api);
+  SignUpNotifier(this._userRepository);
 
-  final BazaarApi _api;
+  final UserRepository _userRepository;
 
   String? _previousEmail;
   SignUpSubmissionStatus _submissionStatus = SignUpSubmissionStatus.idle;
@@ -71,9 +71,12 @@ class SignUpNotifier extends ChangeNotifier {
     _updateState(status: SignUpSubmissionStatus.inprogress);
     try {
       if (accountType.isBuyer) {
-        await _api.auth.createBuyerAccount(email, password);
+        await _userRepository.createBuyerWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
       } else if (accountType.isSeller) {
-        await _api.auth.createSellerAccount(
+        await _userRepository.createSellerAccount(
           email: email,
           password: password,
           businessName: businessName!,
@@ -95,7 +98,7 @@ class SignUpNotifier extends ChangeNotifier {
   Future<void> continueWithGoogle() async {
     _updateState(status: SignUpSubmissionStatus.inprogress);
     try {
-      await _api.auth.signInWithGoogle();
+      await _userRepository.signInWithGoogle();
       _updateState(status: SignUpSubmissionStatus.success);
     } on GoogleSignInCancelByUser {
       _updateState(status: SignUpSubmissionStatus.googleSignInError);

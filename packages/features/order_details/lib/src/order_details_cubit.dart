@@ -1,26 +1,28 @@
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bazaar_api/bazaar_api.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'order_details_state.dart';
 
 class OrderDetailsCubit extends Cubit<OrderDetailState> {
-  OrderDetailsCubit({
-    required this.orderId,
-    required this.api,
-  }) : super(const OrderDetailsInProgress()) {
+  OrderDetailsCubit(
+      {required this.orderId, required this.api, required this.userRepository})
+      : super(const OrderDetailsInProgress()) {
     _fetchOrder();
   }
 
   final String orderId;
   final BazaarApi api;
+  final UserRepository userRepository;
 
   void _fetchOrder() async {
     try {
-      final [role, order] =
-          await Future.wait([api.auth.getUserRole(), api.order.get(orderId)]);
-      emit(OrderDetailsSuccess(
-          order: order as Order, userRole: role as UserRole));
+      final order = await api.order.get(orderId);
+      emit(
+        OrderDetailsSuccess(
+            order: order, userRole: await userRepository.getUserRole()),
+      );
     } catch (e) {
       emit(const OrderDetailsFailure());
     }

@@ -1,10 +1,10 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
+import 'package:user_repository/user_repository.dart';
 
 class SignInNotifier extends ChangeNotifier {
-  SignInNotifier(this._api);
-  final BazaarApi _api;
+  SignInNotifier(this._userRepository);
+  final UserRepository _userRepository;
 
   SignInSubmissionStatus _submissionStatus = SignInSubmissionStatus.idle;
   SignInSubmissionStatus get submissionStatus => _submissionStatus;
@@ -17,7 +17,7 @@ class SignInNotifier extends ChangeNotifier {
   void continueWithGoogle() async {
     _updateStatus(status: SignInSubmissionStatus.inprogress);
     try {
-      await _api.auth.signInWithGoogle();
+      await _userRepository.signInWithGoogle();
       _updateStatus(status: SignInSubmissionStatus.success);
     } on GoogleSignInCancelByUser catch (_) {
       _updateStatus(status: SignInSubmissionStatus.googleSignInError);
@@ -32,7 +32,11 @@ class SignInNotifier extends ChangeNotifier {
   }) async {
     _updateStatus(status: SignInSubmissionStatus.inprogress);
     try {
-      await _api.auth.signInWithEmailAndPassword(email, password);
+      await _userRepository.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
       _updateStatus(status: SignInSubmissionStatus.success);
     } on InvalidCredentialException catch (_) {
       _updateStatus(status: SignInSubmissionStatus.invalidCredentials);

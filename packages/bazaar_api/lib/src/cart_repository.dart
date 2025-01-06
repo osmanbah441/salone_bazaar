@@ -1,4 +1,3 @@
-import 'package:bazaar_api/src/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -59,9 +58,6 @@ class CartRepository {
   }
 
   Future<void> add(Product product) async {
-    if (const AuthService().currentUser == null) {
-      throw const UserAuthenticationRequiredException();
-    }
     try {
       final cartItem = CartItem(
         productId: product.id!,

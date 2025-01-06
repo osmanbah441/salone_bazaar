@@ -4,14 +4,16 @@ import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'order_list_event.dart';
 part 'order_list_state.dart';
 
 final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
-  OrderListBloc({
-    required BazaarApi api,
-  })  : _api = api,
+  OrderListBloc(
+      {required BazaarApi api, required UserRepository userRepository})
+      : _api = api,
+        _userRepository = userRepository,
         super(const OrderListState()) {
     _registerEventHandlers();
 
@@ -19,6 +21,7 @@ final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
   }
 
   final BazaarApi _api;
+  final UserRepository _userRepository;
 
   void _registerEventHandlers() => on<OrderListEvent>(
         (event, emitter) async => switch (event) {
@@ -131,14 +134,15 @@ final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
     final currentlyAppliedFilter = state.filter;
 
     try {
-      final [role as UserRole, newPage as OrderListPage] = await Future.wait([
-        _api.auth.getUserRole(),
-        _api.order.getAll(
-          status: currentlyAppliedFilter is OrderListFilterByStatus
-              ? currentlyAppliedFilter.status.name
-              : '',
-        )
-      ]);
+      final role = await _userRepository.getUserRole();
+
+      final newPage = await _api.order.getAll(
+        status: currentlyAppliedFilter is OrderListFilterByStatus
+            ? currentlyAppliedFilter.status.name
+            : '',
+        uid: _userRepository.currentUser!.uid!,
+        role: role,
+      );
 
       final newItemList = newPage.orderList;
       final oldItemList = state.itemList ?? [];
@@ -148,11 +152,12 @@ final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
       final nextPage = newPage.isLastPage ? null : page + 1;
 
       return OrderListState.success(
-          nextPage: nextPage,
-          itemList: completeItemList,
-          filter: currentlyAppliedFilter,
-          isRefresh: isRefresh,
-          userRole: role);
+        nextPage: nextPage,
+        itemList: completeItemList,
+        filter: currentlyAppliedFilter,
+        isRefresh: isRefresh,
+        userRole: role,
+      );
     } catch (error) {
       if (error is EmptySearchResultException) {
         return OrderListState.noItemsFound(

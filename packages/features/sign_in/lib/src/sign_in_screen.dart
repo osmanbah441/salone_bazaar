@@ -1,7 +1,7 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_in/src/sign_in_notifier.dart';
+import 'package:user_repository/user_repository.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({
@@ -9,13 +9,13 @@ class SignInScreen extends StatefulWidget {
     required this.onSignInSuccess,
     required this.onSignUpTap,
     required this.onForgotPasswordTap,
-    required this.api,
+    required this.userRepository,
   });
 
   final VoidCallback onSignInSuccess;
   final VoidCallback onSignUpTap;
   final VoidCallback onForgotPasswordTap;
-  final BazaarApi api;
+  final UserRepository userRepository;
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-    _notifer = SignInNotifier(widget.api);
+    _notifer = SignInNotifier(widget.userRepository);
     _notifer.addListener(_listener);
   }
 

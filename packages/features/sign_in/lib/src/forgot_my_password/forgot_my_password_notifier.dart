@@ -1,9 +1,9 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:flutter/material.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ForgotPasswordNotifier extends ChangeNotifier {
-  ForgotPasswordNotifier(this._api);
-  final BazaarApi _api;
+  ForgotPasswordNotifier(this._userRepository);
+  final UserRepository _userRepository;
 
   ForgotPasswordSubmissionStatus _submissionStatus =
       ForgotPasswordSubmissionStatus.idle;
@@ -18,7 +18,7 @@ class ForgotPasswordNotifier extends ChangeNotifier {
   Future<void> resetPassword({required String email}) async {
     _updateState(status: ForgotPasswordSubmissionStatus.inprogress);
     try {
-      await _api.auth.requestPasswordResetEmail(email);
+      await _userRepository.requestPasswordResetEmail(email);
       _updateState(status: ForgotPasswordSubmissionStatus.success);
     } catch (e) {
       _updateState(status: ForgotPasswordSubmissionStatus.error);

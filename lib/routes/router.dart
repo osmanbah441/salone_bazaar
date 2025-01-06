@@ -10,36 +10,37 @@ import 'package:sign_up/sign_up.dart';
 import 'package:user_cart/user_cart.dart';
 import 'package:user_profile/user_profile.dart';
 import 'package:order_details/order_details.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'routes.dart';
-part 'bottom_nav_routes.dart';
-part 'users.dart';
+part 'scaffold_with_navbar.dart';
 
 final class AppRouter {
   const AppRouter() : _api = const BazaarApi();
 
   final BazaarApi _api;
 
-  GoRouter get router => GoRouter(
-        initialLocation: PathConstants.productListPath,
-        routes: [
-          bottomNavRoute(_api),
-          ...registrationRoutes(_api),
-          ...productRoutes(_api),
-          ...orderRoutes(_api),
-        ],
-      );
-}
-
-class Redirect {
-  static String? toSignIn(BuildContext context, BazaarApi api) {
-    if (api.auth.currentUser == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const AuthenticationRequiredErrorSnackBar(),
-      );
-      return PathConstants.signInPath;
-    }
-    return null;
+  GoRouter get router {
+    final route = Routes(api: _api, userRepository: UserRepository());
+    return GoRouter(
+      initialLocation: PathConstants.productListPath,
+      routes: [
+        ShellRoute(
+            // bottom navigation route
+            builder: (_, __, child) => _ScaffoldWithNavBar(child: child),
+            routes: [
+              route.productListRoute,
+              route.userCartRoute,
+              route.orderListRoute,
+              route.userProfileRoute,
+            ]),
+        route.orderDetailsRoute,
+        route.productDetailsRoute,
+        route.signInRoute,
+        route.signUpRoute,
+        // add routes here
+      ],
+    );
   }
 }
 
@@ -65,4 +66,16 @@ abstract final class PathConstants {
   static String get orderListPath => '/orders';
   static String orderDetailsPath([String? orderId]) =>
       '$orderListPath/${orderId ?? ":$orderIdPathParameter"}';
+}
+
+abstract class Redirect {
+  static String? toSignIn(BuildContext context, UserRepository userRepository) {
+    if (userRepository.currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const AuthenticationRequiredErrorSnackBar(),
+      );
+      return PathConstants.signInPath;
+    }
+    return null;
+  }
 }
