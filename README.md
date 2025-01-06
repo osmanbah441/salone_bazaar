@@ -19,19 +19,18 @@ Salone Bazaar bridges the gap between small businesses, artisans, farmers, and c
 - **Hosting:** AWS for scalability and reliability
 
 ## Getting Started
-To get started with Salone Bazaar, clone this repository and follow the installation instructions in the [Setup Guide](docs/setup.md).
+To get started with Salone Bazaar, clone this repository and follow the installation instructions in the [Engineer Contribution Guide](https://github.com/osmanbah441/salone_bazaar/wiki/Engineer-Contribution-Guide).
 
 ## Contributing
-We welcome contributions from everyone! Designers, engineers, marketers, and idea enthusiasts can find guidelines in our [Contributing Guide](https://github.com/SaloneBazaar/wiki/contributing).
+We welcome contributions from everyone! Designers, engineers, marketers, and idea enthusiasts can find guidelines in our [Contributing Guide](https://github.com/osmanbah441/salone_bazaar/wiki/Contributing).
 
 ## Documentation
-For detailed information on the project, visit our **[Wiki](https://github.com/SaloneBazaar/wiki)**.
+For detailed information on the project, visit our **[Wiki](https://github.com/osmanbah441/salone_bazaar/wiki)**.
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
 ## Contact
 For inquiries or support, reach out via:
-- Email: support@salonebazaar.com
-- Slack: Join our community channel
+- Email: osmanbah441@gmail.com
 
