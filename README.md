@@ -22,7 +22,7 @@ Salone Bazaar bridges the gap between small businesses, artisans, farmers, and c
 To get started with Salone Bazaar, clone this repository and follow the installation instructions in the [Engineer Contribution Guide](https://github.com/osmanbah441/salone_bazaar/wiki/Engineer-Contribution-Guide).
 
 ## Contributing
-We welcome contributions from everyone! Designers, engineers, marketers, and idea enthusiasts can find guidelines in our [Contributing Guide](https://github.com/osmanbah441/salone_bazaar/wiki/Contributing).
+We welcome contributions from everyone! Designers, engineers, marketers, and idea enthusiasts can find guidelines in our [Contributing Guide](https://github.com/osmanbah441/salone_bazaar/wiki/Contributing-Guide).
 
 ## Documentation
 For detailed information on the project, visit our **[Wiki](https://github.com/osmanbah441/salone_bazaar/wiki)**.
