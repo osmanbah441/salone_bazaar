@@ -1,18 +1,18 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'user_profile_notifier.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({
     super.key,
-    required this.api,
+    required this.userRepository,
     required this.onAuthentionRequired,
     required this.onSignOutSuccess,
   });
 
-  final BazaarApi api;
+  final UserRepository userRepository;
   final VoidCallback onSignOutSuccess;
   final VoidCallback onAuthentionRequired;
 
@@ -26,7 +26,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _notifier = UserProfileNotifier(widget.api);
+    _notifier = UserProfileNotifier(widget.userRepository);
 
     _notifier.addListener(_listener);
   }

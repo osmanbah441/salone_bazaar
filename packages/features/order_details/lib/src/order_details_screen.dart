@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:component_library/component_library.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'order_details_cubit.dart';
 import 'update_order_dialog.dart';
@@ -14,10 +15,12 @@ class OrderDetailsScreen extends StatelessWidget {
     required this.onBackButtonTap,
     required this.orderId,
     required this.api,
+    required this.userRepository,
   });
 
   final String orderId;
   final BazaarApi api;
+  final UserRepository userRepository;
 
   final VoidCallback onBackButtonTap;
 
@@ -25,6 +28,7 @@ class OrderDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<OrderDetailsCubit>(
       create: (context) => OrderDetailsCubit(
+        userRepository: userRepository,
         orderId: orderId,
         api: api,
       ),

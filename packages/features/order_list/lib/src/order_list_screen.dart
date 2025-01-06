@@ -3,6 +3,7 @@ import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'horizontal_list_filter.dart';
 import 'order_list_bloc.dart';
@@ -13,15 +14,17 @@ class OrderListScreen extends StatelessWidget {
     super.key,
     required this.onOrderSelected,
     required this.api,
+    required this.userRepository,
   });
 
   final void Function(String id) onOrderSelected;
   final BazaarApi api;
+  final UserRepository userRepository;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderListBloc>(
-        create: (_) => OrderListBloc(api: api),
+        create: (_) => OrderListBloc(api: api, userRepository: userRepository),
         child: OrderListView(
           onOrderSelected: onOrderSelected,
         ));

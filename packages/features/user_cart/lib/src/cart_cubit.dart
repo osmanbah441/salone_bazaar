@@ -1,15 +1,17 @@
 import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  CartCubit(this._api) : super(CartStateInprogress()) {
+  CartCubit(this._api, this._userRepository) : super(CartStateInprogress()) {
     _fetchCart();
   }
 
   final BazaarApi _api;
+  final UserRepository _userRepository;
 
   void _fetchCart() async {
     try {
@@ -26,7 +28,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void createOrder(lat, long) async {
-    await _api.order.create(lat, long);
+    await _api.order.create(lat, long, _userRepository.currentUser!.uid!);
     refetch();
   }
 

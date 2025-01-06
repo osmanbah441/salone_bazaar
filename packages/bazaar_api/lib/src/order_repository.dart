@@ -1,4 +1,3 @@
-import 'package:bazaar_api/src/auth_service.dart';
 import 'package:bazaar_api/src/cart_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain_models/domain_models.dart' as domain;
@@ -7,9 +6,8 @@ class OrdersRepository {
   const OrdersRepository();
   static final _ordersRef = FirebaseFirestore.instance.collection('orders');
 
-  Future<void> create(double lat, double long) async {
+  Future<void> create(double lat, double long, String uid) async {
     final cart = await const CartRepository().get();
-    final currentUser = const AuthService().currentUser!;
 
     final orderItems = cart.items
         .map(
@@ -26,7 +24,7 @@ class OrdersRepository {
     final doc = _ordersRef.doc();
     domain.Order newOrders = domain.Order(
       id: doc.id,
-      userId: currentUser.uid,
+      userId: uid,
       items: orderItems,
       date: DateTime.now(),
       latitude: lat,
@@ -39,11 +37,9 @@ class OrdersRepository {
 
   Future<domain.OrderListPage> getAll({
     String status = '',
+    domain.UserRole role = domain.UserRole.customer,
+    required String uid,
   }) async {
-    final uid = const AuthService().currentUser!.uid;
-    final role = await const AuthService().getUserRole();
-    role == domain.UserRole.deliveryCrew;
-
     Query query = role == domain.UserRole.admin
         ? _ordersRef
         : role == domain.UserRole.deliveryCrew

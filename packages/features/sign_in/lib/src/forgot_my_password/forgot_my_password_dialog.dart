@@ -1,12 +1,15 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:flutter/material.dart';
 import 'package:component_library/component_library.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'forgot_my_password_notifier.dart';
 
 class ForgotMyPasswordDialog extends StatefulWidget {
-  const ForgotMyPasswordDialog({super.key, required this.api});
-  final BazaarApi api;
+  const ForgotMyPasswordDialog({
+    super.key,
+    required this.userRepository,
+  });
+  final UserRepository userRepository;
 
   @override
   State<ForgotMyPasswordDialog> createState() => _ForgotMyPasswordDialogState();
@@ -22,7 +25,7 @@ class _ForgotMyPasswordDialogState extends State<ForgotMyPasswordDialog> {
     super.initState();
     _emailController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-    _notifier = ForgotPasswordNotifier(widget.api);
+    _notifier = ForgotPasswordNotifier(widget.userRepository);
     _notifier.addListener(_listener);
   }
 

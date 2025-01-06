@@ -1,59 +1,8 @@
 part of 'router.dart';
 
-ShellRoute bottomNavRoute(BazaarApi api) => ShellRoute(
-      // bottom navigation route
-      builder: (context, state, child) => _ScaffoldWithNavBar(
-        child: child,
-      ),
-      routes: [
-        GoRoute(
-          // product list
-          path: PathConstants.productListPath,
-          builder: (context, state) => ProductListScreen(
-            onProductSelected: (id) =>
-                context.go(PathConstants.productDetailsPath(id)),
-            api: api,
-          ),
-        ),
-        GoRoute(
-            // user profile
-            redirect: (context, state) => Redirect.toSignIn(context, api),
-            path: PathConstants.userProfilePath,
-            builder: (context, state) => UserProfileScreen(
-                  onAuthentionRequired: () =>
-                      context.go(PathConstants.signInPath),
-                  onSignOutSuccess: () => context.go(PathConstants.signInPath),
-                  api: api,
-                )),
-        GoRoute(
-          // cart
-          redirect: (context, state) => Redirect.toSignIn(context, api),
-          path: PathConstants.cartPath,
-          builder: (context, state) => UserCartScreen(
-            api: api,
-            onItemTap: (id) => context.go(
-              PathConstants.productDetailsPath(id),
-            ),
-          ),
-        ),
-        GoRoute(
-          //  orders
-          redirect: (context, state) => Redirect.toSignIn(context, api),
-          path: PathConstants.orderListPath,
-          builder: (context, state) => OrderListScreen(
-            onOrderSelected: (id) => context.go(
-              PathConstants.orderDetailsPath(id),
-            ),
-            api: api,
-          ),
-        ),
-      ],
-    );
-
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
 class _ScaffoldWithNavBar extends StatelessWidget {
-  /// Constructs an [_ScaffoldWithNavBar].
   const _ScaffoldWithNavBar({required this.child});
 
   /// The widget to display in the body of the Scaffold.

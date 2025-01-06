@@ -1,4 +1,3 @@
-import 'package:bazaar_api/src/auth_service.dart';
 import 'package:bazaar_api/src/cart_repository.dart';
 import 'package:bazaar_api/src/order_repository.dart';
 import 'package:bazaar_api/src/products_repository.dart';
@@ -11,12 +10,10 @@ import 'firebase_options.dart';
 
 class BazaarApi {
   const BazaarApi()
-      : auth = const AuthService(),
-        product = const ProductsRepository(),
+      : product = const ProductsRepository(),
         cart = const CartRepository(),
         order = const OrdersRepository();
 
-  final AuthService auth;
   final ProductsRepository product;
   final CartRepository cart;
   final OrdersRepository order;
