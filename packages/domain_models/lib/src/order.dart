@@ -65,7 +65,7 @@ class OrderItem {
   }
 }
 
-class Order {
+class Orders {
   final String id;
   final String userId;
   final OrderStatus status;
@@ -75,7 +75,7 @@ class Order {
   final double? latitude;
   final double? longitude;
 
-  const Order({
+  const Orders({
     required this.id,
     required this.userId,
     this.status = OrderStatus.pending,
@@ -106,11 +106,11 @@ class Order {
   }
 
   // Create an Orders from a Map
-  factory Order.fromMap(Map<String, dynamic> map) {
+  factory Orders.fromMap(Map<String, dynamic> map) {
     final orderItems = List<OrderItem>.from(
       map['items'].map((item) => OrderItem.fromMap(item)),
     );
-    return Order(
+    return Orders(
         id: map['orderId'],
         userId: map['userId'],
         items: orderItems,
@@ -130,5 +130,5 @@ class OrderListPage {
   });
 
   final bool isLastPage;
-  final List<Order> orderList;
+  final List<Orders> orderList;
 }

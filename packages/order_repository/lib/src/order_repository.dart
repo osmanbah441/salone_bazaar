@@ -1,17 +1,14 @@
-import 'package:bazaar_api/src/cart_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:domain_models/domain_models.dart' as domain;
+import 'package:domain_models/domain_models.dart';
 
 class OrdersRepository {
   const OrdersRepository();
   static final _ordersRef = FirebaseFirestore.instance.collection('orders');
 
-  Future<void> create(double lat, double long, String uid) async {
-    final cart = await const CartRepository().get();
-
+  Future<void> create(double lat, double long, String uid, Cart cart) async {
     final orderItems = cart.items
         .map(
-          (e) => domain.OrderItem(
+          (e) => OrderItem(
             productId: e.productId,
             name: e.name,
             imageUrl: e.imageUrl,
@@ -22,7 +19,7 @@ class OrdersRepository {
         .toList();
 
     final doc = _ordersRef.doc();
-    domain.Order newOrders = domain.Order(
+    Orders newOrders = Orders(
       id: doc.id,
       userId: uid,
       items: orderItems,
@@ -31,18 +28,16 @@ class OrdersRepository {
       longitude: long,
     );
     await doc.set(newOrders.toMap());
-
-    await const CartRepository().clearCart();
   }
 
-  Future<domain.OrderListPage> getAll({
+  Future<OrderListPage> getAllOrders({
     String status = '',
-    domain.UserRole role = domain.UserRole.customer,
+    UserRole role = UserRole.customer,
     required String uid,
   }) async {
-    Query query = role == domain.UserRole.admin
+    Query query = role == UserRole.admin
         ? _ordersRef
-        : role == domain.UserRole.deliveryCrew
+        : role == UserRole.deliveryCrew
             ? _ordersRef.where('deliveryCrewId', isEqualTo: uid)
             : _ordersRef.where('userId', isEqualTo: uid);
 
@@ -53,36 +48,36 @@ class OrdersRepository {
     final snapshot = await query.get() as QuerySnapshot<Map<String, dynamic>>;
 
     if (snapshot.docs.isEmpty) {
-      return const domain.OrderListPage(isLastPage: true, orderList: []);
+      return const OrderListPage(isLastPage: true, orderList: []);
     }
     final orders =
-        snapshot.docs.map((doc) => domain.Order.fromMap(doc.data())).toList();
-    return domain.OrderListPage(isLastPage: true, orderList: orders);
+        snapshot.docs.map((doc) => Orders.fromMap(doc.data())).toList();
+    return OrderListPage(isLastPage: true, orderList: orders);
   }
 
-  Future<domain.Order> get(String orderId) async {
+  Future<Orders> getSingleOrder(String orderId) async {
     final orderDoc = await _ordersRef.doc(orderId).get();
-    if (orderDoc.exists) return domain.Order.fromMap(orderDoc.data()!);
-    throw const domain.NotFoundResultException();
+    if (orderDoc.exists) return Orders.fromMap(orderDoc.data()!);
+    throw const NotFoundResultException();
   }
 
-  Future<domain.Order> updateStatus(
+  Future<Orders> updateOrderStatus(
     String orderId,
-    domain.OrderStatus status,
+    OrderStatus status,
   ) async {
     await _ordersRef.doc(orderId).update({"status": status.name});
-    return get(orderId);
+    return getSingleOrder(orderId);
   }
 
-  Future<domain.Order> assignToDeliveryCrew({
+  Future<Orders> assignOrderToDeliveryCrew({
     required String orderId,
     required String crewId,
   }) async {
     await _ordersRef.doc(orderId).update({
       "deliveryCrewId": crewId,
-      "status": domain.OrderStatus.ongoing,
+      "status": OrderStatus.ongoing,
     });
 
-    return get(orderId);
+    return getSingleOrder(orderId);
   }
 }

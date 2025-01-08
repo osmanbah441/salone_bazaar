@@ -1,9 +1,9 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:component_library/component_library.dart';
+import 'package:order_repository/order_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 import 'order_details_cubit.dart';
@@ -14,12 +14,12 @@ class OrderDetailsScreen extends StatelessWidget {
     super.key,
     required this.onBackButtonTap,
     required this.orderId,
-    required this.api,
+    required this.ordersRepository,
     required this.userRepository,
   });
 
   final String orderId;
-  final BazaarApi api;
+  final OrdersRepository ordersRepository;
   final UserRepository userRepository;
 
   final VoidCallback onBackButtonTap;
@@ -30,7 +30,7 @@ class OrderDetailsScreen extends StatelessWidget {
       create: (context) => OrderDetailsCubit(
         userRepository: userRepository,
         orderId: orderId,
-        api: api,
+        ordersRepository: ordersRepository,
       ),
       child: OrderDetailsView(
         onBackButtonTap: onBackButtonTap,
@@ -101,7 +101,7 @@ class OrderDetailsView extends StatelessWidget {
 class _OrderDetails extends StatelessWidget {
   const _OrderDetails({required this.order});
 
-  final Order order;
+  final Orders order;
 
   @override
   Widget build(BuildContext context) {

@@ -1,30 +1,42 @@
-import 'package:bazaar_api/bazaar_api.dart';
+import 'package:cart_repository/cart_repository.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:component_library/component_library.dart';
+import 'package:product_repository/product_repository.dart';
+import 'package:user_repository/user_repository.dart';
+
 import 'product_details_cubit.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({
-    required this.productId,
     super.key,
+    required this.productId,
+    required this.userRepository,
     required this.onBackButtonTap,
     required this.onItemAddedToCart,
     required this.onAuthenticationRequired,
-    required this.api,
+    required this.productRepository,
+    required this.cartRepository,
   });
 
   final String productId;
+  final UserRepository userRepository;
   final VoidCallback onBackButtonTap;
-  final BazaarApi api;
+  final ProductsRepository productRepository;
   final VoidCallback onItemAddedToCart;
   final VoidCallback onAuthenticationRequired;
+  final CartRepository cartRepository;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProductDetailsCubit>(
-      create: (_) => ProductDetailsCubit(productId: productId, api: api),
+      create: (_) => ProductDetailsCubit(
+        productId: productId,
+        productRepository: productRepository,
+        cartRepository: cartRepository,
+        userRepository: userRepository,
+      ),
       child: ProductDetailsView(
         onBackButtonTap: onBackButtonTap,
         onAuthenticationRequired: onAuthenticationRequired,

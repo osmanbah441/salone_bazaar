@@ -1,11 +1,11 @@
-import 'package:bazaar_api/bazaar_api.dart';
-
+import 'package:cart_repository/cart_repository.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:component_library/component_library.dart';
 import 'package:map_tracking/map_tracking.dart';
+import 'package:order_repository/order_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 import 'cart_cubit.dart';
@@ -14,19 +14,22 @@ import 'cart_list_tile.dart';
 class UserCartScreen extends StatelessWidget {
   const UserCartScreen({
     required this.userRepository,
-    required this.api,
+    required this.cartRepository,
+    required this.ordersRepository,
     required this.onItemTap,
     super.key,
   });
 
-  final BazaarApi api;
+  final CartRepository cartRepository;
   final Function(String) onItemTap;
   final UserRepository userRepository;
+  final OrdersRepository ordersRepository;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CartCubit>(
-      create: (_) => CartCubit(api, userRepository),
+      create: (_) =>
+          CartCubit(cartRepository, userRepository, ordersRepository),
       child: CartView(
         onItemTap: onItemTap,
       ),

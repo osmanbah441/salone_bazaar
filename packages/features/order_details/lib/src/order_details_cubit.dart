@@ -1,24 +1,26 @@
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:order_repository/order_repository.dart';
 
 part 'order_details_state.dart';
 
 class OrderDetailsCubit extends Cubit<OrderDetailState> {
-  OrderDetailsCubit(
-      {required this.orderId, required this.api, required this.userRepository})
-      : super(const OrderDetailsInProgress()) {
+  OrderDetailsCubit({
+    required this.orderId,
+    required this.ordersRepository,
+    required this.userRepository,
+  }) : super(const OrderDetailsInProgress()) {
     _fetchOrder();
   }
 
   final String orderId;
-  final BazaarApi api;
+  final OrdersRepository ordersRepository;
   final UserRepository userRepository;
 
   void _fetchOrder() async {
     try {
-      final order = await api.order.get(orderId);
+      final order = await ordersRepository.getSingleOrder(orderId);
       emit(
         OrderDetailsSuccess(
             order: order, userRole: await userRepository.getUserRole()),
@@ -34,7 +36,7 @@ class OrderDetailsCubit extends Cubit<OrderDetailState> {
     if (isSucessState) {
       try {
         final previousState = state as OrderDetailsSuccess;
-        final newOrder = await api.order.updateStatus(
+        final newOrder = await ordersRepository.updateOrderStatus(
           orderId,
           OrderStatus.completed,
         );
@@ -50,7 +52,7 @@ class OrderDetailsCubit extends Cubit<OrderDetailState> {
     if (isSucessState) {
       try {
         final previousState = state as OrderDetailsSuccess;
-        final newOrder = await api.order.assignToDeliveryCrew(
+        final newOrder = await ordersRepository.assignOrderToDeliveryCrew(
           orderId: orderId,
           crewId: userId,
         );

@@ -1,18 +1,19 @@
 import 'dart:async';
 
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:order_repository/order_repository.dart';
 
 part 'order_list_event.dart';
 part 'order_list_state.dart';
 
 final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
   OrderListBloc(
-      {required BazaarApi api, required UserRepository userRepository})
-      : _api = api,
+      {required OrdersRepository ordersRepository,
+      required UserRepository userRepository})
+      : _ordersRepository = ordersRepository,
         _userRepository = userRepository,
         super(const OrderListState()) {
     _registerEventHandlers();
@@ -20,7 +21,7 @@ final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
     add(const OrderListFetchFirstPage());
   }
 
-  final BazaarApi _api;
+  final OrdersRepository _ordersRepository;
   final UserRepository _userRepository;
 
   void _registerEventHandlers() => on<OrderListEvent>(
@@ -136,7 +137,7 @@ final class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
     try {
       final role = await _userRepository.getUserRole();
 
-      final newPage = await _api.order.getAll(
+      final newPage = await _ordersRepository.getAllOrders(
         status: currentlyAppliedFilter is OrderListFilterByStatus
             ? currentlyAppliedFilter.status.name
             : '',

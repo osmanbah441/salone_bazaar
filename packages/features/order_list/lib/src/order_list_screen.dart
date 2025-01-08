@@ -1,8 +1,8 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:order_repository/order_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 import 'horizontal_list_filter.dart';
@@ -13,18 +13,21 @@ class OrderListScreen extends StatelessWidget {
   const OrderListScreen({
     super.key,
     required this.onOrderSelected,
-    required this.api,
+    required this.ordersRepository,
     required this.userRepository,
   });
 
   final void Function(String id) onOrderSelected;
-  final BazaarApi api;
+  final OrdersRepository ordersRepository;
   final UserRepository userRepository;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderListBloc>(
-        create: (_) => OrderListBloc(api: api, userRepository: userRepository),
+        create: (_) => OrderListBloc(
+              ordersRepository: ordersRepository,
+              userRepository: userRepository,
+            ),
         child: OrderListView(
           onOrderSelected: onOrderSelected,
         ));
@@ -45,7 +48,7 @@ class OrderListView extends StatefulWidget {
 }
 
 class _OrderListViewState extends State<OrderListView> {
-  final _pagingController = PagingController<int, Order>(
+  final _pagingController = PagingController<int, Orders>(
     firstPageKey: 1,
   );
 
@@ -116,7 +119,7 @@ class _OrderListViewState extends State<OrderListView> {
 }
 
 extension on OrderListState {
-  PagingState<int, Order> toPagingState() {
+  PagingState<int, Orders> toPagingState() {
     return PagingState(
       itemList: itemList,
       nextPageKey: nextPage,

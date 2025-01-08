@@ -14,7 +14,7 @@ class OrderPageListView extends StatelessWidget {
     required this.onOrderSelected,
   });
 
-  final PagingController<int, Order> pagingController;
+  final PagingController<int, Orders> pagingController;
   final void Function(String) onOrderSelected;
 
   @override
@@ -23,7 +23,7 @@ class OrderPageListView extends StatelessWidget {
         builder: (context, state) {
           return PagedListView(
             pagingController: pagingController,
-            builderDelegate: PagedChildBuilderDelegate<Order>(
+            builderDelegate: PagedChildBuilderDelegate<Orders>(
                 firstPageErrorIndicatorBuilder: (context) {
               final bloc = context.read<OrderListBloc>();
               return ExceptionIndicator(

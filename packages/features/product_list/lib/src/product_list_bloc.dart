@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bazaar_api/bazaar_api.dart';
+import 'package:product_repository/product_repository.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,15 +12,15 @@ part 'product_list_state.dart';
 
 final class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   ProductListBloc({
-    required BazaarApi api,
-  })  : _api = api,
+    required ProductsRepository productsRepository,
+  })  : _productRepository = productsRepository,
         super(const ProductListState()) {
     _registerEventHandlers();
 
     add(const ProductFirstPageRequested());
   }
 
-  final BazaarApi _api;
+  final ProductsRepository _productRepository;
 
   void _registerEventHandlers() => on<ProductListEvent>(
         (event, emitter) async => switch (event) {
@@ -159,7 +159,7 @@ final class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
     final currentlyAppliedFilter = state.filter;
 
     try {
-      final newPage = await _api.product.getProductListPage(
+      final newPage = await _productRepository.getProductListPage(
         page: page,
         category: currentlyAppliedFilter is ProductListFilterByCategory
             ? currentlyAppliedFilter.category.name

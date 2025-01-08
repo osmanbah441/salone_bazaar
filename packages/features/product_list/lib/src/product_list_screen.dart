@@ -1,10 +1,10 @@
-import 'package:bazaar_api/bazaar_api.dart';
 import 'package:domain_models/domain_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:product_list/src/backdrop.dart';
 import 'package:product_list/src/category_menu_page.dart';
+import 'package:product_repository/product_repository.dart';
 
 import 'product_list_bloc.dart';
 import 'product_page_grid_view.dart';
@@ -13,17 +13,17 @@ class ProductListScreen extends StatelessWidget {
   const ProductListScreen({
     super.key,
     required this.onProductSelected,
-    required this.api,
+    required this.productsRepository,
   });
 
   final Function(String) onProductSelected;
 
-  final BazaarApi api;
+  final ProductsRepository productsRepository;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProductListBloc>(
-      create: (_) => ProductListBloc(api: api),
+      create: (_) => ProductListBloc(productsRepository: productsRepository),
       child: ProductListView(
         onProductSelected: onProductSelected,
       ),

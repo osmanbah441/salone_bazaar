@@ -12,10 +12,12 @@ dependencies:
     sdk: flutter
     
   domain_models: ^1.0.0
-  bazaar_api: ^0.0.1
   component_library: ^0.0.1
   equatable: ^2.0.5
   flutter_bloc: ^8.1.6
+  product_repository: ^0.0.1
+  user_repository: ^0.0.1
+  cart_repository: ^0.0.1
 
 dev_dependencies:
   flutter_test:

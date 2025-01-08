@@ -5,7 +5,7 @@ sealed class OrderDetailState {
 }
 
 class OrderDetailsSuccess extends OrderDetailState {
-  final Order order;
+  final Orders order;
   final UserRole userRole;
 
   const OrderDetailsSuccess({
@@ -15,7 +15,7 @@ class OrderDetailsSuccess extends OrderDetailState {
 
   OrderDetailsSuccess copyWith({
     UserRole? userRole,
-    Order? order,
+    Orders? order,
   }) =>
       OrderDetailsSuccess(
         order: order ?? this.order,

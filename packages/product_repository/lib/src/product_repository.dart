@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain_models/domain_models.dart';
 
+import 'mappers.dart';
+
 class ProductsRepository {
   const ProductsRepository();
-  static final _ref = FirebaseFirestore.instance.collection('products');
+  static final _productRef = FirebaseFirestore.instance.collection('products');
 
-  static DocumentSnapshot?
-      _lastDocument; // Store the last document for pagination
+// Store the last document for pagination
+  static DocumentSnapshot? _lastDocument;
 
-  Future<void> add(Product product) async => await _ref.add(product.toMap());
+  Future<void> addProduct(Product product) async =>
+      await _productRef.add(product.toMap);
 
   Future<ProductListPage> getProductListPage({
     required int page,
@@ -16,11 +19,10 @@ class ProductsRepository {
     String searchTerm = '',
     int limit = 10,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 300));
     if (page == 1) _lastDocument = null;
     final isFiltering = category.isNotEmpty && searchTerm.isEmpty;
     final isSearching = category.isEmpty && searchTerm.isNotEmpty;
-    Query query = _ref;
+    Query query = _productRef;
 
     if (isFiltering) {
       query = query.where('category', isEqualTo: category);
@@ -45,22 +47,20 @@ class ProductsRepository {
     final isLastPage = snapshot.docs.length < limit;
     _lastDocument = snapshot.docs.last;
 
-    final products = snapshot.docs
-        .map((doc) =>
-            Product.fromMap(doc.data() as Map<String, dynamic>, doc.id))
-        .toList();
+    final products = snapshot.docs.map((doc) => doc.toDomain).toList();
 
     return ProductListPage(isLastPage: isLastPage, productList: products);
   }
 
-  Future<void> update(Product product) async =>
-      await _ref.doc(product.id).update(product.toMap());
+  Future<void> updateProduct(Product product) async =>
+      await _productRef.doc(product.id).update(product.toMap);
 
-  Future<void> deleteProduct(String id) async => await _ref.doc(id).delete();
+  Future<void> deleteProduct(String id) async =>
+      await _productRef.doc(id).delete();
 
-  Future<Product?> getSingle(String id) async {
-    final snapshot = await _ref.doc(id).get();
+  Future<Product?> getSingleProduct(String id) async {
+    final snapshot = await _productRef.doc(id).get();
     if (snapshot.data() == null) return null;
-    return Product.fromMap(snapshot.data()!, snapshot.id);
+    return snapshot.toDomain;
   }
 }

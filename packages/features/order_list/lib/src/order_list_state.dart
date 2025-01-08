@@ -10,7 +10,7 @@ final class OrderListState extends Equatable {
     this.userRole = UserRole.customer,
   });
 
-  final List<Order>? itemList;
+  final List<Orders>? itemList;
   final int? nextPage;
   final OrderListFilter? filter;
   final dynamic error;
@@ -27,7 +27,7 @@ final class OrderListState extends Equatable {
 
   const OrderListState.success({
     required int? nextPage,
-    required List<Order> itemList,
+    required List<Orders> itemList,
     required OrderListFilter? filter,
     required bool isRefresh,
     required UserRole userRole,
@@ -67,7 +67,7 @@ final class OrderListState extends Equatable {
       );
 
   OrderListState copyWithUpdatedOrder(
-    Order updatedOrder,
+    Orders updatedOrder,
   ) {
     return OrderListState(
       itemList: itemList?.map((order) {

@@ -37,7 +37,7 @@ class UserProfileNotifier extends ChangeNotifier {
     );
 
     try {
-      final fetchedUser = await _userRepository.currentUser;
+      final fetchedUser = _userRepository.currentUser;
       if (fetchedUser == null) {
         _updateState(
           submissionStatus: UserProfileSubmissionStatus.authenticationRequired,
