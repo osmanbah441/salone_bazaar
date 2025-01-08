@@ -1,9 +1,12 @@
-part of 'router.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import 'app_routes.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
-class _ScaffoldWithNavBar extends StatelessWidget {
-  const _ScaffoldWithNavBar({required this.child});
+class ScaffoldWithNavBar extends StatelessWidget {
+  const ScaffoldWithNavBar({super.key, required this.child});
 
   /// The widget to display in the body of the Scaffold.
   final Widget child;

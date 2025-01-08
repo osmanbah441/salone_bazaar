@@ -1,17 +1,38 @@
-part of 'router.dart';
+import 'package:cart_repository/cart_repository.dart';
+import 'package:component_library/component_library.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:order_details/order_details.dart';
+import 'package:order_repository/order_repository.dart';
+import 'package:product_details/product_details.dart';
+import 'package:product_repository/product_repository.dart';
+import 'package:user_repository/user_repository.dart';
+import 'package:order_list/order_list.dart';
+import 'package:product_list/product_list.dart';
+import 'package:sign_in/sign_in.dart';
+import 'package:sign_up/sign_up.dart';
+import 'package:user_cart/user_cart.dart';
+import 'package:user_profile/user_profile.dart';
 
-class Routes {
-  const Routes({
-    required this.api,
-    required this.userRepository,
+class AppRoutes {
+  const AppRoutes({
+    this.userRepository = const UserRepository(),
+    this.productsRepository = const ProductsRepository(),
+    this.cartRepository = const CartRepository(),
+    this.ordersRepository = const OrdersRepository(),
   });
-  final BazaarApi api;
+
   final UserRepository userRepository;
+  final ProductsRepository productsRepository;
+  final CartRepository cartRepository;
+  final OrdersRepository ordersRepository;
 
   GoRoute get productDetailsRoute => GoRoute(
         path: PathConstants.productDetailsPath(),
         builder: (context, state) => ProductDetailsScreen(
-          api: api,
+          userRepository: userRepository,
+          productRepository: productsRepository,
+          cartRepository: cartRepository,
           onBackButtonTap: () => context.go(PathConstants.productListPath),
           productId:
               state.pathParameters[PathConstants.productIdPathParameter]!,
@@ -25,7 +46,7 @@ class Routes {
         builder: (context, state) => OrderDetailsScreen(
           orderId: state.pathParameters[PathConstants.orderIdPathParameter]!,
           userRepository: userRepository,
-          api: api,
+          ordersRepository: ordersRepository,
           onBackButtonTap: () => context.go(PathConstants.orderListPath),
         ),
       );
@@ -60,7 +81,7 @@ class Routes {
         builder: (context, state) => ProductListScreen(
           onProductSelected: (id) =>
               context.go(PathConstants.productDetailsPath(id)),
-          api: api,
+          productsRepository: productsRepository,
         ),
       );
 
@@ -80,8 +101,9 @@ class Routes {
             Redirect.toSignIn(context, userRepository),
         path: PathConstants.cartPath,
         builder: (context, state) => UserCartScreen(
+          ordersRepository: ordersRepository,
           userRepository: userRepository,
-          api: api,
+          cartRepository: cartRepository,
           onItemTap: (id) => context.go(
             PathConstants.productDetailsPath(id),
           ),
@@ -98,7 +120,43 @@ class Routes {
           onOrderSelected: (id) => context.go(
             PathConstants.orderDetailsPath(id),
           ),
-          api: api,
+          ordersRepository: ordersRepository,
         ),
       );
+}
+
+abstract final class PathConstants {
+  const PathConstants._();
+
+  // params are used like http path-parameter
+  static const productIdPathParameter = 'productId';
+  static const orderIdPathParameter = 'orderId';
+
+  // the product
+  static String productListPath = '/products';
+  static String productDetailsPath([String? productId]) =>
+      '$productListPath/${productId ?? ":$productIdPathParameter"}';
+
+  // user
+  static String get signInPath => '/sign-in';
+  static String get signUpPath => '/sign-up';
+  static String get userProfilePath => '/user-profile';
+
+  static String get cartPath => '/cart';
+
+  static String get orderListPath => '/orders';
+  static String orderDetailsPath([String? orderId]) =>
+      '$orderListPath/${orderId ?? ":$orderIdPathParameter"}';
+}
+
+abstract class Redirect {
+  static String? toSignIn(BuildContext context, UserRepository userRepository) {
+    if (userRepository.currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const AuthenticationRequiredErrorSnackBar(),
+      );
+      return PathConstants.signInPath;
+    }
+    return null;
+  }
 }
