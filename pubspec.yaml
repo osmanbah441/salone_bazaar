@@ -40,7 +40,7 @@ dependencies:
   user_profile: ^0.0.1
   order_details: ^0.0.1
   user_repository: ^0.0.1
-  domain_models: ^1.0.0
+  domain_models: ^0.0.1
   product_repository: ^0.0.1
   cart_repository: ^0.0.1
   order_repository: ^0.0.1

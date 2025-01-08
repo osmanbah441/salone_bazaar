@@ -1,5 +1,6 @@
 name: component_library
-description: "A new Flutter package project."
+description: "This package provides a collection of reusable UI components for the applications. 
+It encapsulates common UI elements, reducing code duplication and improving consistency across the project."
 version: 0.0.1
 publish_to: 'none'
 resolution: workspace

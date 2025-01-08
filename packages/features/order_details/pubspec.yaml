@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   equatable: ^2.0.5
   flutter_bloc: ^8.1.6
-  domain_models: ^1.0.0
+  domain_models: ^0.0.1
   component_library: ^0.0.1
   user_repository: ^0.0.1
   order_repository: ^0.0.1

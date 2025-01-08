@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   component_library: ^0.0.1
-  domain_models: ^1.0.0
+  domain_models: ^0.0.1
   user_repository: ^0.0.1
 
 dev_dependencies:

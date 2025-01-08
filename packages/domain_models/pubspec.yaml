@@ -1,6 +1,9 @@
 name: domain_models
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
+description: "This package defines the core data types and models used throughout your application's domain layer.
+It serves as a single source of truth for data structures, ensuring consistency and maintainability across 
+different parts of your application."
+
+version: 0.0.1
 resolution: workspace
 
 environment:
