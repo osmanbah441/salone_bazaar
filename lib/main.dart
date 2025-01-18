@@ -9,7 +9,7 @@ import 'firebase_options.dart';
 import 'app_routes.dart';
 import 'scaffold_with_navbar.dart';
 
-const isDebug = true;
+const isDebug = bool.fromEnvironment('DEBUG', defaultValue: true);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
