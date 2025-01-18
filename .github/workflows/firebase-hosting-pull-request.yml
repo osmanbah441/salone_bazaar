@@ -45,7 +45,7 @@ jobs:
 
       # Step 9: Build Web
       - name: Build Flutter Web
-        run: flutter build web --release --output public --dart-define=DEBUG=false
+        run: flutter build web --release --dart-define=DEBUG=false --output=public
 
       # Step 10: Upload Build Artifacts
       - name: Upload Build Artifacts
@@ -69,7 +69,6 @@ jobs:
       # Step 2: Recreate firebase.json
       - name: Recreate firebase.json
         run: echo "${{ secrets.FIREBASE_JSON_BASE64 }}" | base64 --decode > firebase.json
-
 
       # Step 3: Deploy to Firebase Hosting
       - name: Deploy to Firebase
