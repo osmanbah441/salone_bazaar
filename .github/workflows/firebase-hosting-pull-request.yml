@@ -16,22 +16,22 @@ jobs:
         with:
           channel: stable
 
-      - name: Recreate firebase_options.dart
-        run: echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/firebase_options.dart
-      - name: Recreate firebase.json
-        run: echo "${{ secrets.FIREBASE_JSON_BASE64 }}" | base64 --decode > firebase.json
-
-      - name: Verify Flutter Installation
-        run: flutter doctor -v
-
-      - name: Clean Build Environment
-        run: flutter clean
-
-      - name: Install Dependencies
-        run: flutter pub get
+      - name: Recreate firebase_options.dart and firebase.json
+        run:  | 
+          echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/firebase_options.dart
+          echo "${{ secrets.FIREBASE_JSON_BASE64 }}" | base64 --decode > firebase.json
 
       - name: Build Flutter Web
-        run: flutter build web --release --dart-define=DEBUG=false --output=public
+        run: |
+          flutter doctor -v
+          flutter clean
+          flutter pub get
+          flutter build web --release --dart-define=DEBUG=false --output=public
+
+      - name: Cleanup firebase_options.dart and firebase.json
+        run: |
+          rm -f lib/firebase_options.dart
+          rm -f firebase.json
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
