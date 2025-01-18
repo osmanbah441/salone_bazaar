@@ -47,5 +47,5 @@ app.*.map.json
 
 *firebase_options.dart*
 *firebase.json*
-
+.firebaserc
 *lock*
