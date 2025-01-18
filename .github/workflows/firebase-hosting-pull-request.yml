@@ -51,7 +51,6 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: flutter-web-build
           path: public
 
   build_and_preview:
@@ -64,7 +63,8 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: flutter-web-build
+          path: public
+       
 
       # Step 2: Recreate firebase.json
       - name: Recreate firebase.json
