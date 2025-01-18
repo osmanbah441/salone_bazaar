@@ -70,6 +70,9 @@ jobs:
       - name: Recreate firebase.json
         run: echo "${{ secrets.FIREBASE_JSON_BASE64 }}" | base64 --decode > firebase.json
 
+      - name: list dir
+        run: ls -la
+        
       # Step 3: Deploy to Firebase Hosting
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
