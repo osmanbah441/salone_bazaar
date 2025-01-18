@@ -66,7 +66,12 @@ jobs:
         with:
           name: flutter-web-build
 
-      # Step 2: Deploy to Firebase Hosting
+      # Step 2: Recreate firebase.json
+      - name: Recreate firebase.json
+        run: echo "${{ secrets.FIREBASE_JSON_BASE64 }}" | base64 --decode > firebase.json
+
+
+      # Step 3: Deploy to Firebase Hosting
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
