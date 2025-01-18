@@ -20,32 +20,38 @@ jobs:
       - name: Set up Flutter (Latest Stable)
         uses: subosito/flutter-action@v2
         with:
-          channel: master
+          channel: stable
 
-      # Step 3: Recreate firebase_options.dart
+      # Step 3: Create Web Platform (if not exists)
+      - name: Create Web Platform if not exists
+        run: |
+          flutter create . --org com.salonebazaar.app --platforms web || echo "Web platform already exists"
+
+      # Step 4: Recreate firebase_options.dart
       - name: Recreate firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/firebase_options.dart
 
-      # Step 4: Recreate firebase.json
+      # Step 5: Recreate firebase.json
       - name: Recreate firebase.json
         run: echo "${{ secrets.FIREBASE_JSON_BASE64 }}" | base64 --decode > firebase.json
 
-      # Step 5: Verify Flutter Installation
+      # Step 6: Verify Flutter Installation
       - name: Verify Flutter Installation
         run: flutter doctor -v
 
-      # Step 6: Clean and Install Dependencies
+      # Step 7: Clean Build Environment
       - name: Clean Build Environment
         run: flutter clean
 
+      # Step 8: Install Dependencies
       - name: Install Dependencies
         run: flutter pub get
 
-      # Step 7: Build Web
+      # Step 9: Build Web
       - name: Build Flutter Web
         run: flutter build web --release --output public --dart-define=DEBUG=false
 
-      # Step 8: Upload Build Artifacts
+      # Step 10: Upload Build Artifacts
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
