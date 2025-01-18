@@ -42,10 +42,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-/android
-/web
+/public
+/linux
 
 *firebase_options.dart*
 *firebase.json*
+.firebaserc
 
 *lock*
