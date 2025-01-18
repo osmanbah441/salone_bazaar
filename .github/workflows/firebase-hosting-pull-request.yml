@@ -31,10 +31,6 @@ jobs:
       - name: Recreate firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/firebase_options.dart
 
-      # Step 5: Recreate firebase.json
-      - name: Recreate firebase.json
-        run: echo "${{ secrets.FIREBASE_JSON_BASE64 }}" | base64 --decode > firebase.json
-
       # Step 6: Verify Flutter Installation
       - name: Verify Flutter Installation
         run: flutter doctor -v
