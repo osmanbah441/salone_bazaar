@@ -28,13 +28,13 @@ jobs:
           flutter pub get
           flutter build web --release --dart-define=DEBUG=false --output=public
 
-      - name: Cleanup firebase_options.dart and firebase.json
-        run: |
-          rm -f lib/firebase_options.dart
-          rm -f firebase.json
-
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SALONEBAZAAR }}
           projectId: salonebazaar
+
+      - name: Cleanup firebase_options.dart and firebase.json
+        run: |
+              rm -f lib/firebase_options.dart
+              rm -f firebase.json
